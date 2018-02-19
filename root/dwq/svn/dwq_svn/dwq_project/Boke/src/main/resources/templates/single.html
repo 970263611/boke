@@ -109,8 +109,7 @@
 	</div>
 </nav>
 <div style="background-image:url(images/single.jpg);position: absolute;top: 0;left: 0;right: 0;background-size: cover;" id="img_background">
-
-<div>
+</div>
 	<div id="content_page">
     	<div class="container">
 	    	<div class="row" style="text-align: center;">
@@ -118,18 +117,38 @@
 				<div class="col-xs-12 col-md-6">
 					<div>
 						<ul class="list-group">
-						  <li class="list-group-item">Cras justo odio</li>
-						  <li class="list-group-item">Dapibus ac facilisis in</li>
-						  <li class="list-group-item">Morbi leo risus</li>
-						  <li class="list-group-item">Porta ac consectetur ac</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
+						    <span class="date-post" th:text=${article.create_time}></span>
+							<h1 class="mb30" th:text=${article.title}></h1>
+							<p>by <a class="text-link" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}></a></p>
+							<div class="col-md-12">
+						<ul id="gtco-post-list">
+							<li class="full entry animate-box" data-animate-effect="fadeIn">
+								<a>
+									<div class="entry-desc">
+										<h3 th:text=${article.title}></h3>
+										<div>
+											<span th:utext=${article.content} style="color: #000000b5;"></span>
+										</div>
+									</div>
+								</a>
+								<a class="post-meta">
+								  <span class="date-posted" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}>作者</span>
+								  <span class="date-posted" th:text=${article.create_time}>时间</span>
+								</a>
+							</li>
+						</ul>
+						<div style="clear:both;"></div>
+						<div th:each="comment: ${commentList}">
+							<div><div style="border:1px solid rgba(51, 183, 134, 0.45)" th:text=${comment.message}></div></div>
+							<div style="text-align:right;"><span th:text=${comment.create_user}></span>
+								&nbsp&nbsp&nbsp<span th:text=${comment.create_time}></span></div>
+						</div>
+						<div><textarea style="background:#fff;" id="message" class="form-control" placeholder="参与评论" onclick="texttareas()" rows="1"></textarea> </div>
+						<div id="submitBtn" style="display: none">
+							<button type="button" class="btn btn-primary" id='sumitEva' style="float: left;margin-top: 10px;margin-bottom: 0px;" th:onclick="'javascript:submmit('+${article.id}+');'">提交评价</button>
+							<button type="button" class="btn btn-primary" th:onclick="'javascript:back();'" id="reBack" >返回</button>
+						</div>
+						</div>
 						</ul>
 		        	</div>					
 				</div>

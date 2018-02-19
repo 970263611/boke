@@ -44,7 +44,7 @@ public class HtmlController {
 	 */
 	@RequestMapping("/")
 	public String toIndex(Model model) {
-		return ToIndex(model);
+		return "newindex";
 	}
 	/**
 	 * 访问index页面后台跳转方法
@@ -185,7 +185,7 @@ public class HtmlController {
 //    	if(session.getAttribute("user_Login")==null){
 //			model.addAttribute("user_Login", "noLogin");
 //		}
-		return "register";  
+		return "login";  
     } 
 	
 	/**
