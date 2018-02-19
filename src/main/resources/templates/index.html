@@ -40,8 +40,8 @@
 	clear: both;
 	background-color: black;
 	position: absolute;
-	bottom: 0;
 	width: 100%;
+	bottom:0;
 }
 
 #speak 
@@ -576,39 +576,38 @@ li {
 	//默认加载初始的第一页的页码
 	$(function() {
 		scrollTo(0, 0);
-		$
-				.ajax({
-					type : "post",
-					url : "/pageNum",
-					dataType : "json",
-					cache : false,
-					async : false,
-					success : function(data) {
-						var html = "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page(1)'>首页</a>";
-						for (var a = 0; a < Math.ceil(data / 6); a++) {
-							if (a == 0) {
-								html += "<a href='javascript:scroll(0,0);' id='page_"
-										+ (a + 1)
-										+ "' style='margin-right: 5px;color:blue' onclick='go_page("
-										+ (a + 1) + ")'>" + (a + 1) + "</a>";
-							} else if (a > 8) {
-								html += "<a style='margin-right: 5px;color:blue'>...</a>";
-								break;
-							} else {
-								html += "<a href='javascript:scroll(0,0);' id='page_"
-										+ (a + 1)
-										+ "' style='margin-right: 5px;' onclick='go_page("
-										+ (a + 1) + ")'>" + (a + 1) + "</a>";
-							}
-						}
-						html += "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page("
-								+ Math.ceil(data / 6) + ")'>尾页</a>";
-						html += "<a href='javascript:scroll(0,0);' id='go_next_page' onclick='go_page(2)'>下一页</a>";
-						html += "&nbsp&nbsp&nbsp跳转第<input type='text' style='margin-right: 5px;margin-left: 5px;width: 30px;' id='goto_page'>页";
-						html += "<input type='button' style='margin-left: 5px;' onclick='go_to_page()' value='跳转'>";
-						$("#go_any_page").append(html);
+		$.ajax({
+			type : "post",
+			url : "/pageNum",
+			dataType : "json",
+			cache : false,
+			async : false,
+			success : function(data) {
+				var html = "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page(1)'>首页</a>";
+				for (var a = 0; a < Math.ceil(data / 6); a++) {
+					if (a == 0) {
+						html += "<a href='javascript:scroll(0,0);' id='page_"
+								+ (a + 1)
+								+ "' style='margin-right: 5px;color:blue' onclick='go_page("
+								+ (a + 1) + ")'>" + (a + 1) + "</a>";
+					} else if (a > 8) {
+						html += "<a style='margin-right: 5px;color:blue'>...</a>";
+						break;
+					} else {
+						html += "<a href='javascript:scroll(0,0);' id='page_"
+								+ (a + 1)
+								+ "' style='margin-right: 5px;' onclick='go_page("
+								+ (a + 1) + ")'>" + (a + 1) + "</a>";
 					}
-				})
+				}
+				html += "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page("
+						+ Math.ceil(data / 6) + ")'>尾页</a>";
+				html += "<a href='javascript:scroll(0,0);' id='go_next_page' onclick='go_page(2)'>下一页</a>";
+				html += "&nbsp&nbsp&nbsp跳转第<input type='text' style='margin-right: 5px;margin-left: 5px;width: 30px;' id='goto_page'>页";
+				html += "<input type='button' style='margin-left: 5px;' onclick='go_to_page()' value='跳转'>";
+				$("#go_any_page").append(html);
+			}
+		})
 	})
 </script>
 </html>

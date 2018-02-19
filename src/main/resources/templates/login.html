@@ -70,8 +70,8 @@
 		clear: both;
 		/* background-color:#00000099; */
 		position:absolute;
-		bottom:0;
 		width: 100%;
+		bottom:0;
 	}
 	#head_1
 	{
@@ -164,14 +164,14 @@
 				  	<div class="col-xs-0 col-md-5"></div>
 				    <div class="col-xs-12 col-md-7">
 						<div>
-							<form id="form_user" class="form-inline" style="color: #ffffffc4;">
+							<form id="form_user1" class="form-inline" style="color: #ffffffc4;">
 							  <div class="form-group">
 								    <label for="exampleInputName2" style="width: 60px;padding-left: 10px">Uname:</label>
-								    <input type="text" class="form-control" id="username" name="username" onkeydown="key_login()" placeholder="请输入用戶名">
+								    <input type="text" class="form-control" id="username1" name="username" onkeydown="key_login()" placeholder="请输入用戶名">
 							  </div>
 							  <div class="form-group">
 							    <label for="exampleInputEmail2" style="width: 60px;padding-left: 10px;">Pword:</label>
-							    <input type="password" class="form-control" id="password" name="password" onkeydown="key_login()" placeholder="请输入密碼">
+							    <input type="password" class="form-control" id="password1" name="password" onkeydown="key_login()" placeholder="请输入密碼">
 							  </div>
 							  <button type="button" class="btn btn-primary" id="login_btn" onclick="userlogin()">登陆</button>
 							</form>
@@ -266,7 +266,7 @@
 		$.ajax({
 			type : "post",
 			url : "/login",
-			data : $("#form_user").serialize(),
+			data : $("#form_user1").serialize(),
 			cache: false,
 			async: false,
 			error: function(request) {
