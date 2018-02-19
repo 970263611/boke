@@ -1,0 +1,1076 @@
+<!DOCTYPE HTML>
+<!--
+	Justice by gettemplates.co
+	Twitter: http://twitter.com/gettemplateco
+	URL: #
+-->
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>大花的博客-后台查看</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="DaHua's Blog，Welcome to see!" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="GetTemplates.co" />
+
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+
+	<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="/js/layer.js" type="text/javascript"></script>
+	<link href="/css/layer.css" rel="stylesheet" type="text/css" />
+
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	
+	<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<!-- 引入layer -->
+	<link rel="stylesheet" href="css/layer.css">
+
+	<link rel="stylesheet" href="css/jquery.bootgrid.min.css">
+
+	<script src="js/jquery.bootgrid.min.js"></script>
+
+	<script src="js/jquery.bootgrid.fa.min.js"></script>
+
+	<script src="js/layer.js"></script>
+	
+	<style type="text/css">
+	.pagination > li.active > a 
+	{
+	     height: auto; 
+    	 width: auto; 
+    	 padding: auto;
+    }
+	</style>
+	<script type="text/javascript">
+	
+	function user(){
+		close_all();
+		$("#table_user").attr("style","display:block");
+		$("#grid-data_user").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_user",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_user('"
+		        			+ row.id + "\',\'"
+							+ row.nickname + "\',\'"
+							+ row.name + "\',\'"
+							+ row.password + "\',\'"
+							+ row.rowId + "\',\'"
+							+ row.realname + 
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_user('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function article(){
+		close_all();
+		$("#table_article").attr("style","display:block");
+		$("#grid-data_article").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_article",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_article('"
+				        	+ row.id + "\',\'"
+							+ row.title + "\',\'"
+							+ row.content + "\',\'"
+							+ row.lead + "\',\'"
+							+ row.create_user + "\',\'"
+							+ row.create_time + "\',\'"
+							+ row.type +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_article('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function comment(){
+		close_all();
+		$("#table_comment").attr("style","display:block");
+		$("#grid-data_comment").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_comment",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_comment('"
+		        			+ row.id + "\',\'"
+		        			+ row.create_user + "\',\'"
+							+ row.create_time + "\',\'"
+							+ row.a_id + "\',\'"
+							+ row.message +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_comment('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+		
+		
+	}
+	
+	function myPhoto(){
+		close_all();
+		$("#table_myPhoto").attr("style","display:block");
+		$("#grid-data_myPhoto").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_myPhoto",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_myPhoto('"
+		        			+ row.id + "\',\'"
+							+ row.user_id + "\',\'"
+							+ row.photo_1 + "\',\'"
+							+ row.photo_1_test + "\',\'"
+							+ row.photo_2 + "\',\'"
+							+ row.photo_2_test + "\',\'"
+							+ row.photo_3 + "\',\'"
+							+ row.photo_3_test +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_myPhoto('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function myTest(){
+		close_all();
+		$("#table_myTest").attr("style","display:block");
+		$("#grid-data_myTest").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_myTest",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_myTest('"
+		        			+ row.id + "\',\'"
+							+ row.test_1 + "\',\'"
+							+ row.test_2 + "\',\'"
+							+ row.user_id + 
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_myTest('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function permission(){
+		close_all();
+		$("#table_permission").attr("style","display:block");
+		$("#grid-data_permission").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_permission",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_permission('"
+		        			+ row.id + "\',\'"
+							+ row.permissionName + "\',\'"
+							+ row.rowId + 
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_permission('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function role(){
+		close_all();
+		$("#table_role").attr("style","display:block");
+		$("#grid-data_role").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_role",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_role('"
+		        			+ row.id + "\',\'"
+							+ row.rowName + 
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_role('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function wordMessage(){
+		close_all();
+		$("#table_wordMessage").attr("style","display:block");
+		$("#grid-data_wordMessage").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_wordMessage",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_wordMessage('"
+		        			+ row.id + "\',\'"
+		        			+ row.create_user + "\',\'"
+							+ row.create_time + "\',\'"
+							+ row.message +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
+							+ "<a onclick=\"del_wordMessage('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">删除</a>";
+		        }
+		    }
+		});
+	}
+	
+	function close_all(){
+		$("#table_user").attr("style","display:none");
+		$("#table_article").attr("style","display:none");
+		$("#table_comment").attr("style","display:none");
+		$("#table_myPhoto").attr("style","display:none");
+		$("#table_myTest").attr("style","display:none");
+		$("#table_role").attr("style","display:none");
+		$("#table_permission").attr("style","display:none");
+		$("#table_wordMessage").attr("style","display:none");
+	}
+	
+	function loginOut(){
+		layer.msg('确定要退出么？', {
+			  time: 0 //不自动关闭
+			  ,btn: ['咋的，有意见？', '你说退就退啊！']
+			  ,yes: function(index){
+			    layer.close(index);
+			    window.location.href = "loginOut";
+			  }
+			});
+	}
+	
+	function edit_article(id,title,content,lead,create_user,create_time,type){
+		$("#model_article").modal("show");
+		$("#article_id").val(id);
+		$("#article_title").val(title);
+		$("#article_content").val(content);
+		$("#article_lead").val(lead);
+		$("#article_create_user").val(create_user);
+		$("#article_create_time").val(create_time);
+		$("#article_type").val(type);
+	}
+	
+	function edit_comment(id,create_user,create_time,a_id,message){
+		$("#model_comment").modal("show");
+		$("#comment_id").val(id);
+		$("#comment_create_user").val(create_user);
+		$("#comment_create_time").val(create_time);
+		$("#comment_a_id").val(a_id);
+		$("#comment_message").val(message);
+	}
+	
+	function edit_myPhoto(id,user_id,photo_1,photo_1_test,photo_2,photo_2_test,photo_3,photo_3_test){
+		$("#model_myPhoto").modal("show");
+		$("#myPhoto_id").val(id);
+		$("#myPhoto_user_id").val(user_id);
+		$("#myPhoto_photo_1").val(photo_1);
+		$("#myPhoto_photo_1_test").val(photo_1_test);
+		$("#myPhoto_photo_2").val(photo_2);
+		$("#myPhoto_photo_2_test").val(photo_2_test);
+		$("#myPhoto_photo_3").val(photo_3);
+		$("#myPhoto_photo_3_test").val(photo_3_test);
+	}
+	
+	function edit_myTest(id,test_1,test_2,user_id){
+		$("#model_myTest").modal("show");
+		$("#myTest_id").val(id);
+		$("#myTest_test_1").val(test_1);
+		$("#myTest_test_2").val(test_2);
+		$("#myTest_user_id").val(user_id);
+	}
+	
+	function edit_permission(id,permissionName,rowId){
+		$("#model_permission").modal("show");
+		$("#permission_id").val(id);
+		$("#permission_permissionName").val(permissionName);
+		$("#permission_rowId").val(rowId);
+	}
+	
+	function edit_role(id,roleName){
+		$("#model_role").modal("show");
+		$("#role_id").val(id);
+		$("#role_roleName").val(roleName);
+	}
+	
+	function edit_user(id,nickname,name,password,rowId,realname){
+		$("#model_user").modal("show");
+		$("#user_id").val(id);
+		$("#user_nickname").val(nickname);
+		$("#user_name").val(name);
+		$("#user_password").val(password);
+		$("#user_rowId").val(rowId);
+		$("#user_realname").val(realname);
+	}
+	
+	function edit_wordMessage(id,create_user,create_time,message){
+		$("#model_wordMessage").modal("show");
+		$("#wordMessage_id").val(id);
+		$("#wordMessage_create_user").val(create_user);
+		$("#wordMessage_create_time").val(create_time);
+		$("#wordMessage_message").val(message);
+	}
+	
+	function del_article(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_article",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_comment(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_comment",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_myPhoto(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_myPhoto",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_myTest(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_myTest",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_permission(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_permission",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_role(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_role",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_user(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_user",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function del_wordMessage(id){
+		$.ajax({
+			type : "post",
+			url : "/admin_delete_wordMessage",
+			data : {"id":id},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function article_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_article",
+			data : $("#message_article").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function comment_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_comment",
+			data : $("#message_comment").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function myPhoto_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_myPhoto",
+			data : $("#message_myPhoto").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function myTest_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_myTest",
+			data : $("#message_myTest").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function permission_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_permission",
+			data : $("#message_permission").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function role_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_role",
+			data : $("#message_role").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function user_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_user",
+			data : $("#message_user").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	function wordMessage_save(){
+		$.ajax({
+			type : "post",
+			url : "/admin_update_wordMessage",
+			data : $("#message_wordMessage").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('修改失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('修改成功');
+	         // 	$("#model_article").bootgrid("reload");
+                }
+            }
+		});
+			window.location.reload();
+	}
+	
+	</script>
+	</head>
+	<body style="background-image:url(images/image_admin.jpg);background-size:100%;">
+		
+	<div id="page">
+	<nav class="gtco-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2 text-left">
+					<div id="gtco-logo"><a href="index.html" style="text-decoration:none;">大花的博客<span>.</span></a></div>
+				</div>
+				<div class="col-xs-10 text-right menu-1">
+					<ul>
+						<li><a href="javascript:void(0);" onclick="user()">用户信息</a></li>
+						<li><a href="javascript:void(0);" onclick="article()">文章信息</a></li>
+						<li><a href="javascript:void(0);" onclick="wordMessage()">留言信息</a></li>
+						<li><a href="javascript:void(0);" onclick="comment()">评价信息</a></li>
+						<li><a href="javascript:void(0);" onclick="role()">角色信息</a></li>
+						<li><a href="javascript:void(0);" onclick="permission()">权限信息</a></li>
+						<li><a href="javascript:void(0);" onclick="myTest()">个人文字信息</a></li>
+						<li><a href="javascript:void(0);" onclick="myPhoto()">个人图片信息</a></li>
+						<li th:switch="${session.user}">
+							<a th:case=null></a>
+							<a th:case=* th:text=${session.user.nickname} class="dropdown" href="javascript:void(0);" onclick="loginOut()">登录</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+
+	<!-- <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image:url(images/image_13.jpg);" data-stellar-background-ratio="0.5">
+		<div class="overlay">
+		</div>
+		
+	</header> -->
+	<div class="container" style="min-height:700px; padding-top: 116px;">
+		
+			<div id="table_user" style="display: none">
+				<table id="grid-data_user" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="nickname">昵称</th>
+				            <th data-column-id="name">用户名</th>
+				            <th data-column-id="password">密码</th>
+				            <th data-column-id="rowId">权限id</th>
+				            <th data-column-id="realname">真实姓名</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_article" style="display: none">
+				<table id="grid-data_article" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="title">标题</th>
+				            <th data-column-id="content">正文</th>
+				            <th data-column-id="lead">导语</th>
+				            <th data-column-id="create_user">创建人</th>
+				            <th data-column-id="create_time">创建时间</th>
+				            <th data-column-id="type">类别</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_comment" style="display: none">
+				<table id="grid-data_comment" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="create_user">创建人</th>
+				            <th data-column-id="create_time">创建时间</th>
+				            <th data-column-id="a_id">文章ID</th>
+				            <th data-column-id="message">评价信息</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_myPhoto" style="display: none">
+				<table id="grid-data_myPhoto" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="user_id">用户ID</th>
+				            <th data-column-id="photo_1">图片1</th>
+				            <th data-column-id="photo_1_test">图片1对应标语</th>
+				            <th data-column-id="photo_1">图片2</th>
+				            <th data-column-id="photo_1_test">图片2对应标语</th>
+				            <th data-column-id="photo_1">图片3</th>
+				            <th data-column-id="photo_1_test">图片3对应标语</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_myTest" style="display: none">
+				<table id="grid-data_myTest" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="test_1">铭言</th>
+				            <th data-column-id="test_2">格言</th>
+				            <th data-column-id="user_id">关联用户ID</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_permission" style="display: none">
+				<table id="grid-data_permission" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="permissionName">权限名</th>
+				            <th data-column-id="rowId">角色ID</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_role" style="display: none">
+				<table id="grid-data_role" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="roleName">角色名</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			
+			<div id="table_wordMessage" style="display: none">
+				<table id="grid-data_wordMessage" class="table table-hover">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="create_user">创建人</th>
+				            <th data-column-id="create_time">创建时间</th>
+				            <th data-column-id="message">留言信息</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+		</div>
+		
+	<!-- 模态框-article -->
+	<div class="modal fade" id="model_article" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_article">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="article_id" name="id"><br>
+	            	标题：<input type="text" id="article_title" name="title"><br>
+	            	正文：<input type="text" id="article_content" name="content"><br>
+	            	导语：<input type="text" id="article_lead" name="lead"><br>
+	            	创建人：<input type="text" id="article_create_user" name="create_user"><br>
+	            	创建时间：<input type="text" id="article_create_time" name="create_time"><br>
+	            	类型：<input type="text" id="article_type" name="type">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="article_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-comment -->
+	<div class="modal fade" id="model_comment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_comment">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+		            ID：<input type="text" id="comment_id" name="id"><br>
+		                                    创建人：<input type="text" id="comment_create_user" name="create_user"><br>
+		                                    创建时间：<input type="text" id="comment_create_time" name="create_time"><br>
+		                                    关联文章ID：<input type="text" id="comment_a_id" name="a_id"><br>
+		                                    评价信息：<input type="text" id="comment_message" name="message">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="comment_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-myPhoto -->
+	<div class="modal fade" id="model_myPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_myPhoto">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="myPhoto_id" name="id"><br>
+	            	关联用户ID：<input type="text" id="myPhoto_user_id" name="user_id"><br>
+	            	照片一：<input type="text" id="myPhoto_photo_1" name="photo_1"><br>
+	            	照片一文字信息：<input type="text" id="myPhoto_photo_1_test" name="photo_1_test"><br>
+	            	照片二：<input type="text" id="myPhoto_photo_2" name="photo_2"><br>
+	            	照片二文字信息：<input type="text" id="myPhoto_photo_2_test" name="photo_2_test"><br>
+	            	照片三：<input type="text" id="myPhoto_photo_3" name="photo_3"><br>
+	            	照片三文字信息：<input type="text" id="myPhoto_photo_3_test" name="photo_3_test">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="myPhoto_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-myTest -->
+	<div class="modal fade" id="model_myTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_myTest">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="myTest_id" name="id"><br>
+	            	用户铭言：<input type="text" id="myTest_test_1" name="test_1"><br>
+	            	用户格言：<input type="text" id="myTest_test_2" name="test_2"><br>
+	            	关联的用户id：<input type="text" id="myTest_user_id" name="user_id">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="myTest_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-permission -->
+	<div class="modal fade" id="model_permission" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_permission">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="permission_id" name="id"><br>
+	            	权限名字：<input type="text" id="permission_permissionName" name="permissionName"><br>
+	            	对应的角色id：<input type="text" id="permission_rowId" name="rowId">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="permission_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-role -->
+	<div class="modal fade" id="model_role" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_role">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="role_id" name="id"><br>
+	            	角色名字：<input type="text" id="role_roleName" name="roleName">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="role_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-user -->
+	<div class="modal fade" id="model_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_user">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="user_id" name="id"><br>
+	            	昵称：<input type="text" id="user_nickname" name="nickname"><br>
+	            	用户名：<input type="text" id="user_name" name="name"><br>
+	            	密码：<input type="text" id="user_password" name="password"><br>
+	            	对应角色ID：<input type="text" id="user_rowId" name="rowId"><br>
+	            	真实名字：<input type="text" id="user_realname" name="realname">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="user_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- 模态框-workMessage -->
+	<div class="modal fade" id="model_wordMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="message_workMessage">
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">message:</label>
+	            	ID：<input type="text" id="wordMessage_id" name="id"><br>
+	            	创建人：<input type="text" id="wordMessage_create_user" name="create_user"><br>
+	            	创建时间：<input type="text" id="wordMessage_create_time" name="create_time"><br>
+	            	留言信息：<input type="text" id="wordMessage_message" name="message">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="workMessage_save()">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+		
+	<footer id="gtco-footer" role="contentinfo">
+		<div class="container">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; September 1 2017. Website all information from <a target="_blank" title="大花">大花的博客</a> - All Rights Reserved <a target="_blank">版权所有</a></small> 
+					</p>
+					<div class="bshare-custom"><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
+				</div>
+		</div>
+	</footer>
+	</div>
+	
+	
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Stellar -->
+	<script src="js/jquery.stellar.min.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+
+	</body>
+</html>
+
