@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<!--
+	Justice by gettemplates.co
+	Twitter: http://twitter.com/gettemplateco
+	URL: #
+-->
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>大花的博客-文章详情</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="DaHua's Blog，Welcome to see!" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="GetTemplates.co" />
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="css/magnific-popup.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	
+		<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Stellar -->
+	<script src="js/jquery.stellar.min.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+	
+	<!-- 引入layer -->
+	<link rel="stylesheet" href="layer/layer.css">
+	<script src="layer/layer.js"></script>
+
+	<style type="text/css">
+	.gtco-cover 
+	{
+    	height: 452px;
+    }
+    .btn-primary 
+    {
+    	background: rgba(247, 56, 89, 0.54);
+    }
+    #message
+	{
+	    width: 98%;
+	}
+	#reBack
+	{
+		margin-right: 23px;
+		float:right;
+		margin-top: 10px;
+		margin-bottom: 0px;
+	}
+    @media screen and (max-width: 768px)
+	{
+ 		#message
+ 		{
+		    width: 100%;
+		}
+		#reBack
+		{
+			float:right;
+			margin-top: 10px;
+			margin-bottom: 0px;
+		}
+	}
+	</style>
+	</head>
+	<body>
+		
+	<div class="gtco-loader"></div>
+	
+	<div id="page">
+	<nav class="gtco-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2 text-left">
+					<div id="gtco-logo"><a href="index.html">大花的博客<span>.</span></a></div>
+				</div>
+				<div class="col-xs-10 text-right menu-1">
+					<ul>
+						<li class="has-dropdown" style="display:inline-block;">
+							<a>提笔</a>
+							<ul class="dropdown" style="width:100px;">
+								<li><a href="/write?type=1">技术交流</a></li>
+								<li><a href="/write?type=2">我的困惑</a></li>
+								<li><a href="/write?type=3">谈谈生活</a></li>
+							</ul>
+						</li>
+
+						<li><a href="myworld">个人</a></li>
+<!-- 						<li><a href="javascript:void(0);" onclick="words_block()">留言</a></li> -->
+						<li th:switch="${session.user}">
+							<a th:case=null></a>
+							<a th:case=* th:text=${session.user.nickname} class="dropdown" href="javascript:void(0);" onclick="loginOut()">登录</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+
+	<header id="gtco-header" class="gtco-cover" role="banner" style="background-image:url(images/image_15.jpg);" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7 text-left">
+					<div class="display-t" style="height:auto;padding-top:170px;">
+						<div class="display-tc animate-box" data-animate-effect="fadeInUp" style="height:auto;">
+							<span class="date-post" th:text=${article.create_time}></span>
+							<h1 class="mb30" th:text=${article.title}></h1>
+							<p>by <a class="text-link" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}></a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	
+	<div id="gtco-maine">
+		<div class="container">
+			<div class="row row-pb-md">
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="related-title animate-box">文章详情</h2>
+				</div>
+			</div>
+			<div class="row row-pb-md">
+				<div class="col-md-12">
+					<ul id="gtco-post-list">
+						<li class="full entry animate-box" data-animate-effect="fadeIn">
+							<a>
+								<div class="entry-desc">
+									<h3 th:text=${article.title}></h3>
+									<div>
+										<span th:utext=${article.content} style="color: #000000b5;"></span>
+									</div>
+								</div>
+							</a>
+							<a class="post-meta">
+							  <span class="date-posted" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}>作者</span>
+							  <span class="date-posted" th:text=${article.create_time}>时间</span>
+							</a>
+						</li>
+					</ul>
+					<div style="clear:both;"></div>
+					<div th:each="comment: ${commentList}">
+						<div><div style="border:1px solid rgba(51, 183, 134, 0.45)" th:text=${comment.message}></div></div>
+						<div style="text-align:right;"><span th:text=${comment.create_user}></span>
+							&nbsp&nbsp&nbsp<span th:text=${comment.create_time}></span></div>
+					</div>
+					<div><textarea style="background:#fff;" id="message" class="form-control" placeholder="参与评论" onclick="texttareas()" rows="1"></textarea> </div>
+					<div id="submitBtn" style="display: none">
+						<button type="button" class="btn btn-primary" id='sumitEva' style="float: left;margin-top: 10px;margin-bottom: 0px;" th:onclick="'javascript:submmit('+${article.id}+');'">提交评价</button>
+						<button type="button" class="btn btn-primary" th:onclick="'javascript:back();'" id="reBack" >返回</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	
+	<footer id="gtco-footer" role="contentinfo">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-12">
+					<h3 class="footer-heading">特别致谢</h3>
+				</div>
+				<div class="col-md-4">
+					<div class="post-entry">
+						<div class="post-img">
+							<a><img src="images/lwt.jpg" class="img-responsive" alt="DaHua's Blog，Welcome to see!"></a>
+						</div>
+						<div class="post-copy">
+							<h4><a>特别致谢李伟涛哥对我的帮助</a></h4>
+							<a class="post-meta"><span class="date-posted">2017-08-29</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="post-entry">
+						<div class="post-img">
+							<a><img src="images/wxm.jpg" class="img-responsive" alt="DaHua's Blog，Welcome to see!"></a>
+						</div>
+						<div class="post-copy">
+							<h4><a>特别致谢武小默哥对我的帮助</a></h4>
+							<a class="post-meta"><span class="date-posted">2017-08-29</span></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="post-entry">
+						<div class="post-img">
+							<a><img src="images/jds.jpg" class="img-responsive" alt="DaHua's Blog，Welcome to see!"></a>
+						</div>
+						<div class="post-copy">
+							<h4><a>特别感谢姜东升同学对我的帮助</a></h4>
+							<a class="post-meta"><span class="date-posted">2017-08-29</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row copyright">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; September 1 2017. Website all information from <a target="_blank" title="大花">大花的博客</a> - All Rights Reserved <a target="_blank">版权所有</a></small> 
+					</p>
+					<div class="bshare-custom"><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+	
+	<script type="text/javascript">
+		function submmit(id){
+			$("#sumitEva").attr("disabled", true);
+			var message = $("#message").val();
+			if(message == "" || message == null){
+				layer.msg('评价信息不能为空', function(){});
+				$("#sumitEva").attr("disabled", false);
+			}else{
+				$.ajax({
+					type : "post",
+					url : "/comment_insert",
+					data :{"a_id":id,"message":message},
+					cache: false,
+					async: false,
+					error: function(request) {
+						layer.msg('请登陆后评价', function(){});
+		            },
+		            success: function(data) {
+		            	if(data == "success"){
+			            	window.location.reload();
+		            	}else{
+		            		layer.msg('请登陆后评价', function(){});
+		            	}
+		            }
+				});
+			}
+		}
+		
+		function loginOut(){
+			layer.msg('确定要退出么？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['咋的，有意见？', '你说退就退啊！']
+				  ,yes: function(index){
+				    layer.close(index);
+				    window.location.href = "loginOut";
+				  }
+				});
+		}
+		
+		function back(){
+			window.history.back(-1);
+		}
+		
+		//按钮延时设置（废弃）
+// 		$(function(){
+// 			var countdown=3;
+//     		$("#sumitEva").attr("disabled", true); 
+//     		setTimeout("closeCol()",3000);
+// 		})
+		
+// 		function closeCol(){
+// 			$("#sumitEva").attr("disabled", false); 
+// 		}
+		
+		//进入其他人主页的方法
+		function go_people(id){
+			window.location.href="/myworld?modify=no&articleId="+id;
+		}
+		
+		function texttareas(){
+			$.ajax({
+				type : "post",
+				url : "/userLoginOr",
+				cache: false,
+				async: false,
+				error: function(request) {
+					layer.msg('请登陆后评价', function(){});
+	            },
+	            success: function(data) {
+            		if(data!=""){
+        				$("#message").attr("rows","3");
+        				$("#submitBtn").attr("style","display:block")
+        			}else{
+        				layer.msg('请登陆后评价', function(){});
+        			}
+	            }
+			});
+		}
+	</script>
+	
+	</body>
+</html>
+

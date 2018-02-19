@@ -1,0 +1,311 @@
+<!DOCTYPE HTML>
+<!--
+	Justice by gettemplates.co
+	Twitter: http://twitter.com/gettemplateco
+	URL: #
+-->
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>大花的博客-登录页</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="DaHua's Blog，Welcome to see!" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="GetTemplates.co" />
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="/js/layer.js" type="text/javascript"></script>
+	<link href="/css/layer.css" rel="stylesheet" type="text/css" />
+	
+	<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<!-- 引入layer -->
+	<link rel="stylesheet" href="css/layer.css">
+	<script src="js/layer.js"></script>
+
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+	<style type="text/css">
+	#mainbody
+	{
+		margin-top:180px;
+	}
+	#foot
+	{
+		float: right;
+		margin-top: 67px;
+   	    margin-right: 37px;
+	}
+	.form-control
+	{
+		width:80%;
+	    height: 36px;
+	    display: inline-block;
+    	background-color: rgba(255, 255, 255, 0.58);
+	}
+	.header 
+	{
+		height: 80px;
+		overflow: hidden;
+		zoom: 1;
+		border-bottom: 1px solid #8a6d3b;
+		background: rgba(0,0,0,0.25);
+	}
+	.loginstyle
+	{
+		width: 300PX;
+		height: 400px;
+		overflow: hidden;
+		zoom: 1;
+		background: rgba(0,0,0,0.25);
+	}
+	.col-sm-10 
+	{
+	    margin-top: 10px;
+	}
+	.btn-default
+	{
+	    background-color: rgba(255, 255, 255, 0.58);
+	}
+	#gtco-footer 
+	{
+    	padding: 15px 0;
+	}
+ 	.gtco-cover.gtco-cover-sm 
+	{ 
+ 		height:690px; 
+ 	} 
+ 	
+ 	#title
+	{
+		margin-top: 37px;
+		width: 89%;
+	}
+	#content
+	{
+	    margin: 20px 0px;
+	}
+	.checkbox label, .radio label {
+    color: rgb(245, 245, 245);
+    }
+	@media screen and (max-width: 768px)
+	{
+		.loginstyle
+		{
+			width: auto;
+		}
+		.gtco-cover.gtco-cover-sm
+		{
+			height:auto; 
+		}
+		#title
+		{
+			width: 53%;
+		}
+		#content
+		{
+		    width: 69%;
+		    margin-bottom: 22px;
+		}
+		#mainbody
+		{
+		    margin-top: 50%;
+   			margin-bottom: 40%;
+		}
+		#foot
+		{
+			float: right;
+			margin-top: 22px;
+			margin-right: 6px;
+		}
+		.checkbox label, .radio label {
+	    color: rgb(245, 245, 245);
+	    }
+	}
+
+	
+	</style>
+	<script type="text/javascript">
+	//如果用户登陆，则不允许进入此页面，返回到index
+	window.onload=function(){
+		var winHeight = $(document).height();
+		$("#gtco-header").css("height",winHeight-77);
+	    if('alLogin' == '[[${session.user_Login}]]'){
+	    	window.location.href = "index.html";
+	    }
+	} 
+	
+	function userlogin(){
+		$.ajax({
+			type : "post",
+			url : "/login",
+			data : $("#form_user").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('登陆失败', function(){});
+            },
+            success: function(data) {
+                if(data == "error"){
+                	layer.msg('用户名或密码输入错误', function(){});
+                }else if(data == "success"){
+                	window.location.href = "index.html";
+                }
+            }
+		});
+	}
+	
+	function key_login(){
+		if(event.keyCode==13){
+			userlogin();
+		}
+	}
+</script>
+	</head>
+	<body>
+		
+	<div class="gtco-loader"></div>
+	
+	<div id="page">
+	<nav class="gtco-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-2 text-left">
+					<div id="gtco-logo"><a href="index.html">大花的博客<span>.</span></a></div>
+				</div>
+				<div class="col-xs-10 text-right menu-1">
+					<ul>
+<!-- 						<li class="has-dropdown"> -->
+<!-- 							<a href="category.html">提笔</a> -->
+<!-- 							<ul class="dropdown"> -->
+<!-- 								<li><a href="#">技术交流</a></li> -->
+<!-- 								<li><a href="#">我的困惑</a></li> -->
+<!-- 								<li><a href="#">谈谈生活</a></li> -->
+<!-- 								<li><a href="#">情感交流</a></li> -->
+<!-- 							</ul> -->
+<!-- 						</li> -->
+
+<!-- 						<li class="active"><a href="category.html">致谢</a></li> -->
+<!-- 						<li><a href="category.html">致谢</a></li> -->
+<!-- 						<li><a href="category.html">反馈</a></li> -->
+<!-- 						<li><a href="category.html">登陆</a></li> -->
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+
+	<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image:url(images/image_8.jpg);" data-stellar-background-ratio="0.5">
+		<div class="overlay">
+	
+			
+		
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-8 text-center">
+					<div class="row">
+		<div class="col-md-7"></div>
+		<div id="mainbody" class="col-md-3">
+			<div class="loginstyle">
+				<div style="border-bottom: 1px solid #8a6d3b;">
+					<h2 style="text-align:center;color: rgba(255, 255, 255, 0.82);">请您登录</h2>
+				</div>
+				<form id="form_user" class="form-group">
+				  <div class="form-group">
+					<div class="col-sm-12"  style="margin-top: 20px;">
+					  <input type="text" class="form-control" id="username" name="username" onkeydown="key_login()" placeholder="请输入用戶名">
+					</div>
+				  </div>
+				  <div class="form-group">
+					
+					<div class="col-sm-12" style="margin-top: 25px;">
+					  <input type="password" class="form-control" id="password" name="password" onkeydown="key_login()" placeholder="请输入密碼">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<div class="col-sm-12">
+					  <div class="checkbox">
+						<label>
+						  <input type="checkbox" name="rememberMe"> 记住密码
+						</label>
+					  </div>
+					</div>
+				  </div>
+				  <div class="form-group">
+					<div class="col-sm-12">
+					  <button type="button" class="btn btn-primary" style="width: 80%;margin-top: 8px;" onclick="userlogin()">登陆</button>
+					</div>
+				  </div>
+				</form>
+				<div id="foot">
+					 <a href="/index">返回首页</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+					 <a>忘记密码</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+					 <a href="register">注册账号</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+				<div class="col-md-2"></div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+	</header>
+	
+	<footer id="gtco-footer" role="contentinfo">
+		<div class="container">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; September 1 2017. Website all information from <a target="_blank" title="大花">大花的博客</a> - All Rights Reserved <a target="_blank">版权所有</a></small> 
+					</p>
+					<div class="bshare-custom"><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
+				</div>
+		</div>
+	</footer>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Stellar -->
+	<script src="js/jquery.stellar.min.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+
+	</body>
+</html>
+
