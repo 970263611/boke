@@ -148,12 +148,20 @@ public interface UserDao {
 	String user_seName(User user);
 
 	/**
-	 * 根据用户昵称获取起所发的文章
+	 * 根据用户昵称获取起最近所发的文章（3条）
+	 * @param nickname
+	 * @return
+	 */
+	@Select("select * from article where create_user = #{0} GROUP BY(create_time) DESC limit 0,3")
+	List<Article> select_article_mine(String nickname);
+	
+	/**
+	 * 根据用户昵称获取所有所发的文章
 	 * @param nickname
 	 * @return
 	 */
 	@Select("select * from article where create_user = #{0}")
-	List<Article> select_article_mine(String nickname);
+	List<Article> select_article_user_all(String nickname);
 
 	/**
 	 * 查询新注册用户输入的昵称是否重名

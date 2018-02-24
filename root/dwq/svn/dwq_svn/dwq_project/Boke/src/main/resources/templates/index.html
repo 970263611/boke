@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <head>
-<title>棣栭〉</title>
+<title>首页</title>
 <link rel="shortcut icon" href="images/logo.ico" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css">
@@ -98,15 +99,15 @@ body {
 	position: relative;
 	height: 100%;
 	width: 100%;
-	display: -webkit-box; /*浣跨敤CSS3鐨勭洅妯″瀷涔嬫祦寮忓竷灞�*/
+	display: -webkit-box; /*使用CSS3的盒模型之流式布局*/
 	display: -moz-box;
 	display: box;
-	-webkit-box-pack: center; /*瀹氫箟鐩掓ā鍨嬪唴閮ㄥ厓绱犲湪姘村钩鏂瑰悜涓婂眳浜庝腑闂翠綅缃�*/
+	-webkit-box-pack: center; /*定义盒模型内部元素在水平方向上居于中间位置*/
 	-moz-box-pack: center;
 	-o-box-pack: center;
 	-ms-box-pack: center;
 	box-pack: center;
-	-webkit-box-align: center; /*瀹氫箟鐩掓ā鍨嬪唴閮ㄥ厓绱犲湪鍨傜洿鏂瑰悜涓婂眳浜庝腑闂翠綅缃�*/
+	-webkit-box-align: center; /*定义盒模型内部元素在垂直方向上居于中间位置*/
 	-moz-box-align: center;
 	-o-box-align: center;
 	-ms-box-align: center;
@@ -120,20 +121,20 @@ body {
 	padding: 10px 10px 20px 10px;
 	text-align: center;
 	font-size: 20px;
-	box-shadow: .2em .2em .8em #130c0e; /*缁欑収鐗囨坊鍔犻槾褰辨晥鏋滐紝瀵屾湁绔嬩綋鎰�*/
+	box-shadow: .2em .2em .8em #130c0e; /*给照片添加阴影效果，富有立体感*/
 }
 
 .photoview p {
-	margin-top: 5px; /*璁剧疆鐓х墖鍐呮樉绀烘枃瀛楁钀界殑澶栦笂杈硅窛*/
+	margin-top: 5px; /*设置照片内显示文字段落的外上边距*/
 }
 
 .photo01 {
-	-weikit-transform-origin: right bottom; /*璁剧疆鍙充笅瑙掍负鏃嬭浆鍩哄噯鐐� */
+	-weikit-transform-origin: right bottom; /*设置右下角为旋转基准点 */
 	-moz-transform-origin: right bottom;
 	-o-transform-origin: right bottom;
 	-ms-transform-origin: right bottom;
 	transform-origin: right bottom;
-	transform: rotate(10deg); /*浠ュ彸涓嬭涓哄熀鍑嗙偣椤烘椂閽堟棆杞�10掳*/
+	transform: rotate(10deg); /*以右下角为基准点顺时针旋转10°*/
 	-webkit-transform: rotate(10deg);
 	-moz-transform: rotate(10deg);
 	-o-transform: rotate(10deg);
@@ -141,12 +142,12 @@ body {
 }
 
 .photo02 {
-	-weikit-transform-origin: right bottom; /*璁剧疆鍙充笅瑙掍负鏃嬭浆鍩哄噯鐐� */
+	-weikit-transform-origin: right bottom; /*设置右下角为旋转基准点 */
 	-moz-transform-origin: right bottom;
 	-o-transform-origin: right bottom;
 	-ms-transform-origin: right bottom;
 	transform-origin: right bottom;
-	transform: rotate(-20deg); /*浠ュ彸涓嬭涓哄熀鍑嗙偣閫嗘椂閽堟棆杞�20掳*/
+	transform: rotate(-20deg); /*以右下角为基准点逆时针旋转20°*/
 	-webkit-transform: rotate(-20deg);
 	-moz-transform: rotate(-20deg);
 	-o-transform: rotate(-20deg);
@@ -154,12 +155,12 @@ body {
 }
 
 .photo03 {
-	-weikit-transform-origin: left top; /*璁剧疆宸︿笂瑙掍负鏃嬭浆鍩哄噯鐐� */
+	-weikit-transform-origin: left top; /*设置左上角为旋转基准点 */
 	-moz-transform-origin: left top;
 	-o-transform-origin: left top;
 	-ms-transform-origin: left top;
 	transform-origin: left top;
-	transform: rotate(20deg); /*浠ュ乏涓婅涓哄熀鍑嗙偣椤烘椂閽堟棆杞�20掳*/
+	transform: rotate(20deg); /*以左上角为基准点顺时针旋转20°*/
 	-webkit-transform: rotate(20deg);
 	-moz-transform: rotate(20deg);
 	-o-transform: rotate(20deg);
@@ -167,12 +168,12 @@ body {
 }
 
 .photo04 {
-	-weikit-transform-origin: left bottom; /*璁剧疆宸︿笅瑙掍负鏃嬭浆鍩哄噯鐐� */
+	-weikit-transform-origin: left bottom; /*设置左下角为旋转基准点 */
 	-moz-transform-origin: left bottom;
 	-o-transform-origin: left bottom;
 	-ms-transform-origin: left bottom;
 	transform-origin: left bottom;
-	transform: rotate(-20deg); /*浠ュ乏涓嬭涓哄熀鍑嗙偣閫嗘椂閽堟棆杞�20掳*/
+	transform: rotate(-20deg); /*以左下角为基准点逆时针旋转20°*/
 	-webkit-transform: rotate(-20deg);
 	-moz-transform: rotate(-20deg);
 	-o-transform: rotate(-20deg);
@@ -186,16 +187,19 @@ body {
 
 a:link 
 {
-	text-decoration:none;//鏈闂細钃濊壊銆佹棤涓嬪垝绾�   
+	text-decoration:none;  
 } 
 a:visited 
 {
-	color:purple;//宸茶闂細绱壊銆佹棤涓嬪垝绾�   
+	color:purple;
 } 
 li {
 	list-style-type:none;
 }
-
+#gopage
+{
+	margin: 20px 0 -50px;
+}
 @media screen and (max-width: 768px) {
 	#collapse {
 		background: #000;
@@ -235,6 +239,10 @@ li {
 		padding-top: 100px;
 		padding-bottom: 292px;
 	}
+	#gopage
+	{
+		margin: -20px 0 -50px;
+	}
 }
 </style>
 </head>
@@ -255,9 +263,9 @@ li {
 					</button>
 
 					<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo"
-						src="images/logo.ico"
+						src="images/logo_white.png"
 						style="height: 20px; width: 20px; float: left; position: absolute; top: 0;" /><span
-						style="font-size: 20px; font-family: cursive; margin-left: -8px;">&nbsp澶ц姳鐨勫崥瀹�<span
+						style="font-size: 20px; font-family: cursive; margin-left: -8px;">&nbsp大花博客<span
 							style="color: red;">.</span></span></a>
 				</div>
 
@@ -266,17 +274,17 @@ li {
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false">鎻愮瑪 <span class="caret"></span></a>
+							aria-expanded="false">提笔 <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><a href="/write?type=1">鎶�鏈氦娴�</a></li>
-								<li><a href="/write?type=2">鎴戠殑鍥版儜</a></li>
-								<li><a href="/write?type=3">璋堣皥鐢熸椿</a></li>
+								<li><a href="/write?type=1">技术交流</a></li>
+								<li><a href="/write?type=2">我的困惑</a></li>
+								<li><a href="/write?type=3">谈谈生活</a></li>
 							</ul></li>
-						<li><a href="myworld">涓汉</a></li>
-						<li><a href="javascript:scroll(0,0)" onclick="words_block()">鐣欒█</a></li>
-						<li th:switch="${session.user}"><a th:case=null href="login">鐧诲綍</a>
+						<li><a href="myworld">个人</a></li>
+						<li><a href="javascript:scroll(0,0)" onclick="words_block()">留言</a></li>
+						<li th:switch="${session.user}"><a th:case=null href="login">登陆</a>
 							<a th:case=* th:text='${session.user.nickname}' class="dropdown"
-							href="javascript:void(0);" onclick="loginOut()">鐧诲綍</a></li>
+							href="javascript:void(0);" onclick="loginOut()">登陆</a></li>
 					</ul>
 				</div>
 				<!-- /.navbar-collapse -->
@@ -285,15 +293,15 @@ li {
 		</div>
 	</nav>
 	<ul id="menu">
-		<li data-menuanchor="page1" class="active"><a href="#page1">涓�</a></li>
-		<li data-menuanchor="page2"><a href="#page2">浜�</a></li>
-		<li data-menuanchor="page3"><a href="#page3">涓�</a></li>
+		<li data-menuanchor="page1" class="active"><a href="#page1">一</a></li>
+		<li data-menuanchor="page2"><a href="#page2">二</a></li>
+		<li data-menuanchor="page3"><a href="#page3">三</a></li>
 	</ul>
 	<div id="dowebok">
 		<div class="section"
 			style="background-image: url(images/image_1.jpg); color: white; font-size: 50px;">
-			<p style="text-align: center; font-family: cursive;">涓栦笂鏃犻毦浜�</p>
-			<p style="text-align: center; font-family: cursive;">鍙鑲攢鐧�</p>
+			<p style="text-align: center; font-family: cursive;">世上无难事</p>
+			<p style="text-align: center; font-family: cursive;">只要肯攀登</p>
 		</div>
 		<div class="section"
 			style="background-image: url(images/image_new_1.jpg);">
@@ -312,7 +320,7 @@ li {
 									<div>
 										<span>by- </span>
 										<a href="javascript:scroll(0,0)" th:onclick="'go_people('+${a_one.id}+');'" th:text=${a_one.create_user}>浣滆��</a> 
-										<span th:text=${a_one.create_time}>鏃堕棿</span>
+										<span th:text=${a_one.create_time}></span>
 									</div>
 								</li>
 
@@ -326,7 +334,7 @@ li {
 									<div>
 										<span>by- </span>
 										<a href="javascript:scroll(0,0)" th:onclick="'go_people('+${a_two.id}+');'" th:text=${a_two.create_user}>浣滆��</a>
-										<span th:text=${a_two.create_time}>鏃堕棿</span>
+										<span th:text=${a_two.create_time}></span>
 									</div>
 								</li>
 
@@ -339,13 +347,31 @@ li {
 									<div>
 										<span>by- </span>
 										<a href="javascript:scroll(0,0)" th:onclick="'go_people('+${alist.id}+');'" th:text=${alist.create_user}>浣滆��</a>
-										<span th:text=${alist.create_time}>鏃堕棿</span>
+										<span th:text=${alist.create_time}></span>
 									</div>
 								</li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-xs-0 col-md-3"></div>
+				</div>
+			</div>
+			<div class='container-fluid'>
+				<div class='row'>
+				  	<div class='col-xs-0 col-md-1'></div>
+				    <div class='col-xs-12 col-md-8' style='text-align: center;' id='gopage'>
+						<nav aria-label='...'>
+						    <ul class='pagination' id='go_any_page'>
+						  	</ul>
+						</nav>
+						<nav aria-label="...">
+						  <ul class="pager">
+						    <li><a href="#">Previous</a></li>
+						    <li><a href="#">Next</a></li>
+						  </ul>
+						</nav>
+					</div>
+					<div class='col-xs-0 col-md-3'></div>
 				</div>
 			</div>
 		</div>
@@ -358,32 +384,32 @@ li {
 								<div class="photo01">
 									<div class="photoview">
 										<img src="images/1.jpg" width="300" height="220">
-										<p>瀹岀編鐨勬槦绌�</p>
-										<p>涓嶆柊椴滅殑钀濆崪鐨�</p>
+										<p>完美的星空</p>
+										<p>不新鲜的萝卜皮</p>
 									</div>
 								</div>
 
 								<div class="photo02">
 									<div class="photoview">
 										<img src="images/2.jpg" width="300" height="220">
-										<p>娴疯竟鐨勯粍鏄�</p>
-										<p>涓嶆柊椴滅殑钀濆崪鐨�</p>
+										<p>海边的黄昏</p>
+										<p>不新鲜的萝卜皮</p>
 									</div>
 								</div>
 
 								<div class="photo03">
 									<div class="photoview">
 										<img src="images/3.jpg" width="300" height="220">
-										<p>鍩庡競钀芥棩浣欐櫀</p>
-										<p>涓嶆柊椴滅殑钀濆崪鐨�</p>
+										<p>城市落日余晖</p>
+										<p>不新鲜的萝卜皮</p>
 									</div>
 								</div>
 
 								<div class="photo04">
 									<div class="photoview">
 										<img src="images/4.jpg" width="300" height="220">
-										<p>澶ф捣鐨勫绌�</p>
-										<p>涓嶆柊椴滅殑钀濆崪鐨�</p>
+										<p>大海的夜空</p>
+										<p>不新鲜的萝卜皮</p>
 									</div>
 								</div>
 							</div>
@@ -396,13 +422,13 @@ li {
 					<div class="row">
 						<div class="col-xs-0 col-md-5"
 							style="padding-top: 20px; text-align: center;">
-							<img src="images/da.png"
-								style="height: 55px; width: 76px; float: center;">
+							<img src="images/logo_white.png"
+								style="height: 66px; width: 76px; float: center;">
 						</div>
 						<div class="col-xs-12 col-md-4">
 							<div style="padding-top: 20px;">
-								<p>鐗瑰埆鑷磋阿锛氭灏忛粯 鏉庝紵娑� 姹熶笢鍗�</p>
-								<p style="margin-bottom: 3px;">璇疯仈绯绘垜锛歭ove_dingwq@163.com</p>
+								<p>特别致谢：武小默 李伟涛 江东升</p>
+								<p style="margin-bottom: 3px;">请联系我：love_dingwq@163.com</p>
 								<!-- <div class="bdsharebuttonbox">
 								<span style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;">鎰熻阿鍒嗕韩锛�</span>
 								<a href="#" class="bds_weixin" data-cmd="weixin"></a>
@@ -419,50 +445,44 @@ li {
 						</div>
 						<div class="col-xs-12 col-md-3">
 							<div style="padding-top: 20px;">
-								<p>澶囨鍙凤細</p>
-								<p>澶囨鍙凤細</p>
+								<p>备案号：</p>
+				    			<p>备案号：</p>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div style="text-align: center; padding-bottom: 10px;">
 					<p>
-						<small class="block">&copy; September 1 2017. Website all
-							information from <a title="澶ц姳">澶ц姳鐨勫崥瀹�</a> - All Rights Reserved
-							鐗堟潈鎵�鏈�
+						<small class="block">&copy; September 1 2017. Website all information from 
+							<a title="大花">大花的博客</a>- All Rights Reserved 版权所有
 						</small>
 					</p>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- 妯℃�佹 -->
-	<div class="modal fade" id="Modal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="exampleModalLabel">缂栬緫鎴戠殑鐣欒█</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="message-text" class="control-label">鐣欒█淇℃伅:</label>
-							<textarea class="form-control" id="message"></textarea>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">鍏抽棴</button>
-					<button type="button" class="btn btn-primary" id='send_word'
-						onclick="submmit_words()">鐣欒█</button>
-				</div>
-			</div>
-		</div>
+	<!-- 模态框 -->
+	<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑我的留言</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">留言信息:</label>
+	            <textarea class="form-control" id="message"></textarea>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="button" class="btn btn-primary" id='send_word' onclick="submmit_words()">留言</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
@@ -493,7 +513,7 @@ li {
 		}
 		autoScrolling();
 	});
-	//棣栭〉logo鍔ㄧ敾
+	
 	$(function() {
 		$("#img_logo").animate({
 			top : "25",
@@ -518,62 +538,58 @@ li {
 		}
 	})
 
-	//鏄剧ず鐣欒█鏉�
+	
 	function words_block() {
 		$("#Modal").modal("show");
 	}
 
-	//鎻愪氦鐣欒█
-	function submmit_words() {
+	
+	//提交留言
+	function submmit_words(){
 		var words_mess = $("#message").val();
 		$("#send_word").attr("disabled", true);
-		if (words_mess == null || words_mess == "") {
+		if(words_mess==null || words_mess==""){
 			$("#send_word").attr("disabled", false);
-			layer.msg('璇峰～鍐欑暀瑷�鍚庡湪鎻愪氦', function() {
-			});
+			layer.msg('请填写留言后在提交', function(){});
 			return false;
 		}
 		$.ajax({
 			type : "post",
 			url : "/words_mess",
-			data : {
-				"words_mess" : words_mess
-			},
-			cache : false,
-			async : false,
-			error : function(request) {
-				layer.msg('鐣欒█澶辫触', function() {
-				});
+			data : {"words_mess":words_mess},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('留言失败', function(){});
 				$("#send_word").attr("disabled", false);
-			},
-			success : function(data) {
-				if (data == "success") {
-					layer.msg('鐣欒█鎴愬姛');
-					$("#send_word").attr("disabled", false);
-					$("#Modal").modal("hide");
-				}
-			}
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('留言成功');
+                	$("#send_word").attr("disabled", false);
+                	$("#Modal").modal("hide");
+                }
+            }
 		});
 	}
 
-	function loginOut() {
-		layer.msg('纭畾瑕侀��鍑轰箞锛�', {
-			time : 0 //涓嶈嚜鍔ㄥ叧闂�
-			,
-			btn : [ '鍜嬬殑锛屾湁鎰忚锛�', '浣犺閫�灏遍��鍟婏紒' ],
-			yes : function(index) {
-				layer.close(index);
-				window.location.href = "loginOut";
-			}
-		});
+	function loginOut(){
+		layer.msg('确定要退出么？', {
+			  time: 0 //不自动关闭
+			  ,btn: ['咋的，有意见？', '你说退就退啊！']
+			  ,yes: function(index){
+			    layer.close(index);
+			    window.location.href = "loginOut";
+			  }
+			});
 	}
 
-	//杩涘叆鍏朵粬浜轰富椤电殑鏂规硶
+	//进入其他人主页的方法
 	function go_people(id) {
 		window.location.href = "/myworld?modify=no&articleId=" + id;
 	}
 
-	//榛樿鍔犺浇鍒濆鐨勭涓�椤电殑椤电爜
+	//默认加载初始的第一页的页码
 	$(function() {
 		scrollTo(0, 0);
 		$.ajax({
@@ -583,31 +599,113 @@ li {
 			cache : false,
 			async : false,
 			success : function(data) {
-				var html = "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page(1)'>棣栭〉</a>";
+				var html = "<li class='disabled' id='previous'>" +
+						    	"<a href='javascript:scroll(0,0);' onclick='go_page(1,this,"+data+")' aria-label='Previous'>" +
+						    		"<span aria-hidden='true'>&laquo;</span>" +
+						    	"</a>" +
+					    	"</li>";
 				for (var a = 0; a < Math.ceil(data / 6); a++) {
-					if (a == 0) {
-						html += "<a href='javascript:scroll(0,0);' id='page_"
-								+ (a + 1)
-								+ "' style='margin-right: 5px;color:blue' onclick='go_page("
-								+ (a + 1) + ")'>" + (a + 1) + "</a>";
-					} else if (a > 8) {
-						html += "<a style='margin-right: 5px;color:blue'>...</a>";
-						break;
-					} else {
-						html += "<a href='javascript:scroll(0,0);' id='page_"
-								+ (a + 1)
-								+ "' style='margin-right: 5px;' onclick='go_page("
-								+ (a + 1) + ")'>" + (a + 1) + "</a>";
+					if(a==0){
+						html += "<li class='active'>" +
+					    			"<a href='javascript:scroll(0,0);' id='page_" + (a + 1) +
+					    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+					    				"<span class='sr-only'>(current)</span>" +
+				    				"</a>" +
+			    				"</li>";
+					}else{
+						html += "<li>" +
+					    			"<a href='javascript:scroll(0,0);' id='page_" + (a + 1) +
+					    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+					    				"<span class='sr-only'>(current)</span>" +
+				    				"</a>" +
+    							"</li>";
 					}
 				}
-				html += "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page("
-						+ Math.ceil(data / 6) + ")'>灏鹃〉</a>";
-				html += "<a href='javascript:scroll(0,0);' id='go_next_page' onclick='go_page(2)'>涓嬩竴椤�</a>";
-				html += "&nbsp&nbsp&nbsp璺宠浆绗�<input type='text' style='margin-right: 5px;margin-left: 5px;width: 30px;' id='goto_page'>椤�";
-				html += "<input type='button' style='margin-left: 5px;' onclick='go_to_page()' value='璺宠浆'>";
-				$("#go_any_page").append(html);
+						html+=	"<li id='lastPage'>" +
+							    	"<a href='javascript:scroll(0,0);' aria-label='Previous' onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>" +
+							    		"<span aria-hidden='true'>&raquo;</span>" +
+							    	"</a>" +
+						    	"</li>";
+            	$("#go_any_page").append(html);
 			}
 		})
 	})
+	
+	
+	function go_page(page,obj,lastPage){
+		$(".active li").each(function() {
+			$(this).removeClass("active");
+		});
+		$(obj).parent().addClass("active");
+		if(page!=1){
+			$("#previous").removeClass("disabled");
+		}else{
+			$("#previous").addClass("disabled");
+		}
+		if(Math.ceil(lastPage/6) == page){
+			$("#lastPage").addClass("disabled");
+		}else{
+			$("#lastPage").removeClass("disabled");
+		}
+		if(page==1){
+    		window.location.reload();
+    	}else if(page>1){
+    		$("#page_"+page).attr("style","margin-right: 5px;color:blue");
+			$.ajax({
+				type : "post",
+				url : "/go_page",
+				data : {"page":page},
+				dataType : "json",
+				cache: false,
+				async: false,
+	            success: function(data) {
+	            	$("#gtco-post-list li").remove();
+	            	var html = "";
+	           		for(var a = 0;a<data.length;a++){
+	           			html += "<li class='entry' data-animate-effect='fadeIn'>"
+	            			+"<a href='single.html?id="+data[a].id+"'><div class='entry-desc'>"
+							+"<h3>"+data[a].title+"</h3>"
+							+"<p>"+data[a].lead+"</p>"
+							+"</div></a><div class='post-meta'>"
+							+"<span class='date-posted'>"+data[a].create_user+"</span>"
+							+"<span class='date-posted'>"+data[a].create_time+"</span>"
+							+"<span class='date-posted' style='float:right'>点击查看全文</span>"
+							+"</div></li>";
+	           		}
+	           			var allPage=[[${session.allPage}]];
+	           			if(page+1<=Math.ceil(allPage/6)){
+			            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
+	           			}
+		            	$('#gtco-post-list').append(html);
+		            	//根据点击页数动态调整当前第一页
+// 		            	if(page>6){
+// 	            		    $("#go_any_page").empty();
+// 		            		var html = "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page(1)'>首页</a>";
+// 		                	var newFirstPage = page-6;
+// 		                	var lastPage = newFirstPage+9;
+// 		            		for(var a=newFirstPage;a<Math.ceil(allPage/6);a++){
+// 		                		if(a==0){
+// 		                			html+="<a href='javascript:scroll(0,0);' id='page_"+(a+1)+"' style='margin-right: 5px;color:blue' onclick='go_page("+(a+1)+")'>"+(a+1)+"</a>";
+// 		                		}else if(a>lastPage){
+// 		                			html+="<a style='margin-right: 5px;color:blue'>...</a>";
+// 		                			break;
+// 		                		}else{
+// 		    	            		html+="<a href='javascript:scroll(0,0);' id='page_"+(a+1)+"' style='margin-right: 5px;' onclick='go_page("+(a+1)+")'>"+(a+1)+"</a>";
+// 		                		}
+// 		                	}
+// 		                	$("#go_any_page").append(html);
+// 		            	}
+	            }
+			});
+    	}
+	}
+		    		 
+	
+	function go_to_page(){
+		var page = $("#goto_page").val();
+		scrollTo(0,0);
+		go_page(page);
+	}
+	
 </script>
 </html>

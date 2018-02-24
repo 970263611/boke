@@ -207,4 +207,14 @@ public class HtmlController {
     	return ToLogin(model);
     }
     
+    /**
+	 * 用户注销
+	 */
+    @RequestMapping("/user_article")
+    public String user_article(Model model,String nickname){
+    	List<Article> list = userService.select_article_user_all(nickname);
+    	model.addAttribute("list", list);
+    	return "user_article";
+    }
+    
 }

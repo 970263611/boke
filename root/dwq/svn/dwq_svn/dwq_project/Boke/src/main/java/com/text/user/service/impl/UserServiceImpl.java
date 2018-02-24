@@ -359,4 +359,14 @@ public class UserServiceImpl implements UserService {
 		return newUser;
 	}
 
+	/**
+	 * 根据用户昵称获取起所有的文章
+	 * @param nickname
+	 * @return
+	 */
+	@Override
+	public List<Article> select_article_user_all(String nickname) {
+		return userDao.select_article_user_all(nickname);
+	}
+
 }

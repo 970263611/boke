@@ -67,12 +67,19 @@ public interface UserService {
 	String userAdd(User user);
 
 	/**
-	 * 根据用户昵称获取起所发的文章
+	 * 根据用户昵称获取最近所发的文章（3条）
 	 * @param nickname
 	 * @return
 	 */
 	List<Article> select_article_mine(String nickname);
 
+	/**
+	 * 根据用户昵称获取起所有的文章
+	 * @param nickname
+	 * @return
+	 */
+	List<Article> select_article_user_all(String nickname);
+	
 	/**
 	 * 查询第二条显示的文章
 	 * @return

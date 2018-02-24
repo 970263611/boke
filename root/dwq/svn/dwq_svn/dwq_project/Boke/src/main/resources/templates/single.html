@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -34,6 +35,7 @@
 	/* background-color:#00000099; */
 	position: absolute;
 	width: 100%;
+	bottom:0;
 }
 
 #content_page {
@@ -43,7 +45,18 @@
 li {
 	list-style-type:none;
 }
-
+a:link 
+{
+	text-decoration:none;
+} 
+a:visited 
+{
+	color:purple;
+}
+ul
+{
+    margin-left: -40px;
+}
 @media screen and (min-width: 768px) {
 	#img_background {
 		bottom: 0;
@@ -64,6 +77,11 @@ li {
 	.navbar-inverse .navbar-toggle {
 		border-color: #3330;
 	}
+	#collapse 
+	{
+	    background: #000;
+	    float: right;
+	}
 }
 </style>
 </head>
@@ -71,6 +89,7 @@ li {
 
 
 	<!--ͷ??-->
+	<div id='all_page' style="position: relative;">
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container" style="padding-top: 15px;">
 			<div class="container-fluid">
@@ -86,7 +105,7 @@ li {
 					<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo"
 						src="images/logo.ico"
 						style="height: 20px; width: 20px; float: left; position: initial;" /><span
-						style="font-size: 20px; font-family: cursive; margin-left: -8px;">&nbsp大花的博客<span
+						style="font-size: 20px; font-family: cursive; margin-left: -8px;">&nbsp大花博客<span
 							style="color: red;">.</span></span></a>
 				</div>
 
@@ -118,11 +137,11 @@ li {
 		<div class="container">
 			<div class="row">
 				<div class="col-md-7 text-left">
-					<div class="display-t" style="height:auto;padding-top:170px;">
+					<div class="display-t" style="height:auto;padding-top:130px;padding-bottom: 100px;">
 						<div class="display-tc animate-box" data-animate-effect="fadeInUp" style="height:auto;">
-							<span class="date-post" th:text=${article.create_time}></span>
 							<h1 class="mb30" th:text=${article.title}></h1>
-							<p>by <a class="text-link" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}></a></p>
+							<p style="float: right;font-size: 20px;padding-top: 20px;">by <a class="text-link" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}></a>
+							&nbsp&nbsp&nbsp<span class="date-post" th:text=${article.create_time}></span></p>
 						</div>
 					</div>
 				</div>
@@ -133,40 +152,50 @@ li {
 	<div id="gtco-maine">
 		<div class="container">
 			<div class="row row-pb-md">
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="related-title animate-box">文章详情</h2>
-				</div>
-			</div>
-			<div class="row row-pb-md">
 				<div class="col-md-12">
 					<ul id="gtco-post-list">
 						<li class="full entry animate-box" data-animate-effect="fadeIn">
-							<a>
+							<div>
 								<div class="entry-desc">
-									<h3 th:text=${article.title}></h3>
+									<h3 th:text=${article.title} style="text-align: center;padding: 10px;"></h3>
 									<div>
-										<span th:utext=${article.content} style="color: #000000b5;"></span>
+										<span th:utext=${article.content} style="color: #000000b5;line-height: 35px;font-size: 16px;"></span>
 									</div>
 								</div>
-							</a>
-							<a class="post-meta">
-							  <span class="date-posted" th:onclick="'go_people('+${article.id}+');'" th:text=${article.create_user}>作者</span>
-							  <span class="date-posted" th:text=${article.create_time}>时间</span>
-							</a>
+							</div>
 						</li>
 					</ul>
 					<div style="clear:both;"></div>
-					<div th:each="comment: ${commentList}">
+					<div><textarea style="background:#fff;margin: 30px 0 30px 0;" id="message" class="form-control" placeholder="参与评论" onclick="texttareas()" rows="1"></textarea> </div>
+					<div id="submitBtn" style="display: none">
+						<button type="button" class="btn btn-primary" id='sumitEva' style="float: left;margin-top: -20px;margin-bottom: 20px;" th:onclick="'javascript:submmit('+${article.id}+');'">提交评价</button>
+					</div>
+					
+					<!-- <div th:each="comment: ${commentList}">
 						<div><div style="border:1px solid rgba(51, 183, 134, 0.45)" th:text=${comment.message}></div></div>
 						<div style="text-align:right;"><span th:text=${comment.create_user}></span>
 							&nbsp&nbsp&nbsp<span th:text=${comment.create_time}></span></div>
-					</div>
-					<div><textarea style="background:#fff;" id="message" class="form-control" placeholder="参与评论" onclick="texttareas()" rows="1"></textarea> </div>
-					<div id="submitBtn" style="display: none">
-						<button type="button" class="btn btn-primary" id='sumitEva' style="float: left;margin-top: 10px;margin-bottom: 0px;" th:onclick="'javascript:submmit('+${article.id}+');'">提交评价</button>
-						<button type="button" class="btn btn-primary" th:onclick="'javascript:back();'" id="reBack" >返回</button>
+					</div> -->
+					
+					<div class="container-fluid" style="padding-bottom: 50px;">
+						<div class="row">
+							<div class="col-xs-12 col-md-7">
+								<ul>
+									<li th:each="comment: ${commentList}">
+									     <div style="padding-left:0px;">
+									         <div style="background-color: #0080003b;">
+									            <h4 style="padding: 5px;font-size: 15px;">
+									               <a th:text=${comment.create_user}></a> (愿这世界如童话，抱着想象实现它)
+									               <span th:text=${comment.create_time}></span>
+									            </h4>
+									         </div>
+									         <p th:text=${comment.message} style="margin-left: 20px;"></p>
+									     </div>
+									 </li>
+								 </ul>
+							</div>
+							<div class="col-xs-0 col-md-5"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -178,10 +207,11 @@ li {
 			style="text-align: center; padding-top: 20px; padding-bottom: 10px;">
 			<p>
 				<small class="block">&copy; September 1 2017. Website all
-					information from <a title="大花">大花的博客</a> - All Rights Reserved 版权所有
+					information from <a title="大花">大花博客</a> - All Rights Reserved 版权所有
 				</small>
 			</p>
 		</div>
+	</div>
 	</div>
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
@@ -189,6 +219,11 @@ li {
 <script type="text/javascript" src="js/npm.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
+	window.onload = function() {
+		var winHeight = document.documentElement.clientHeight;
+		$("#all_page").css("min-height", winHeight);
+	}
+
 	$("body").click(function(e) {
 		var id = e.target.offsetParent.id;
 		if (e.target.tabIndex == -1 && id != "head_1") {
