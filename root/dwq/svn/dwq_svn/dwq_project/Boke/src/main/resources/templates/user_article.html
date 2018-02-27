@@ -86,9 +86,7 @@ ul
 </style>
 </head>
 <body>
-
-
-	<!--ͷ??-->
+	<div id='all_page' style="position: relative;">
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container" style="padding-top: 15px;">
 			<div class="container-fluid">
@@ -168,6 +166,7 @@ ul
 			</p>
 		</div>
 	</div>
+	</div>
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -183,7 +182,10 @@ ul
 			}
 		}
 	})
-	
+	window.onload = function() {
+		var winHeight = document.documentElement.clientHeight;
+		$("#all_page").css("min-height", winHeight);
+	}
 	function loginOut(){
 		layer.msg('确定要退出么？', {
 			  time: 0 //不自动关闭

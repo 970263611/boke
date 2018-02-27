@@ -6,6 +6,7 @@
 <head>
 	<title>个人页面</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/webuploader.css">
 <style type="text/css">
    .navbar-inverse 
 	{
@@ -33,6 +34,7 @@
 		/* background-color:#00000099; */
 		position:absolute;
 		width: 100%;
+		bottom:0;
 	}
 	#content_page
 	{
@@ -50,16 +52,26 @@
 	{
 		color:purple;
 	}
+	#logo_text
+	{
+		padding-top: 41.5px;
+	}
+	img
+	{
+		height: 137px!important;
+	}
+	.webuploader-pick{
+		color:#333;
+		padding:0;
+		display:block;
+		background: #00b7ee;
+	}
 	@media screen and (min-width: 768px)
 	{
 		#img_background
 		{
 			bottom:0;
 		}
-	}
-	img
-	{
-		height: 137px!important;
 	}
 	@media screen and (max-width: 768px)
 	{
@@ -84,10 +96,24 @@
 		{
 			height: 100px!important;
 		}
+		#logo_text
+		{
+			padding-top: 21.5px;
+		}
+		#collapse 
+		{
+		    background: #000;
+		    float: right;
+		}
+		#myJournal
+		{
+			margin-top: 0px;
+		}
 	}
 </style>
 </head>
 <body style="background: #e6e6e6;">
+<div id='all_page' style="position: relative;">
 <nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container" style="padding-top: 15px;">
 		  <div class="container-fluid">
@@ -132,19 +158,22 @@
 <div class="container-fluid" style="height: 160px;">
     <div class="row">
 	  	<div class="col-xs-0 col-md-1"></div>
-	    <div class="col-xs-12 col-md-5">
-			<h2>世上无难事，只要肯攀登</h2>
+	    <div th:switch="${test1}" class="col-xs-12 col-md-5" data-toggle="modal" data-target="#exampleModal" style="height:100px;text-align: center">
+			<h2 th:case=null id="logo_text">点击修改我的铭言</h2>
+			<h2 id="logo_text" th:case=* th:text=${test1}></h2>  
+			<cite th:text="'by - ' + ${nickname}">&mdash; Jean Smith</cite>
 	    </div>
 	    <div class="col-xs-0 col-md-1"></div>
-	    <div class="col-xs-12 col-md-5">
+	    <div th:switch="${test2}" class="col-xs-12 col-md-5" data-toggle="modal" data-target="#exampleModal1">
 			<h3>他的介绍</h3>
-				<div>
-					123456789
+				<div style="height: 100px;background-color: #00800061;">
+					<p th:case=null>点击修改我的留言</p>
+					<p id="test_2" th:case=* th:text=${test2}></p> 
 				</div>
 	    </div>
 	</div>
 </div>
-<div class="container-fluid">
+<div class="container-fluid" style="padding-bottom: 60px;">
     <div class="row">
 	  	<div class="col-xs-0 col-md-1"></div>
 	    <div class="col-xs-12 col-md-5">
@@ -158,11 +187,23 @@
 							<figcaption><p th:text=${iter.text}></p></figcaption>
 						</figure>
 					</div>
-					<div>
-						<a href="#" style="float: right;">查看相册</a>
+					<div style="float: right;">
+						<a href="javascript:void(0);" onclick="modal_show()" id="uplaod_text">上传照片</a>
+						<a href="#">查看相册</a>
 					</div>
     			</div>
 		    </div>
+		    <div id='phone_file_input' style="display: none">
+				<div id="uploader-demo">  
+				    <!--用来存放item-->  
+				    <div id="thelist" class="uploader-list"></div>  
+				    <div>  
+					    <button id="filePicker" class="btn btn-default" style="padding:1px 6px">选择文件</button>
+					    <input type="text" id = "test_photo" style="border-radius: 5px;border: 1px solid #ccc;"> 
+					    <button id="ctlBtn" class="btn btn-default" style="padding:1px 6px">开始上传</button>
+				    </div>
+			    </div>
+			</div>
 	    </div>
 	    <div class="col-xs-0 col-md-1"></div>
 	    <div class="col-xs-12 col-md-5">
@@ -185,17 +226,229 @@
     </div>
 </div>
 <div class='footer'>
-	<div style="text-align: center;padding-top: 20px;padding-bottom: 10px;">
+	<div style="text-align: center;padding-bottom: 10px;">
 		<p><small class="block">&copy; September 1 2017. Website all information from <a title="大花">大花博客</a> - All Rights Reserved 版权所有</small></p>
 	</div>
+</div>
+<!-- 模态框 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">编辑我的铭言</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="message-text" class="control-label">message:</label>
+            <textarea class="form-control" id="message-text1"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="save()">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">编辑我的格言</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="message-text" class="control-label">message:</label>
+            <textarea class="form-control" id="message-text2"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="save()">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/npm.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
+<script src="js/webuploader.js"></script>
 <script>
-	
+	window.onload = function() {
+		var winHeight = document.documentElement.clientHeight;
+		$("#all_page").css("min-height", winHeight);
+	}
+	function modal_show() {
+		if($("#phone_file_input").attr("style")=="display:block"){
+			$("#phone_file_input").attr("style","display:none");
+			$("#uplaod_text").text("上传照片");
+		}else{
+			$("#phone_file_input").attr("style","display:block");
+			$("#uplaod_text").text("关闭上传");
+		}
+		
+		/*init webuploader*/  
+	  	   var $list=$("#thelist");   //这几个初始化全局的百度文档上没说明，好蛋疼。  
+	  	   var $btn =$("#ctlBtn");   //开始上传  
+	  	   var thumbnailWidth = 100;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算，具体可以看api文档  
+	  	   var thumbnailHeight = 100;  
+	  	  
+	  	   var uploader = WebUploader.create({  
+	  	       // 选完文件后，是否自动上传。  
+	  	       auto: false,  
+	  	  
+	  	       // swf文件路径  
+	  	       swf: 'js/Uploader.swf',  
+	  	  
+	  	       // 文件接收服务端。  
+	  			server : '/photo_uplode',
+	  
+	 				sendAsBinary : true, 
+	  	  
+	  	       // 选择文件的按钮。可选。  
+	  	       // 内部根据当前运行是创建，可能是input元素，也可能是flash.  
+	  	       pick: '#filePicker',  
+	  	  
+	  	       // 只允许选择图片文件。  
+	  	       accept: {  
+	  	           title: 'Images',  
+	  	           extensions: 'gif,jpg,jpeg,bmp,png',  
+	  	           mimeTypes: 'image/*'  
+	  	       }, 
+	  	       method:'POST',  
+	  	   });  
+	  	   // 当有文件添加进来的时候  
+	  	   uploader.on( 'fileQueued', function( file ) {  // webuploader事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploader.onFileueued = function(file){...} ，类似js的事件定义。  
+	  	       var $li = $(  
+	  	               '<div id="' + file.id + '" class="file-item thumbnail">' +  
+	  	                   '<img>' +  
+	  	                   '<div class="info">' + file.name + '</div>' +  
+	  	               '</div>'  
+	  	               ),  
+	  	           $img = $li.find('img');  
+	  	  
+	  	  
+	  	       // $list为容器jQuery实例  
+	  	       $list.append( $li );  
+	  	  
+	  	       // 创建缩略图  
+	  	       // 如果为非图片文件，可以不用调用此方法。  
+	  	       // thumbnailWidth x thumbnailHeight 为 100 x 100  
+	  	       uploader.makeThumb( file, function( error, src ) {   //webuploader方法  
+	  	           if ( error ) {  
+	  	               $img.replaceWith('<span>不能预览</span>');  
+	  	               return;  
+	  	           }  
+	  	  
+	  	           $img.attr( 'src', src );  
+	  	       }, thumbnailWidth, thumbnailHeight );  
+	  	   });  
+	  	   
+	  	   uploader.on( 'uploadBeforeSend', function( block, data ) {  
+	  		    // block为分块数据。  
+	  		    // file为分块对应的file对象。  
+	  		    var file = block.file;  
+	  		    // 修改data可以控制发送哪些携带数据。  
+	  		    data.test_photo = $("#test_photo").val();  
+	  		});  
+	  	   
+	  	   // 文件上传过程中创建进度条实时显示。  
+	  	   uploader.on( 'uploadProgress', function( file, percentage ) {  
+	  	       var $li = $( '#'+file.id ),  
+	  	           $percent = $li.find('.progress span');  
+	  	  
+	  	       // 避免重复创建  
+	  	       if ( !$percent.length ) {  
+	  	           $percent = $('<p class="progress"><span></span></p>')  
+	  	                   .appendTo( $li )  
+	  	                   .find('span');  
+	  	       }  
+	  	  
+	  	       $percent.css( 'width', percentage * 100 + '%' );  
+	  	   });  
+	  	  
+	  	   // 文件上传成功，给item添加成功class, 用样式标记上传成功。  
+	  	   uploader.on( 'uploadSuccess', function( file ) {  
+	  	       $( '#'+file.id ).addClass('upload-state-done');  
+	  	       window.location.reload();
+	  	   });  
+	  	   
+	  	   // 文件上传失败，显示上传出错。  
+	  	   uploader.on( 'uploadError', function( file ) {  
+	  	       var $li = $( '#'+file.id ),  
+	  	           $error = $li.find('div.error');  
+	  	  
+	  	       // 避免重复创建  
+	  	       if ( !$error.length ) {  
+	  	           $error = $('<div class="error"></div>').appendTo( $li );  
+	  	       }  
+	  	  
+	  	       $error.text('上传失败');  
+	  	   });  
+	  	  
+	  	   // 完成上传完了，成功或者失败，先删除进度条。  
+	  	   uploader.on( 'uploadComplete', function( file ) {  
+	  	       $( '#'+file.id ).find('.progress').remove();  
+	  	   });  
+	  	      $btn.on( 'click', function() {  
+	  	        console.log("上传...");  
+	  	        uploader.upload();  
+	  	        console.log("上传成功"); 
+	  	      });
+	}
+	 $(function(){  
+  	     
+  	  });  
+	 
+	 function loginOut(){
+		layer.msg('确定要退出么？', {
+			  time: 0 //不自动关闭
+			  ,btn: ['咋的，有意见？', '你说退就退啊！']
+			  ,yes: function(index){
+			    layer.close(index);
+			    window.location.href = "loginOut";
+			  }
+		});
+	 }
+	 
+	//保存铭言和简介
+	function save(){
+		var test1 = $("#message-text1").val();
+		var test2 = $("#message-text2").val();
+		if(test1 == "" || test1 == null){
+			test1 = '[[${test1}]]';
+		}
+		if(test2 == "" || test2 == null){
+			test2 = '[[${test2}]]';
+		}
+		$.ajax({
+			type : "post",
+			url : "/save_mytest",
+			data : {"test1":test1,"test2":test2},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('保存失败', function(){});
+            },
+            success: function(data) {
+                if(data == "error"){
+                	layer.msg('保存失败', function(){});
+                }else if(data == "success"){
+                	window.location.href = "myworld";
+                }
+            }
+		});
+	}
 </script>
 </body>
 </html>
