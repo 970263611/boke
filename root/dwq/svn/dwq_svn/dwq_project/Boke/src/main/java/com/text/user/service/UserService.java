@@ -1,9 +1,14 @@
 package com.text.user.service;
 
+import java.util.HashMap;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Select;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
+import com.text.entity.MyPhoto;
+import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 
@@ -121,5 +126,22 @@ public interface UserService {
 	 */
 	User getUser(User user);
 
-	
+	/**
+	 * 查询最新照片信息
+	 * @param originalFilename
+	 * @return
+	 */
+	List<MyPhoto> select_all_four();
+
+	/**
+	 * 根据用户id查询用户所有信息
+	 */
+	User select_user(Integer userId);
+
+	/**
+	 * 查询用户所有上传的照片
+	 * @param nickname
+	 * @return
+	 */
+	List<MyPhoto> select_photo_user_all(String nickname);
 }

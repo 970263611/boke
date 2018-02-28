@@ -154,18 +154,18 @@
 	<div style="background-image:url(images/bg.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
 	</div>
 </div>	
-<h1 style="color: white;position: absolute;top: 25%;left: 30%;">大花博客</h1>
+<h1 style="color: white;position: absolute;top: 25%;left: 30%;" th:text=${nickname}>大花博客</h1>
 <div class="container-fluid" style="height: 160px;">
     <div class="row">
 	  	<div class="col-xs-0 col-md-1"></div>
-	    <div th:switch="${test1}" class="col-xs-12 col-md-5" data-toggle="modal" data-target="#exampleModal" style="height:100px;text-align: center">
+	    <div th:switch="${test1}" id="change_m" class="col-xs-12 col-md-5" data-toggle="modal" data-target="#exampleModal" style="height:100px;text-align: center">
 			<h2 th:case=null id="logo_text">点击修改我的铭言</h2>
 			<h2 id="logo_text" th:case=* th:text=${test1}></h2>  
 			<cite th:text="'by - ' + ${nickname}">&mdash; Jean Smith</cite>
 	    </div>
 	    <div class="col-xs-0 col-md-1"></div>
-	    <div th:switch="${test2}" class="col-xs-12 col-md-5" data-toggle="modal" data-target="#exampleModal1">
-			<h3>他的介绍</h3>
+	    <div th:switch="${test2}" id="change_j" class="col-xs-12 col-md-5" data-toggle="modal" data-target="#exampleModal1">
+			<h3 id='interoduce'>我的介绍</h3>
 				<div style="height: 100px;background-color: #00800061;">
 					<p th:case=null>点击修改我的留言</p>
 					<p id="test_2" th:case=* th:text=${test2}></p> 
@@ -177,7 +177,7 @@
     <div class="row">
 	  	<div class="col-xs-0 col-md-1"></div>
 	    <div class="col-xs-12 col-md-5">
-	    	<h3>他的美照</h3>
+	    	<h3 id='myPho'>我的美照</h3>
 			<div class="container-fluid" style="padding-top: 10px;">
     			<div class="row">
     				<!--显示图片的地方 -->
@@ -189,7 +189,7 @@
 					</div>
 					<div style="float: right;">
 						<a href="javascript:void(0);" onclick="modal_show()" id="uplaod_text">上传照片</a>
-						<a href="#">查看相册</a>
+						<a href="user_photo" th:href="@{/user_photo(nickname=${nickname})}">查看相册</a>
 					</div>
     			</div>
 		    </div>
@@ -420,6 +420,24 @@
 			  }
 		});
 	 }
+	 
+	//判断是用户自己访问主页还是其他人访问
+		$(function(){
+			var not_see = '[[${not_see}]]';
+			var modify = '[[${modify}]]';
+			if('yes' == not_see){
+				$("#uplaod_text").attr("style","display: none;");
+			}
+			if('no' == modify){
+				$("#myPho").text("他的美照");
+				$("#interoduce").text("我的日志");
+				$("#change_j").attr("data-toggle","");
+				$("#change_j").attr("data-target","");
+				$("#change_m").attr("data-toggle","");
+				$("#change_m").attr("data-target","");
+				$("#uplaod_text").attr("style","display: none;");
+			}
+		})
 	 
 	//保存铭言和简介
 	function save(){
