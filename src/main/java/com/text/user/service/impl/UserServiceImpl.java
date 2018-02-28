@@ -1,10 +1,12 @@
 package com.text.user.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
+import com.text.entity.MyPhoto;
+import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.realm.RedisCacheConfiguration;
@@ -367,6 +371,35 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Article> select_article_user_all(String nickname) {
 		return userDao.select_article_user_all(nickname);
+	}
+
+	/**
+	 * 查询最新照片信息
+	 * @param originalFilename
+	 * @return
+	 */
+	@Override
+	public List<MyPhoto> select_all_four() {
+		return userDao.select_all_four();
+	}
+
+	/**
+	 * 根据用户id查询用户所有信息
+	 */
+	
+	@Override
+	public User select_user(Integer userId) {
+		return userDao.select_user(userId);
+	}
+
+	/**
+	 * 查询用户所有上传的照片
+	 * @param nickname
+	 * @return
+	 */
+	@Override
+	public List<MyPhoto> select_photo_user_all(String nickname) {
+		return userDao.select_photo_user_all(nickname);
 	}
 
 }

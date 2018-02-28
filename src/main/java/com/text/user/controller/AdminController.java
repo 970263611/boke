@@ -1,5 +1,6 @@
 package com.text.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -172,7 +173,7 @@ public class AdminController {
 	@RequestMapping("/admin_update_myPhoto")
 	@ResponseBody
 	public String admin_update_myPhoto(){
-		MyPhoto myPhoto = new MyPhoto();
+		List<MyPhoto> myPhoto = new ArrayList<>();
 		
 		int id = Integer.parseInt(request.getParameter("id"));
 		int user_id = Integer.parseInt(request.getParameter("user_id"));
@@ -183,7 +184,7 @@ public class AdminController {
 		String photo_3 = request.getParameter("photo_3");
 		String photo_3_test = request.getParameter("photo_3_test");
 		
-		myPhoto.setId(id);
+		/*myPhoto.setId(id);
 		myPhoto.setUser_id(user_id);
 		myPhoto.setPhoto_1(photo_1);
 		myPhoto.setPhoto_1_test(photo_1_test);
@@ -192,10 +193,10 @@ public class AdminController {
 		myPhoto.setPhoto_3(photo_3);
 		myPhoto.setPhoto_3_test(photo_3_test);
 		
-		int a = adminDao.admin_update_myPhoto(myPhoto);
-		if(a == 1) {
+		int a = adminDao.admin_update_myPhoto(myPhoto);*/
+		/*if(a == 1) {
 			return "success";
-		}
+		}*/
 		return null;
 	}
 	

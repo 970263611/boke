@@ -1,6 +1,7 @@
 package com.text.user.dao;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -13,11 +14,13 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
 import com.text.entity.MyTest;
+import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 
@@ -200,30 +203,24 @@ public interface UserDao {
 	 * @param originalFilename
 	 * @return
 	 */
-	@Select("select * from myphoto where user_id = #{0}")
-	MyPhoto select_all(int id);
-
-	/**
-	 * 保存用户上传的第一张图片
-	 * @param originalFilename
-	 */
-	@Insert("insert into myphoto (user_id,photo_1,photo_1_test) values (#{user_id},#{originalFilename},#{text})")
-	void fileUp(@Param("user_id") int user_id,@Param("originalFilename") String originalFilename,@Param("text") String text1);
+	@Select("select * from myphoto where user_id = #{0} ORDER BY(update_time) DESC limit 0,3")
+	List<MyPhoto> select_all(int id);
 	
 	/**
-	 * 保存用户上传的第二张图片
+	 * 查询最新照片信息
 	 * @param originalFilename
+	 * @return
 	 */
-	@Update("update myphoto set photo_2 = #{originalFilename},photo_2_test = #{text} where user_id = #{user_id}")
-	void fileUp_2(@Param("user_id") int user_id,@Param("originalFilename") String originalFilename,@Param("text") String text2);
+	@Select("SELECT a.*, b.nickname FROM myphoto a LEFT join user b on a.user_id = b.id ORDER BY(a.update_time) DESC LIMIT 0,4")
+	List<MyPhoto> select_all_four();
 
 	/**
-	 * 保存用户上传的第三张图片
+	 * 保存用户上传图片
 	 * @param originalFilename
 	 */
-	@Update("update myphoto set photo_3 = #{originalFilename},photo_3_test = #{text} where user_id = #{user_id}")
-	void fileUp_3(@Param("user_id") int user_id,@Param("originalFilename") String originalFilename,@Param("text") String text3);
-
+	@Insert("insert into myphoto (user_id,photo,photo_test,update_time) values (#{user_id},#{originalFilename},#{text},#{date})")
+	void fileUp(@Param("user_id") int user_id,@Param("originalFilename") String originalFilename,@Param("text") String text,@Param("date") String date);
+	
 	/**
 	 * 查询文章条数，便于前端分页
 	 */
@@ -258,5 +255,13 @@ public interface UserDao {
 	 */
 	@Insert("insert into user_photo_byte (user_id,user_nickname,photo_name,photo_byte) values (#{id},#{nickname},#{fileName},#{image})")
 	int create_imgByte(@Param("id") int id,@Param("nickname") String nickname,@Param("fileName") String fileName,@Param("image") byte[] image);
+
+	/**
+	 * 查询用户所有上传的照片
+	 * @param nickname
+	 * @return
+	 */
+	@Select("select a.*,b.nickname from myphoto a LEFT JOIN user b on a.user_id =  b.id and b.nickname = #{0} ORDER BY(a.update_time) desc")
+	List<MyPhoto> select_photo_user_all(String nickname);
 
 }

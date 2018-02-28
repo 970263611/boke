@@ -1,8 +1,10 @@
 package com.text.user.service.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,18 +24,9 @@ public class PhotoInputService {
 
 	public JSONObject fileUp(String fileName,String userId,int id,String text,HttpServletResponse response) throws IOException {
 		HashMap<Object, Object> map = new HashMap<>();
-		MyPhoto myPhoto = userDao.select_all(id);
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		userDao.create_imgByte(id,nickname,fileName,out.toByteArray());
-		if(myPhoto == null) {
-			userDao.fileUp(id,fileName,text);
-		}else if(myPhoto.getPhoto_1() == null) {
-			userDao.fileUp(id,fileName,text);
-		}else if(myPhoto.getPhoto_2() == null) {
-			userDao.fileUp_2(id,fileName,text);
-		}else if(myPhoto.getPhoto_3() == null) {
-			userDao.fileUp_3(id,fileName,text);
-		}
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+		String date = df.format(new Date());// new Date()为获取当前系统时间
+		userDao.fileUp(id,fileName,text,date);
 		map.put("data", "success");
 		return JSONObject.fromObject(map);
 	}

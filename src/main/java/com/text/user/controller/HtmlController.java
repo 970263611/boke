@@ -1,8 +1,6 @@
 package com.text.user.controller;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
+import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
@@ -58,9 +57,26 @@ public class HtmlController {
 		Article a_two = userService.select_article_two();
 		//查询置顶的丁伟强写的文章方法
 		Article a_one = userService.select_article_one();
+		
+		/**
+		 * 查询最新照片信息
+		 * @param originalFilename
+		 * @return
+		 */
+		List<MyPhoto> photo = userService.select_all_four();
+		
 		model.addAttribute("a_two",a_two);
 		model.addAttribute("a_one",a_one);
 		model.addAttribute("list",list);
+		
+		for(MyPhoto pho:photo) {
+			pho.setPhoto("http://www.loveding.top:8089/"+pho.getUser_id() + "/" + pho.getPhoto());
+		}
+		model.addAttribute("photo1",photo.get(0));
+		model.addAttribute("photo2",photo.get(1));
+		model.addAttribute("photo3",photo.get(2));
+		model.addAttribute("photo4",photo.get(3));
+		
 		//分页下一页功能(废弃)
 //		Subject subject=SecurityUtils.getSubject();
 //		Session session=subject.getSession();
@@ -136,30 +152,15 @@ public class HtmlController {
 		model.addAttribute("list",mylist);
  		model.addAttribute("test1",test1);
 		model.addAttribute("test2",test2);
-		MyPhoto myPhoto = userDao.select_all(userId);
+		List<MyPhoto> myPhotoList = userDao.select_all(userId);
 		List<HashMap<String,String>> image_list = new ArrayList<>();
-		if(myPhoto != null) {
-			if(myPhoto.getPhoto_1() != null) {
-				String image_1 = "http://www.loveding.top:8089/"+userId + "/" + myPhoto.getPhoto_1();
+		if(myPhotoList.size() > 0) {
+			for(MyPhoto myPhoto:myPhotoList) {
+				String image = "http://www.loveding.top:8089/"+userId + "/" + myPhoto.getPhoto();
 				HashMap<String,String> map = new HashMap<>();
-				map.put("image", image_1);
-				map.put("text", myPhoto.getPhoto_1_test());
+				map.put("image", image);
+				map.put("text", myPhoto.getPhoto_test());
 				image_list.add(map);
-			}
-			if(myPhoto.getPhoto_2() != null) {
-				String image_2 = "http://www.loveding.top:8089/"+userId + "/" + myPhoto.getPhoto_2();
-				HashMap<String,String> map = new HashMap<>();
-				map.put("image", image_2);
-				map.put("text", myPhoto.getPhoto_2_test());
-				image_list.add(map);
-			}
-			if(myPhoto.getPhoto_3() != null) {
-				String image_3 = "http://www.loveding.top:8089/"+userId + "/" + myPhoto.getPhoto_3();
-				HashMap<String,String> map = new HashMap<>();
-				map.put("image", image_3);
-				map.put("text", myPhoto.getPhoto_3_test());
-				image_list.add(map);
-				model.addAttribute("not_see", "yes");
 			}
 			model.addAttribute("image_list",image_list);
 		}
@@ -217,4 +218,16 @@ public class HtmlController {
     	return "user_article";
     }
     
+    /**
+     * 访问照片详情页面
+     */
+    @RequestMapping("/user_photo")
+    public String user_photo(Model model,String nickname){
+    	List<MyPhoto> photos = userService.select_photo_user_all(nickname);
+    	for(MyPhoto myPhoto:photos) {
+    		myPhoto.setPhoto("http://www.loveding.top:8089/"+myPhoto.getUser_id() + "/" +myPhoto.getPhoto());
+    	}
+    	model.addAttribute("photos", photos);
+    	return "user_photo";
+    }
 }

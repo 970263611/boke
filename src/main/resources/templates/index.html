@@ -381,33 +381,33 @@ li {
 							<div class="photowall">
 								<div class="photo01">
 									<div class="photoview">
-										<img src="images/1.jpg" width="300" height="220">
-										<p>完美的星空</p>
-										<p>不新鲜的萝卜皮</p>
+										<img th:src='${photo1.photo}' width="300" height="220">
+										<p th:text="${photo1.photo_test}">完美的星空</p>
+										<p th:text="${photo1.nickname}">不新鲜的萝卜皮</p>
 									</div>
 								</div>
 
 								<div class="photo02">
 									<div class="photoview">
-										<img src="images/2.jpg" width="300" height="220">
-										<p>海边的黄昏</p>
-										<p>不新鲜的萝卜皮</p>
+										<img th:src='${photo2.photo}' width="300" height="220">
+										<p th:text="${photo2.photo_test}">完美的星空</p>
+										<p th:text="${photo2.nickname}">不新鲜的萝卜皮</p>
 									</div>
 								</div>
 
 								<div class="photo03">
 									<div class="photoview">
-										<img src="images/3.jpg" width="300" height="220">
-										<p>城市落日余晖</p>
-										<p>不新鲜的萝卜皮</p>
+										<img th:src='${photo3.photo}' width="300" height="220">
+										<p th:text="${photo3.photo_test}">完美的星空</p>
+										<p th:text="${photo3.nickname}">不新鲜的萝卜皮</p>
 									</div>
 								</div>
 
 								<div class="photo04">
 									<div class="photoview">
-										<img src="images/4.jpg" width="300" height="220">
-										<p>大海的夜空</p>
-										<p>不新鲜的萝卜皮</p>
+										<img th:src='${photo4.photo}' width="300" height="220">
+										<p th:text="${photo4.photo_test}">完美的星空</p>
+										<p th:text="${photo4.nickname}">不新鲜的萝卜皮</p>
 									</div>
 								</div>
 							</div>

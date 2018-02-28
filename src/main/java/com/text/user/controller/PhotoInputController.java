@@ -55,7 +55,7 @@ public class PhotoInputController {
 //		String path = "E:/images/"+ user.getNickname() + "/";
 		String path = "/root/dwq/images/"+ user.getId() + "/";
 		Date date = new Date();
-		String fileName = user.getId()+date.getTime()+".png";
+		String fileName = user.getId()+date.getTime()+".jpg";
 		String newPath = path+fileName;
 		File myFile = new File(newPath);
         //判断目标文件所在的目录是否存在  
@@ -63,7 +63,7 @@ public class PhotoInputController {
         	myFile.mkdirs();
         } 
         BufferedImage image = ImageIO.read(in); 
-        ImageIO.write(image, "png", myFile);
+        ImageIO.write(image, "jpg", myFile);
         
 	    in.close();
 		try {
