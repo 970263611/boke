@@ -77,11 +77,16 @@
 		.w-e-text-container 
 		{
 	    	height: 320px!important;
+	    	z-index:auto!important;
 		}
 		#collapse 
 		{
 		    background: #000;
 		    float: right;
+		}
+		#editor
+		{
+		    margin-top: 135px;	
 		}
 	}
 </style>
@@ -145,9 +150,32 @@
 
 <div class='footer'>
 	<div style="text-align: center;padding-top: 20px;padding-bottom: 10px;">
-		<p><small class="block">&copy; September 1 2017. Website all information from <a title="大花">大花博客</a> - All Rights Reserved 版权所有</small></p>
+		<p><small class="block">&copy; September 1 2017. 黑 ICP 备 18000243 号 - All Rights Reserved</small></p>
 	</div>
 </div>
+<!-- 模态框 -->
+	<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">编辑我的留言</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">留言信息:</label>
+	            <textarea class="form-control" id="message"></textarea>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="button" class="btn btn-primary" id='send_word' onclick="submmit_words()">留言</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -171,6 +199,16 @@
 		    'undo'  // 撤销
 	    ]
 	    editor.create();
+	    
+	    $("body").click(function(e) {
+			var id = e.target.offsetParent.id;
+			if (e.target.tabIndex == -1 && id != "head_1") {
+				var flag = $("#collapse").attr("aria-expanded");
+				if (flag == "true") {
+					$("#collapse").removeClass("in");
+				}
+			}
+		})
 	    
 		function insert_article(){
 			$("#myShare").attr("disabled", true);
@@ -216,5 +254,40 @@
 				  }
 				});
 		}
+		
+		function words_block() {
+			$("#Modal").modal("show");
+		}
+
+		
+		//提交留言
+		function submmit_words(){
+			var words_mess = $("#message").val();
+			$("#send_word").attr("disabled", true);
+			if(words_mess==null || words_mess==""){
+				$("#send_word").attr("disabled", false);
+				layer.msg('请填写留言后在提交', function(){});
+				return false;
+			}
+			$.ajax({
+				type : "post",
+				url : "/words_mess",
+				data : {"words_mess":words_mess},
+				cache: false,
+				async: false,
+				error: function(request) {
+					layer.msg('留言失败', function(){});
+					$("#send_word").attr("disabled", false);
+	            },
+	            success: function(data) {
+	                if(data == "success"){
+	                	layer.msg('留言成功');
+	                	$("#send_word").attr("disabled", false);
+	                	$("#Modal").modal("hide");
+	                }
+	            }
+			});
+		}
+
 </script>
 </html>
