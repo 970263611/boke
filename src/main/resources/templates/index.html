@@ -309,13 +309,13 @@ li {
 		</div>
 		<div class="section"
 			style="background-image: url(images/image_new_1.jpg);">
-			<div class="container-fluid" style="padding-top: 39px;">
+			<div class="container-fluid" style="padding-top: 60px;">
 				<div class="row">
 					<div class="col-xs-0 col-md-1"></div>
 					<div class="col-xs-12 col-md-8">
 						<div style="background-color: #ffffff78;">
-							<ul class="list-group" style="padding:10px;padding-top:1px;">
-								<li>
+							<ul id='textList' class="list-group" style="padding:10px;padding-top:1px;">
+								<!-- <li>
 									<a href="single.html" target="_blank" th:href="@{/single(id=${a_one.id})}">
 											<div>
 												<h3 th:text="${a_one.title}"></h3>
@@ -353,7 +353,7 @@ li {
 										<a href="javascript:scroll(0,0)" th:onclick="'go_people('+${alist.id}+');'" th:text=${alist.create_user}>浣滆��</a>
 										<span th:text=${alist.create_time}></span>
 									</div>
-								</li>
+								</li> -->
 							</ul>
 						</div>
 					</div>
@@ -439,12 +439,13 @@ li {
 								<a href="#" class="bds_youdao" data-cmd="youdao"></a>
 								<a href="#" class="bds_more" data-cmd="more"></a>
 							</div> -->
+							<div class="bshare-custom" style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;"><span>感谢分享：</span><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
 							</div>
 						</div>
 						<div class="col-xs-12 col-md-3">
 							<div style="padding-top: 20px;">
-								<p>备案号：</p>
-				    			<p>备案号：</p>
+								<p>备案号：黑ICP备18000243号</p>
+				    			<p>感恩2018 www.loveding.top</p>
 							</div>
 						</div>
 					</div>
@@ -587,9 +588,32 @@ li {
 		window.location.href = "/myworld?modify=no&articleId=" + id;
 	}
 
+	//默认加载初始的第一页的文章
+	$(function() {
+		$.ajax({
+			type : "post",
+			url : "/go_page_first",
+			dataType : "json",
+			cache: false,
+			async: false,
+            success: function(data) {
+            	$("#textList li").remove();
+            	var html = "";
+           		for(var a = 0;a<data.length;a++){
+           			html += "<li>"
+            				+"<a href='single.html?id="+data[a].id+"'><div>"
+            				+"<h3>"+data[a].title+"</h3></div></a>"
+							+"<div><span>by- </span><a onclick='go_people('"+data[a].id+")>"+data[a].create_user+"</a></span>"
+							+"<span>"+data[a].create_time+"</span>"
+							+"</div></li>";
+           		}
+	            	$('#textList').append(html);
+            }
+		});
+	})
+	
 	//默认加载初始的第一页的页码
 	$(function() {
-		scrollTo(0, 0);
 		$.ajax({
 			type : "post",
 			url : "/pageNum",
@@ -597,23 +621,23 @@ li {
 			cache : false,
 			async : false,
 			success : function(data) {
-				var html =  "<li><a href='#'>Previous</a></li>" +
+				var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
 							"<li class='disabled' id='previous'>" +
-						    	"<a href='javascript:scroll(0,0);' onclick='go_page(1,this,"+data+")' aria-label='Previous'>" +
-						    		"<span aria-hidden='true'>&laquo;</span>" +
+						    	"<a id='previousChild' onclick='go_page(2,this,"+data+")'>" +
+						    		"<span>&laquo;</span>" +
 						    	"</a>" +
 					    	"</li>";
 				for (var a = 0; a < Math.ceil(data / 6); a++) {
 					if(a==0){
 						html += "<li class='active'>" +
-					    			"<a href='javascript:scroll(0,0);' id='page_" + (a + 1) +
+					    			"<a id='page_" + (a + 1) +
 					    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
 					    				"<span class='sr-only'>(current)</span>" +
 				    				"</a>" +
 			    				"</li>";
 					}else{
 						html += "<li>" +
-					    			"<a href='javascript:scroll(0,0);' id='page_" + (a + 1) +
+					    			"<a id='page_" + (a + 1) +
 					    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
 					    				"<span class='sr-only'>(current)</span>" +
 				    				"</a>" +
@@ -621,11 +645,11 @@ li {
 					}
 				}
 						html+=	"<li id='lastPage'>" +
-							    	"<a href='javascript:scroll(0,0);' aria-label='Previous' onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>" +
-							    		"<span aria-hidden='true'>&raquo;</span>" +
+							    	"<a id='go_next_page' onclick='go_page(2,this,"+data+")'>" +
+							    		"<span>&raquo;</span>" +
 							    	"</a>" +
 						    	"</li>" +
-							    "<li><a href='#'>Next</a></li>";
+							    "<li id='lastPageParent'><a onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>尾页</a></li>";
             	$("#go_any_page").append(html);
 			}
 		})
@@ -647,10 +671,39 @@ li {
 		}else{
 			$("#lastPage").removeClass("disabled");
 		}
+		$("#previousParent").removeClass("active");
+		$("#lastPageParent").removeClass("active");
+		$("#page_"+page).parent().addClass('active');
 		if(page==1){
-    		window.location.reload();
+			$.ajax({
+				type : "post",
+				url : "/go_page_first",
+				dataType : "json",
+				cache: false,
+				async: false,
+	            success: function(data) {
+	            	$("#textList li").remove();
+	            	var html = "";
+	           		for(var a = 0;a<data.length;a++){
+	           			html += "<li>"
+	            				+"<a href='single.html?id="+data[a].id+"'><div>"
+	            				+"<h3>"+data[a].title+"</h3></div></a>"
+								+"<div><span>by- </span><a onclick='go_people('"+data[a].id+")>"+data[a].create_user+"</a></span>"
+								+"<span>"+data[a].create_time+"</span>"
+								+"</div></li>";
+	           		}
+		           		if(page-1<=0){
+			            	$("#previousChild").attr("onclick","go_page(1)")
+	           			}else{
+			            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
+	           			}
+	           			if(page+1<=Math.ceil(lastPage/6)){
+			            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
+	           			}
+		            	$('#textList').append(html);
+	            }
+			});
     	}else if(page>1){
-    		$("#page_"+page).attr("style","margin-right: 5px;color:blue");
 			$.ajax({
 				type : "post",
 				url : "/go_page",
@@ -659,52 +712,28 @@ li {
 				cache: false,
 				async: false,
 	            success: function(data) {
-	            	$("#gtco-post-list li").remove();
+	            	$("#textList li").remove();
 	            	var html = "";
 	           		for(var a = 0;a<data.length;a++){
-	           			html += "<li class='entry' data-animate-effect='fadeIn'>"
-	            			+"<a href='single.html?id="+data[a].id+"'><div class='entry-desc'>"
-							+"<h3>"+data[a].title+"</h3>"
-							+"<p>"+data[a].lead+"</p>"
-							+"</div></a><div class='post-meta'>"
-							+"<span class='date-posted'>"+data[a].create_user+"</span>"
-							+"<span class='date-posted'>"+data[a].create_time+"</span>"
-							+"<span class='date-posted' style='float:right'>点击查看全文</span>"
-							+"</div></li>";
+	           			html += "<li>"
+	            				+"<a href='single.html?id="+data[a].id+"'><div>"
+	            				+"<h3>"+data[a].title+"</h3></div></a>"
+								+"<div><span>by- </span><a onclick='go_people('"+data[a].id+")>"+data[a].create_user+"</a></span>"
+								+"<span>"+data[a].create_time+"</span>"
+								+"</div></li>";
 	           		}
-	           			var allPage=[[${session.allPage}]];
-	           			if(page+1<=Math.ceil(allPage/6)){
+		           		if(page-1<=0){
+			            	$("#previousChild").attr("onclick","go_page(1)")
+	           			}else{
+			            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
+	           			}
+	           			if(page+1<=Math.ceil(lastPage/6)){
 			            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
 	           			}
-		            	$('#gtco-post-list').append(html);
-		            	//根据点击页数动态调整当前第一页
-// 		            	if(page>6){
-// 	            		    $("#go_any_page").empty();
-// 		            		var html = "<a href='javascript:scroll(0,0);' style='margin-right: 5px;' onclick='go_page(1)'>首页</a>";
-// 		                	var newFirstPage = page-6;
-// 		                	var lastPage = newFirstPage+9;
-// 		            		for(var a=newFirstPage;a<Math.ceil(allPage/6);a++){
-// 		                		if(a==0){
-// 		                			html+="<a href='javascript:scroll(0,0);' id='page_"+(a+1)+"' style='margin-right: 5px;color:blue' onclick='go_page("+(a+1)+")'>"+(a+1)+"</a>";
-// 		                		}else if(a>lastPage){
-// 		                			html+="<a style='margin-right: 5px;color:blue'>...</a>";
-// 		                			break;
-// 		                		}else{
-// 		    	            		html+="<a href='javascript:scroll(0,0);' id='page_"+(a+1)+"' style='margin-right: 5px;' onclick='go_page("+(a+1)+")'>"+(a+1)+"</a>";
-// 		                		}
-// 		                	}
-// 		                	$("#go_any_page").append(html);
-// 		            	}
+		            	$('#textList').append(html);
 	            }
 			});
     	}
-	}
-		    		 
-	
-	function go_to_page(){
-		var page = $("#goto_page").val();
-		scrollTo(0,0);
-		go_page(page);
 	}
 	
 </script>

@@ -3,6 +3,7 @@ package com.text.user.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -170,6 +171,23 @@ public class UserController {
 		}else {
 			return null;
 		}
+	}
+	
+	/**
+	 * 分页跳转，传过来页数
+	 */
+	@RequestMapping("go_page_first")
+	public List<Article> go_page_first(){
+		List<Article> list = userService.select_article_all();
+		//查询第二条显示的文章
+		Article a_two = userService.select_article_two();
+		//查询置顶的丁伟强写的文章方法
+		Article a_one = userService.select_article_one();
+		List<Article> data = new ArrayList<Article>();
+		data.add(a_one);
+		data.add(a_two);
+		data.addAll(list);
+		return data;
 	}
 	
 	/**

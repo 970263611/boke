@@ -51,12 +51,7 @@ public class HtmlController {
 	 */
 	@RequestMapping("/index") 
     public String ToIndex(Model model) {
-		//给一个没登陆的状态位为noLogin，如果登陆则替换为用户信息
-		List<Article> list = userService.select_article_all();
-		//查询第二条显示的文章
-		Article a_two = userService.select_article_two();
-		//查询置顶的丁伟强写的文章方法
-		Article a_one = userService.select_article_one();
+		
 		
 		/**
 		 * 查询最新照片信息
@@ -64,10 +59,6 @@ public class HtmlController {
 		 * @return
 		 */
 		List<MyPhoto> photo = userService.select_all_four();
-		
-		model.addAttribute("a_two",a_two);
-		model.addAttribute("a_one",a_one);
-		model.addAttribute("list",list);
 		
 		for(MyPhoto pho:photo) {
 			pho.setPhoto("http://www.loveding.top:8089/"+pho.getUser_id() + "/" + pho.getPhoto());
