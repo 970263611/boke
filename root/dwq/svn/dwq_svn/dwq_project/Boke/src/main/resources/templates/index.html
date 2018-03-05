@@ -445,7 +445,8 @@ li {
 						<div class="col-xs-12 col-md-3">
 							<div style="padding-top: 20px;">
 								<p>备案号：黑ICP备18000243号</p>
-				    			<p>感恩2018 www.loveding.top</p>
+								<p>感恩2018&nbsp&nbsp大花博客v2.0</p>
+				    			<p>www.loveding.top</p>
 							</div>
 						</div>
 					</div>
@@ -453,7 +454,7 @@ li {
 				<div style="text-align: center; padding-bottom: 10px;">
 					<p>
 						<small class="block">&copy; September 1 2017. Website all information from 
-							<a title="大花">大花的博客</a>- All Rights Reserved 版权所有
+							<a title="大花">大花博客</a>- All Rights Reserved 版权所有
 						</small>
 					</p>
 				</div>
@@ -594,8 +595,6 @@ li {
 			type : "post",
 			url : "/go_page_first",
 			dataType : "json",
-			cache: false,
-			async: false,
             success: function(data) {
             	$("#textList li").remove();
             	var html = "";
@@ -603,7 +602,7 @@ li {
            			html += "<li>"
             				+"<a href='single.html?id="+data[a].id+"'><div>"
             				+"<h3>"+data[a].title+"</h3></div></a>"
-							+"<div><span>by- </span><a onclick='go_people('"+data[a].id+")>"+data[a].create_user+"</a></span>"
+							+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
 							+"<span>"+data[a].create_time+"</span>"
 							+"</div></li>";
            		}
@@ -618,8 +617,6 @@ li {
 			type : "post",
 			url : "/pageNum",
 			dataType : "json",
-			cache : false,
-			async : false,
 			success : function(data) {
 				var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
 							"<li class='disabled' id='previous'>" +
@@ -679,8 +676,7 @@ li {
 				type : "post",
 				url : "/go_page_first",
 				dataType : "json",
-				cache: false,
-				async: false,
+				cache: true,
 	            success: function(data) {
 	            	$("#textList li").remove();
 	            	var html = "";
@@ -688,7 +684,7 @@ li {
 	           			html += "<li>"
 	            				+"<a href='single.html?id="+data[a].id+"'><div>"
 	            				+"<h3>"+data[a].title+"</h3></div></a>"
-								+"<div><span>by- </span><a onclick='go_people('"+data[a].id+")>"+data[a].create_user+"</a></span>"
+								+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
 								+"<span>"+data[a].create_time+"</span>"
 								+"</div></li>";
 	           		}
@@ -709,8 +705,7 @@ li {
 				url : "/go_page",
 				data : {"page":page},
 				dataType : "json",
-				cache: false,
-				async: false,
+				cache: true,
 	            success: function(data) {
 	            	$("#textList li").remove();
 	            	var html = "";
@@ -718,7 +713,7 @@ li {
 	           			html += "<li>"
 	            				+"<a href='single.html?id="+data[a].id+"'><div>"
 	            				+"<h3>"+data[a].title+"</h3></div></a>"
-								+"<div><span>by- </span><a onclick='go_people('"+data[a].id+")>"+data[a].create_user+"</a></span>"
+								+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
 								+"<span>"+data[a].create_time+"</span>"
 								+"</div></li>";
 	           		}

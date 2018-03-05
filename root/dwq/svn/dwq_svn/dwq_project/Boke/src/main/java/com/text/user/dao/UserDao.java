@@ -261,7 +261,7 @@ public interface UserDao {
 	 * @param nickname
 	 * @return
 	 */
-	@Select("select a.*,b.nickname from myphoto a LEFT JOIN user b on a.user_id =  b.id and b.nickname = #{0} ORDER BY(a.update_time) desc")
+	@Select("select a.*,b.nickname from myphoto a LEFT JOIN user b on a.user_id =  b.id where b.nickname = #{0} ORDER BY(a.update_time) desc")
 	List<MyPhoto> select_photo_user_all(String nickname);
 
 }
