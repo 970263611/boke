@@ -297,13 +297,10 @@
 	    }
 	} 
 	function userAdd(){
-		var inputs = $("[type=text]");
-		for(var a=0;a<inputs.length;a++){
-			if($(inputs[a]).val()==null || $(inputs[a]).val()==""){
-				layer.msg('请全部填写后提交', function(){});
-					return false;
-			}
-		 };
+		if(nickname=="" || nickname==null || username=="" || username==null || password=="" || password==null || password_once=="" || password_once==null || realname=="" || realname==null){
+			layer.msg('请全部填写后提交', function(){});
+				return false;
+		}
 		 if($("#password_once").val() != $("#password").val()){
 			 layer.msg('两次密码输入不一致', function(){});
 					return false;
