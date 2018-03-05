@@ -460,6 +460,7 @@ public class AdminController {
 		 * 缓存所有文章的方法，要先执行一下在进入系统，需要管理员手动执行
 		 */
 		@RequestMapping("admin_redis")
+		@ResponseBody
 		public String admin_redis() {
 			return userService.admin_redis();
 		}
@@ -468,6 +469,7 @@ public class AdminController {
 		 * 清空缓存的方法
 		 */
 		@RequestMapping("admin_clear")
+		@ResponseBody
 		public String admin_clear() {
 			return userService.admin_clear();
 		}
