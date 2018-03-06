@@ -10,7 +10,6 @@
 <style type="text/css">
    .navbar-inverse 
 	{
-	    background-color: #2220;
 	    height: 80px;
 	    border-color: white;
 	}
@@ -66,6 +65,10 @@
 		display:block;
 		background: #00b7ee;
 	}
+	#logo_text
+{
+	font-size: 20px; 
+}
 	@media screen and (min-width: 768px)
 	{
 		#img_background
@@ -109,12 +112,16 @@
 		{
 			margin-top: 0px;
 		}
+		#logo_text
+		{
+			font-size: 16px; 
+		}
 	}
 </style>
 </head>
 <body style="background: #e6e6e6;">
 <div id='all_page' style="position: relative;">
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgba(0,0,0,0);">
 	<div class="container" style="padding-top: 15px;">
 		  <div class="container-fluid">
 			    <div class="navbar-header">
@@ -125,7 +132,7 @@
 				        <span class="icon-bar"></span>
 				      </button>
 
-			      	<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo" src="images/logo.ico" style="height: 20px!important;width: 20px!important;float: left;position: initial;"/><span style="font-size: 20px;font-family: cursive;margin-left: -8px;">&nbsp大花博客<span style="color: red;">.</span></span></a>
+			      	<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo" src="images/logo.ico" style="height: 20px!important;width: 20px!important;float: left;position: initial;"/><span style="font-size: 20px;font-family: cursive;margin-left: -8px;" id='logo_text'>&nbsp大花博客<span style="color: red;">.</span></span></a>
 			    </div>
 
 			    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -154,7 +161,7 @@
 	<div style="background-image:url(images/bg.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
 	</div>
 </div>	
-<h1 style="color: white;position: absolute;top: 25%;left: 30%;" th:text=${nickname}>大花博客</h1>
+<h1 style="color: white;position: absolute;top: 16%;left: 30%;" th:text=${nickname}>大花博客</h1>
 <div class="container-fluid" style="height: 160px;">
     <div class="row">
 	  	<div class="col-xs-0 col-md-1"></div>

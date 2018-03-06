@@ -10,7 +10,6 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <style type="text/css">
 .navbar-inverse {
-	background-color: #2220;
 	height: 80px;
 	border-color: white;
 }
@@ -57,6 +56,10 @@ ul
 {
     margin-left: -40px;
 }
+#logo_text
+{
+	font-size: 20px; 
+}
 @media screen and (min-width: 768px) {
 	#img_background {
 		bottom: 0;
@@ -82,12 +85,16 @@ ul
 	    background: #000;
 	    float: right;
 	}
+	#logo_text
+	{
+		font-size: 16px; 
+	}
 }
 </style>
 </head>
 <body>
 	<div id='all_page' style="position: relative;">
-	<nav class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgba(0,0,0,0);">
 		<div class="container" style="padding-top: 15px;">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -102,7 +109,7 @@ ul
 					<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo"
 						src="images/logo.ico"
 						style="height: 20px; width: 20px; float: left; position: initial;" /><span
-						style="font-size: 20px; font-family: cursive; margin-left: -8px;">&nbsp大花博客<span
+						style="font-size: 20px; font-family: cursive; margin-left: -8px;" id='logo_text'>&nbsp大花博客<span
 							style="color: red;">.</span></span></a>
 				</div>
 

@@ -20,7 +20,6 @@
 	    padding: 96px 108px 120px 38px;
 	}
 	.navbar-inverse {
-	background-color: #2220;
 	height: 80px;
 	border-color: white;
 	}
@@ -41,6 +40,19 @@
 	#img_text
 	{
 		padding-left: 50px;
+	}
+	.footer 
+	{
+		color: black;
+		clear: both;
+		/* background-color:#00000099; */
+		position: absolute;
+		width: 100%;
+		bottom:0;
+	}
+	#logo_text
+	{
+		font-size: 20px; 
 	}	
 	@media screen and (max-width: 768px)
 	{
@@ -61,13 +73,17 @@
 		{
 			padding-left: 0px;
 		}	
+		#logo_text
+		{
+			font-size: 16px; 
+		}
 	}
 </style>
 </head>
 <body id="page">
 <div id='all_page' style="position: relative;">
 <div style="background-image:url(images/myphoto.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;"></div>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgba(0,0,0,0);">
 		<div class="container" style="padding-top: 15px;">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -82,7 +98,7 @@
 					<a class="navbar-brand" href="index.html" id="speak">
 					<img id="img_logo" src="images/logo.ico"
 						style="height: 20px; width: 20px; float: left; position: initial;" /><span
-						style="font-size: 20px; font-family: cursive; margin-left: -8px;">&nbsp大花博客<span
+						style="font-size: 20px; font-family: cursive; margin-left: -8px;" id='logo_text'>&nbsp大花博客<span
 							style="color: red;">.</span></span></a>
 				</div>
 
