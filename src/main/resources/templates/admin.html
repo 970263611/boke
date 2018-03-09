@@ -120,8 +120,10 @@
 						<li><a href="javascript:void(0);" onclick="comment()">评价信息</a></li>
 						<li><a href="javascript:void(0);" onclick="role()">角色信息</a></li>
 						<li><a href="javascript:void(0);" onclick="permission()">权限信息</a></li>
-						<li><a href="javascript:void(0);" onclick="myTest()">个人文字信息</a></li>
-						<li><a href="javascript:void(0);" onclick="myPhoto()">个人图片信息</a></li>
+						<li><a href="javascript:void(0);" onclick="myTest()">个人文字</a></li>
+						<li><a href="javascript:void(0);" onclick="myPhoto()">个人图片</a></li>
+						<li><a href="javascript:void(0);" onclick="admin_redis()">缓存文章</a></li>
+						<li><a href="javascript:void(0);" onclick="admin_clear()">清空缓存</a></li>
 						<li th:switch="${session.user}">
 							<a th:case=null></a>
 							<a th:case=* th:text=${session.user.nickname} class="dropdown" href="javascript:void(0);" onclick="loginOut()">登录</a>
@@ -133,7 +135,8 @@
 			<!-- /.container-fluid -->
 		</div>
 	</nav>
-	<div class="container" style="min-height:700px; padding-top: 116px;">
+	<div class="container" style="min-height:700px; padding-top: 116px;position: relative;
+    z-index: 1;">
 		
 			<div id="table_user" style="display: none">
 				<table id="grid-data_user" class="table table-hover">
@@ -151,7 +154,8 @@
 				</table>
 			</div>
 			
-			<div id="table_article" style="display: none">
+			<div id="table_article" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_article" class="table table-hover">
 				    <thead>
 				        <tr>
@@ -168,7 +172,8 @@
 				</table>
 			</div>
 			
-			<div id="table_comment" style="display: none">
+			<div id="table_comment" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_comment" class="table table-hover">
 				    <thead>
 				        <tr>
@@ -183,25 +188,24 @@
 				</table>
 			</div>
 			
-			<div id="table_myPhoto" style="display: none">
+			<div id="table_myPhoto" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_myPhoto" class="table table-hover">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
 				            <th data-column-id="user_id">用户ID</th>
-				            <th data-column-id="photo_1">图片1</th>
-				            <th data-column-id="photo_1_test">图片1对应标语</th>
-				            <th data-column-id="photo_1">图片2</th>
-				            <th data-column-id="photo_1_test">图片2对应标语</th>
-				            <th data-column-id="photo_1">图片3</th>
-				            <th data-column-id="photo_1_test">图片3对应标语</th>
+				            <th data-column-id="photo">图片</th>
+				            <th data-column-id="photo_test">图片对应标语</th>
+				            <th data-column-id="update_time">更新时间</th>
 				            <th data-column-id="commands" data-formatter="commands">操作</th>
 				        </tr>
 				    </thead>
 				</table>
 			</div>
 			
-			<div id="table_myTest" style="display: none">
+			<div id="table_myTest" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_myTest" class="table table-hover">
 				    <thead>
 				        <tr>
@@ -215,7 +219,8 @@
 				</table>
 			</div>
 			
-			<div id="table_permission" style="display: none">
+			<div id="table_permission" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_permission" class="table table-hover">
 				    <thead>
 				        <tr>
@@ -228,7 +233,8 @@
 				</table>
 			</div>
 			
-			<div id="table_role" style="display: none">
+			<div id="table_role" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_role" class="table table-hover">
 				    <thead>
 				        <tr>
@@ -240,7 +246,8 @@
 				</table>
 			</div>
 			
-			<div id="table_wordMessage" style="display: none">
+			<div id="table_wordMessage" style="display: none;position: relative;
+    z-index: 1;">
 				<table id="grid-data_wordMessage" class="table table-hover">
 				    <thead>
 				        <tr>
@@ -523,9 +530,7 @@
 			</div>
 		</div>
 	</div>
-	<div style="position: relative;height: 300px;">
-		<div style="background-image:url(images/bg.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
-		</div>
+	<div style="background-image:url(images/image_new_1.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
 	</div>
 	<!-- 模态框 -->
 	<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -677,12 +682,9 @@
 		        	return "<a onclick=\"edit_myPhoto('"
 		        			+ row.id + "\',\'"
 							+ row.user_id + "\',\'"
-							+ row.photo_1 + "\',\'"
-							+ row.photo_1_test + "\',\'"
-							+ row.photo_2 + "\',\'"
-							+ row.photo_2_test + "\',\'"
-							+ row.photo_3 + "\',\'"
-							+ row.photo_3_test +
+							+ row.photo + "\',\'"
+							+ row.photo_test + "\',\'"
+							+ row.update_time +
 							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\">编辑</a>"
 							+ "<a onclick=\"del_myPhoto('"
 		        			+ row.id +
@@ -1192,6 +1194,36 @@
             }
 		});
 			window.location.reload();
+	}
+	
+	function admin_redis(){
+		$.ajax({
+			type : "post",
+			url : "/admin_redis",
+			error: function(request) {
+				layer.msg('缓存失败', function(){});
+            },
+            success: function(data) {
+                if(data == "redis_success"){
+                	layer.msg('缓存成功');
+                }
+            }
+		});
+	}
+	
+	function admin_clear(){
+		$.ajax({
+			type : "post",
+			url : "/admin_clear",
+			error: function(request) {
+				layer.msg('清空失败', function(){});
+            },
+            success: function(data) {
+                if(data == "redis_clear"){
+                	layer.msg('清空成功');
+                }
+            }
+		});
 	}
 	
 	
