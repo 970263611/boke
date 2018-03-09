@@ -8,7 +8,6 @@
 <title>首页</title>
 <link rel="shortcut icon" href="images/logo.ico" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css">
 <link rel="stylesheet" href="css/jquery.bootgrid.min.css">
 <style type="text/css">
 .navbar-inverse 
@@ -29,30 +28,14 @@
 	    color: #fff;
 	    background-color: #08080800;
 	}
-	.footer
-	{
-		color:black;
-		clear: both;
-		/* background-color:#00000099; */
-		position:absolute;
-		width: 100%;
-		bottom:0;
-	}
 	
-	
-	
-	.footer 
-	{
-		color: black;
-		clear: both;
-		/* background-color:#00000099; */
-		position: absolute;
-		width: 100%;
-		bottom:0;
-	}
 	#logo_text
 	{
 		font-size: 20px; 
+	}
+	.row
+	{
+		display:none;
 	}
 	@media screen and (max-width: 768px)
 	{
@@ -88,7 +71,7 @@
 	}
 </style>
 </head>
-<body>
+<body style="background-image: url(images/image_new_1.jpg);">
 
 
 	<!--头??-->
@@ -139,7 +122,7 @@
     z-index: 1;">
 		
 			<div id="table_user" style="display: none">
-				<table id="grid-data_user" class="table table-hover">
+				<table id="grid-basic_user" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -156,7 +139,7 @@
 			
 			<div id="table_article" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_article" class="table table-hover">
+				<table id="grid-basic_article" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -174,7 +157,7 @@
 			
 			<div id="table_comment" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_comment" class="table table-hover">
+				<table id="grid-basic_comment" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -190,7 +173,7 @@
 			
 			<div id="table_myPhoto" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_myPhoto" class="table table-hover">
+				<table id="grid-basic_myPhoto" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -206,7 +189,7 @@
 			
 			<div id="table_myTest" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_myTest" class="table table-hover">
+				<table id="grid-basic_myTest" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -221,7 +204,7 @@
 			
 			<div id="table_permission" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_permission" class="table table-hover">
+				<table id="grid-basic_permission" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -235,7 +218,7 @@
 			
 			<div id="table_role" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_role" class="table table-hover">
+				<table id="grid-basic_role" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -248,7 +231,7 @@
 			
 			<div id="table_wordMessage" style="display: none;position: relative;
     z-index: 1;">
-				<table id="grid-data_wordMessage" class="table table-hover">
+				<table id="grid-basic_wordMessage" class="class="table table-condensed table-hover table-striped"">
 				    <thead>
 				        <tr>
 				            <th data-column-id="id">ID</th>
@@ -484,54 +467,6 @@
 	    </div>
 	  </div>
 	</div>
-			<div class='footer'>
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-xs-0 col-md-5"
-							style="padding-top: 20px; text-align: center;">
-							<img src="images/logo_white.jpg"
-								style="height: 72px; width: 76px; float: center;">
-						</div>
-						<div class="col-xs-12 col-md-4">
-							<div style="padding-top: 20px;">
-								<p>特别致谢：武小默 李伟涛 江东升</p>
-								<p style="margin-bottom: 3px;">请联系我：love_dingwq@163.com</p>
-								<!-- <div class="bdsharebuttonbox">
-								<span style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;">鎰熻阿鍒嗕韩锛�</span>
-								<a href="#" class="bds_weixin" data-cmd="weixin"></a>
-								<a href="#" class="bds_sqq" data-cmd="sqq"></a>
-								<a href="#" class="bds_qzone" data-cmd="qzone"></a>
-								<a href="#" class="bds_tsina" data-cmd="tsina"></a>
-								<a href="#" class="bds_douban" data-cmd="douban"></a>
-								<a href="#" class="bds_tqq" data-cmd="tqq"></a>
-								<a href="#" class="bds_renren" data-cmd="renren"></a>
-								<a href="#" class="bds_youdao" data-cmd="youdao"></a>
-								<a href="#" class="bds_more" data-cmd="more"></a>
-							</div> -->
-							<div class="bshare-custom" style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;"><span>感谢分享：</span><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-md-3">
-							<div style="padding-top: 20px;">
-								<p>备案号：黑ICP备18000243号</p>
-								<p>感恩2018&nbsp&nbsp大花博客v2.0</p>
-				    			<p>www.loveding.top</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div style="text-align: center; padding-bottom: 10px;">
-					<p>
-						<small class="block">&copy; September 1 2017. Website all information from 
-							<a title="大花">大花博客</a>- All Rights Reserved 版权所有
-						</small>
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div style="background-image:url(images/image_new_1.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
-	</div>
 	<!-- 模态框 -->
 	<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 	  <div class="modal-dialog" role="document">
@@ -596,7 +531,7 @@
 	function user(){
 		close_all();
 		$("#table_user").attr("style","display:block");
-		$("#grid-data_user").bootgrid({
+		$("#grid-basic_user").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_user",
 		    formatters: {
@@ -621,7 +556,7 @@
 	function article(){
 		close_all();
 		$("#table_article").attr("style","display:block");
-		$("#grid-data_article").bootgrid({
+		$("#grid-basic_article").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_article",
 		    formatters: {
@@ -647,7 +582,7 @@
 	function comment(){
 		close_all();
 		$("#table_comment").attr("style","display:block");
-		$("#grid-data_comment").bootgrid({
+		$("#grid-basic_comment").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_comment",
 		    formatters: {
@@ -673,7 +608,7 @@
 	function myPhoto(){
 		close_all();
 		$("#table_myPhoto").attr("style","display:block");
-		$("#grid-data_myPhoto").bootgrid({
+		$("#grid-basic_myPhoto").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_myPhoto",
 		    formatters: {
@@ -697,7 +632,7 @@
 	function myTest(){
 		close_all();
 		$("#table_myTest").attr("style","display:block");
-		$("#grid-data_myTest").bootgrid({
+		$("#grid-basic_myTest").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_myTest",
 		    formatters: {
@@ -720,7 +655,7 @@
 	function permission(){
 		close_all();
 		$("#table_permission").attr("style","display:block");
-		$("#grid-data_permission").bootgrid({
+		$("#grid-basic_permission").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_permission",
 		    formatters: {
@@ -742,7 +677,7 @@
 	function role(){
 		close_all();
 		$("#table_role").attr("style","display:block");
-		$("#grid-data_role").bootgrid({
+		$("#grid-basic_role").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_role",
 		    formatters: {
@@ -763,7 +698,7 @@
 	function wordMessage(){
 		close_all();
 		$("#table_wordMessage").attr("style","display:block");
-		$("#grid-data_wordMessage").bootgrid({
+		$("#grid-basic_wordMessage").bootgrid({
 		    ajax: true,
 		    url: "/admin_select_wordMessage",
 		    formatters: {
