@@ -634,7 +634,7 @@ li {
 				var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
 							"<li class='disabled' id='previous'>" +
 						    	"<a id='previousChild' onclick='go_page(2,this,"+data+")'>" +
-						    		"<span>&laquo;</span>" +
+						    		"<span>&lt;</span>" +
 						    	"</a>" +
 					    	"</li>";
 				for (var a = 0; a < Math.ceil(data / 6); a++) {
@@ -656,7 +656,7 @@ li {
 				}
 						html+=	"<li id='lastPage'>" +
 							    	"<a id='go_next_page' onclick='go_page(2,this,"+data+")'>" +
-							    		"<span>&raquo;</span>" +
+							    		"<span>&gt;</span>" +
 							    	"</a>" +
 						    	"</li>" +
 							    "<li id='lastPageParent'><a onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>尾页</a></li>";
