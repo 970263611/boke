@@ -283,6 +283,10 @@ li {
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="collapse">
 					<ul class="nav navbar-nav navbar-right">
+						<li th:switch="${session.user}">
+							<a th:case=null></a>
+							<a th:case=* th:if="${session.user.rowId} == 1" href="admin">进入后台管理页面</a>
+						</li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-haspopup="true"
 							aria-expanded="false">提笔 <span class="caret"></span></a>
@@ -293,9 +297,11 @@ li {
 							</ul></li>
 						<li><a href="myworld">个人</a></li>
 						<li><a href="javascript:scroll(0,0)" onclick="words_block()">留言</a></li>
-						<li th:switch="${session.user}"><a th:case=null href="login">登陆</a>
+						<li th:switch="${session.user}">
+							<a th:case=null href="login">登陆</a>
 							<a th:case=* th:text='${session.user.nickname}' class="dropdown"
-							href="javascript:void(0);" onclick="loginOut()">登陆</a></li>
+							href="javascript:void(0);" onclick="loginOut()">登陆</a>
+						</li>
 					</ul>
 				</div>
 				<!-- /.navbar-collapse -->
