@@ -23,6 +23,7 @@ import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
+import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
 
 @RestController
@@ -32,6 +33,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private HttpServletRequest request;
+	@Autowired
+	private UserDao userDao;
 	
 	/**
 	 * 获取当前时间的公用方法
@@ -56,7 +59,8 @@ public class UserController {
 		try{
 			subject.login(token);
 			User user = new User(username,password);
-	    	session.setAttribute("user", userService.getUser(user));
+			User newUser = userService.getUser(user);
+	    	session.setAttribute("user", newUser);
 			session.setAttribute("user_Login","alLogin");
 	        return "success";
 		}catch(Exception e){

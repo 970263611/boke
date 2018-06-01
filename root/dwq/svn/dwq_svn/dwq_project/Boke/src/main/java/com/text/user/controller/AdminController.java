@@ -112,6 +112,16 @@ public class AdminController {
 	}
 	
 	/**
+	 * 查询所有登陆ip信息
+	 * @return
+	 */
+	@RequestMapping("/admin_select_ip")
+	@ResponseBody
+	public String admin_select_ip(){
+		return json(adminDao.admin_select_ip());
+	}
+	
+	/**
 	 * 更新文章表
 	 */
 	@RequestMapping("/admin_update_article")

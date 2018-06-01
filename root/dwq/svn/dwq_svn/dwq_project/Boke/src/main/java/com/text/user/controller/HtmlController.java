@@ -1,6 +1,8 @@
 package com.text.user.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
-import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
@@ -50,7 +51,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/index") 
-    public String ToIndex(Model model) {
+    public String ToIndex(Model model,HttpServletRequest request) {
 		
 		
 		/**
@@ -76,6 +77,27 @@ public class HtmlController {
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
 		session.setAttribute("allPage",userDao.pageNum());
+		String ip = request.getHeader("x-forwarded-for");  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("Proxy-Client-IP");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("WL-Proxy-Client-IP");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getRemoteAddr();  
+	    }
+	    Date date = new Date();
+        //设置要获取到什么样的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获取String类型的时间
+        String time = sdf.format(date);
+		User newUser = (User) session.getAttribute("user");
+		if(newUser == null) {
+			userDao.saveIP(ip,time,0,null);
+		}else {
+			userDao.saveIP(ip,time,newUser.getId(),newUser.getName());
+		}
         return "index";  
     } 
 	
