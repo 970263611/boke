@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 /**
  * @ClassName: WebAppConfig
  * @Description: TODO(这里用一句话描述这个类的作用)
- * @author Administrator
+ * @author dwq
  * @date 2017年7月11日
  * 这种办法是一个非常好的访问系统文件夹下图片的办法，只可惜没有使用好，有时间再研究
  */
