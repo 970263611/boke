@@ -103,8 +103,9 @@
 						<li><a href="javascript:void(0);" onclick="comment()">评价信息</a></li>
 						<li><a href="javascript:void(0);" onclick="role()">角色信息</a></li>
 						<li><a href="javascript:void(0);" onclick="permission()">权限信息</a></li>
-						<li><a href="javascript:void(0);" onclick="myTest()">个人文字</a></li>
-						<li><a href="javascript:void(0);" onclick="myPhoto()">个人图片</a></li>
+						<li><a href="javascript:void(0);" onclick="myTest()">文字</a></li>
+						<li><a href="javascript:void(0);" onclick="myPhoto()">图片</a></li>
+						<li><a href="javascript:void(0);" onclick="ip()">ip</a></li>
 						<li><a href="javascript:void(0);" onclick="admin_redis()">缓存文章</a></li>
 						<li><a href="javascript:void(0);" onclick="admin_clear()">清空缓存</a></li>
 						<li th:switch="${session.user}">
@@ -238,6 +239,21 @@
 				            <th data-column-id="create_user">创建人</th>
 				            <th data-column-id="create_time">创建时间</th>
 				            <th data-column-id="message">留言信息</th>
+				            <th data-column-id="commands" data-formatter="commands">操作</th>
+				        </tr>
+				    </thead>
+				</table>
+			</div>
+			<div id="table_ip" style="display: none;position: relative;
+    z-index: 1;">
+				<table id="grid-basic_ip" class="class="table table-condensed table-hover table-striped"">
+				    <thead>
+				        <tr>
+				            <th data-column-id="id">ID</th>
+				            <th data-column-id="loginIP">创建ip</th>
+				            <th data-column-id="loginTime">登陆时间</th>
+				            <th data-column-id="userId">用户id</th>
+				            <th data-column-id="userName">用户名字</th>
 				            <th data-column-id="commands" data-formatter="commands">操作</th>
 				        </tr>
 				    </thead>
@@ -718,6 +734,30 @@
 		});
 	}
 	
+	function ip(){
+		close_all();
+		$("#table_ip").attr("style","display:block");
+		$("#grid-basic_ip").bootgrid({
+		    ajax: true,
+		    url: "/admin_select_ip",
+		    formatters: {
+		        "commands": function(column, row)
+		        {
+		        	return "<a onclick=\"edit_wordMessage('"
+		        			+ row.id + "\',\'"
+		        			+ row.loginIP + "\',\'"
+							+ row.time + "\',\'"
+							+ row.userId + "\',\'"
+							+ row.userName +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\"></a>"
+							+ "<a onclick=\"del_wordMessage('"
+		        			+ row.id +
+							"')\" style=\"color:red; text-decoration:none;margin-right:10px;cursor:pointer\"></a>";
+		        }
+		    }
+		});
+	}
+	
 	function close_all(){
 		$("#table_user").attr("style","display:none");
 		$("#table_article").attr("style","display:none");
@@ -727,6 +767,7 @@
 		$("#table_role").attr("style","display:none");
 		$("#table_permission").attr("style","display:none");
 		$("#table_wordMessage").attr("style","display:none");
+		$("#table_ip").attr("style","display:none");
 	}
 	
 	function loginOut(){
