@@ -264,4 +264,7 @@ public interface UserDao {
 	@Select("select a.*,b.nickname from myphoto a LEFT JOIN user b on a.user_id =  b.id where b.nickname = #{0} ORDER BY(a.update_time) desc")
 	List<MyPhoto> select_photo_user_all(String nickname);
 
+	@Insert("insert into login_ip (LoginIP,loginTime,userId,userName) values (#{LoginIP},#{loginTime},#{userId},#{userName})")
+	void saveIP(@Param("LoginIP") String ip,@Param("loginTime") String time,@Param("userId") int userId,@Param("userName") String userName);
+
 }

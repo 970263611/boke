@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
+import com.text.entity.LoginIP;
 import com.text.entity.MyPhoto;
 import com.text.entity.MyTest;
 import com.text.entity.Permission;
@@ -77,7 +78,14 @@ public interface AdminDao {
 	 */
 	@Select("select * from comment")
 	public List<Comment> admin_select_comment();
-
+	
+	/**
+	 * 查询所有登陆ip
+	 * @return
+	 */
+	@Select("select * from login_ip")
+	public List<LoginIP> admin_select_ip();
+	
 	/**
 	 * 更新文章表信息
 	 * @return
