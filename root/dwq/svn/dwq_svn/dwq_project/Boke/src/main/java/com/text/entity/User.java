@@ -1,7 +1,5 @@
 package com.text.entity;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 /**
  * 用户信息的实体类
  * 一个主键-一共四个属性
@@ -9,7 +7,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
  * @author 丁伟强
  *
  */
-@EntityScan
 public class User {
 
 	private int id;			//	ID
