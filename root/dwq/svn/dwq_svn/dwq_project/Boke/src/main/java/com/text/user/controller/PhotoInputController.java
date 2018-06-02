@@ -42,7 +42,7 @@ public class PhotoInputController {
 	 * @return 文件名
 	 * @throws IOException 
 	 */
-	@RequestMapping("photo_uplode")
+	@RequestMapping("/photo_uplode")
 	@ResponseBody
 	public JSONObject fileUp(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		InputStream in = request.getInputStream();
