@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -26,12 +27,14 @@ public class RunFunction {
 	
 	private static Logger logger = LoggerFactory.getLogger(RunFunction.class);
 	
+	@Autowired
+	private SerializeUtil redisDateSourse;
+	
 	//获取微信token定时方法
-	@Scheduled(cron="* * 0/2 * * ?") //每2小时执行一次  
+	@Scheduled(cron="0 0 */2 * * ?") //每2小时执行一次  
     public void statusCheck() {      
         logger.info(new Date()+"dwq---执行---");  
         CloseableHttpClient httpclient = HttpClients.createDefault();  
-        SerializeUtil redisDateSourse = new SerializeUtil();
         Jedis jedis = redisDateSourse.getRedis();
         try {  
             //利用get形式获得token  
