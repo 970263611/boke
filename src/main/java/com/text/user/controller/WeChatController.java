@@ -7,13 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.text.entity.WeChat;
 import com.text.realm.RunFunction;
 import com.text.user.service.WeChatService;
 
-@Controller("wechat")
+@Controller()
+@RequestMapping("wechat")
 public class WeChatController {
 	
 	private static Logger logger = LoggerFactory.getLogger(RunFunction.class);
@@ -24,7 +26,7 @@ public class WeChatController {
 	/*
 	 * 获取微信发过来的数据，解析
 	 */
-	@GetMapping("getMes")
+	@RequestMapping("/getMes")
 	@ResponseBody
 	public String getWeChat(HttpServletRequest request){
 		/*boolean isGet = request.getMethod().toLowerCase().equals("get");  */
