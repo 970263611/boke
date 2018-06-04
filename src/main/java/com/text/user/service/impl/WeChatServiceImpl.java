@@ -1,11 +1,14 @@
 package com.text.user.service.impl;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -17,6 +20,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +76,80 @@ public class WeChatServiceImpl implements WeChatService{
         System.out.println("失败认证");  
         return null;  
 	}
+	
+	/**
+	 * 自定义回复消息
+	 * @throws DocumentException 
+	 * @throws IOException 
+	 */
+	@Override
+	public String processRequest(HttpServletRequest request) throws IOException, DocumentException {
+		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top/n";  
+		Map requestMap = WeChatMesUtil.parseMsgXml(request);
+		// 发送方帐号（open_id）  
+        String fromUserName = (String) requestMap.get("FromUserName");  
+        // 公众帐号  
+        String toUserName = (String) requestMap.get("ToUserName");  
+        // 消息类型  
+        String msgType = (String) requestMap.get("MsgType"); 
+        
+        // 文本消息  
+        if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_TEXT)) {  
+        	String content = (String) requestMap.get("Content");
+        	respMessage += "您发送的是文本消息！";  
+        	if("你好".equals(content)) {
+        		respMessage += "/n你好";
+        	}
+        }  
+        // 图片消息  
+        else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_IMAGE)) {  
+        	respMessage += "您发送的是图片消息！";  
+        }  
+        // 地理位置消息  
+        else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_LOCATION)) {  
+        	respMessage += "您发送的是地理位置消息！";  
+        }  
+        // 链接消息  
+        else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_LINK)) {  
+        	respMessage += "您发送的是链接消息！";  
+        }  
+        // 音频消息  
+        else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_VOICE)) {  
+        	respMessage += "您发送的是音频消息！";  
+        }  // 事件推送  
+        else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_EVENT)) {  
+            // 事件类型  
+            String eventType = (String) requestMap.get("Event");  
+            // 订阅  
+            if (eventType.equals(WeChatMesUtil.EVENT_TYPE_SUBSCRIBE)) {  
+            	respMessage += "mo-爱心 盼星星，盼月亮，你终于来鸟~";  
+            }  
+            // 取消订阅  
+            else if (eventType.equals(WeChatMesUtil.EVENT_TYPE_UNSUBSCRIBE)) {  
+                // TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息  
+            }  
+            // 自定义菜单点击事件  
+            else if (eventType.equals(WeChatMesUtil.EVENT_TYPE_CLICK)) {  
+                // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
+                String eventKey = (String) requestMap.get("EventKey");  
+                if (eventKey.equals("11")) {  
+                	respMessage += "授权登录菜单项被点击";  
+                } else if (eventKey.equals("22")) {  
+                    // 调用推送方法  
+                    System.out.println("------------>OPENID=" + fromUserName);  
+                    try {  
+                        respMessage += "您好，您的微信号与商会云账号已解绑成功!";  
+                    } catch (Exception e) {  
+                    	respMessage += "您好，您的微信号与商会云账号解绑失败!";  
+                    }  
+                } else if (eventKey.equals("20_PROMANAGE")) {  
+                    // 推送模版  
+                	respMessage += "模版申请中。。。";  
+                }  
+            }  
+        }  
+		return WeChatMesUtil.XMLprint(respMessage);
+	}
 
 	/**
 	 * 微信自定义菜单创建
@@ -87,6 +166,7 @@ public class WeChatServiceImpl implements WeChatService{
 	        data += "{\"name\": \"业务领域\",\"sub_button\": [{\"type\": \"view\",\"name\": \"业务范围\",\"url\": \"http://www.haiyusoft.com\"},{\"type\": \"click\",\"name\": \"联合研发中心\",\"key\": \"m_about\"},{\"type\": \"click\",\"name\": \"我要绑定\",\"key\": \"我要绑定\"}]}]}";  */
 	        
 	        CloseableHttpResponse result = null;
+	        JSONObject json = null;
 	        try {
 	        //开启http请求准备
 	        CloseableHttpClient httpclient = HttpClients.createDefault();  
@@ -97,6 +177,8 @@ public class WeChatServiceImpl implements WeChatService{
 	        stringEntity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 	        httpPost.setEntity(stringEntity);
 	        result = httpclient.execute(httpPost);
+	        String resultStr = EntityUtils.toString(result.getEntity());
+	        json = JSONObject.fromObject(resultStr);
 	        httpclient.close(); 
 	        } catch (Exception e) {
 	        	e.printStackTrace();
@@ -107,6 +189,8 @@ public class WeChatServiceImpl implements WeChatService{
 	        int statusCode = result.getStatusLine().getStatusCode();  
 	        if(statusCode !=200){  
 	            System.out.println("请求新建菜单失败,连接微信服务器失败");
+	        }else if(!"0".equals(json.getString("errcode"))){
+	        	System.out.println("请求数据填写错误");
 	        }else{
 	        	System.out.println("请求新建菜单成功");
 	        	flag = "success";

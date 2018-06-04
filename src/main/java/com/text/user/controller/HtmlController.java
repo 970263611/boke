@@ -1,5 +1,7 @@
 package com.text.user.controller;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +45,46 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/")
-	public String toIndex(Model model) {
+	public String toIndex(Model model,HttpServletRequest request) {
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		String ipAddress = request.getHeader("x-forwarded-for");  
+        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {  
+            ipAddress = request.getHeader("Proxy-Client-IP");  
+        }  
+        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {  
+            ipAddress = request.getHeader("WL-Proxy-Client-IP");  
+        }  
+        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {  
+            ipAddress = request.getRemoteAddr();  
+            if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){  
+                //根据网卡取本机配置的IP  
+                InetAddress inet=null;  
+                try {  
+                    inet = InetAddress.getLocalHost();  
+                } catch (Exception e) {  
+                    e.printStackTrace();  
+                }  
+                ipAddress= inet.getHostAddress();  
+            }  
+        }  
+        //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割  
+        if(ipAddress!=null && ipAddress.length()>15){ //"***.***.***.***".length() = 15  
+            if(ipAddress.indexOf(",")>0){  
+                ipAddress = ipAddress.substring(0,ipAddress.indexOf(","));  
+            }  
+        }  
+	    Date date = new Date();
+        //设置要获取到什么样的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获取String类型的时间
+        String time = sdf.format(date);
+		User newUser = (User) session.getAttribute("user");
+		if(newUser == null) {
+			userDao.saveIP(ipAddress,time,0,null);
+		}else {
+			userDao.saveIP(ipAddress,time,newUser.getId(),newUser.getName());
+		}
 		return "newindex";
 	}
 	/**
@@ -77,27 +118,7 @@ public class HtmlController {
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
 		session.setAttribute("allPage",userDao.pageNum());
-		String ip = request.getHeader("x-forwarded-for");  
-	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-	        ip = request.getHeader("Proxy-Client-IP");  
-	    }  
-	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-	        ip = request.getHeader("WL-Proxy-Client-IP");  
-	    }  
-	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
-	        ip = request.getRemoteAddr();  
-	    }
-	    Date date = new Date();
-        //设置要获取到什么样的时间
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //获取String类型的时间
-        String time = sdf.format(date);
-		User newUser = (User) session.getAttribute("user");
-		if(newUser == null) {
-			userDao.saveIP(ip,time,0,null);
-		}else {
-			userDao.saveIP(ip,time,newUser.getId(),newUser.getName());
-		}
+		
         return "index";  
     } 
 	
