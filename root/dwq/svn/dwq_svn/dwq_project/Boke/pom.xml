@@ -151,6 +151,12 @@
 		    <artifactId>httpclient</artifactId>
 		    <version>4.4.1</version>
 		</dependency>
+		
+		<!-- 解析xml -->
+		<dependency>
+		    <groupId>dom4j</groupId>
+		    <artifactId>dom4j</artifactId>
+	    </dependency>
 
 	</dependencies>
 
