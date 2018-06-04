@@ -42,8 +42,7 @@ public class RunFunction {
             // Create a custom response handler  
             ResponseHandler<JSONObject> responseHandler = new ResponseHandler<JSONObject>() {  
   
-                public JSONObject handleResponse(  
-                        final HttpResponse response) throws ClientProtocolException, IOException {  
+                public JSONObject handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {  
                     int status = response.getStatusLine().getStatusCode();  
                     if (status >= 200 && status < 300) {  
                         HttpEntity entity = response.getEntity();  
