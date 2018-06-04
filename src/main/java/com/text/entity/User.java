@@ -1,5 +1,7 @@
 package com.text.entity;
 
+import java.util.Date;
+
 /**
  * 用户信息的实体类
  * 一个主键-一共四个属性
@@ -15,6 +17,7 @@ public class User {
 	private String password;//	密码
 	private int rowId;		//  权限id
 	private String realname;//  真实姓名
+	private Date createTime;//创建时间
 	
 	public String getPassword() {
 		return password;
@@ -51,10 +54,13 @@ public class User {
 	}
 	public void setRealname(String realname) {
 		this.realname = realname;
+	}	
+	public Date getCreateTime() {
+		return createTime;
 	}
-	
-	
-	
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
