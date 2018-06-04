@@ -139,7 +139,7 @@ public interface UserDao {
 	 * @param user
 	 * @return
 	 */
-	@Insert("insert into user (nickname,name,password,realname) values (#{nickname},#{name},#{password},#{realname})")
+	@Insert("insert into user (nickname,name,password,realname,createTime) values (#{nickname},#{name},#{password},#{realname},#{createTime})")
 	int userAdd(User user);
 
 	/**

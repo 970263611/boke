@@ -144,6 +144,7 @@ public class UserController {
 		user.setName(name);
 		user.setPassword(password);
 		user.setRealname(realname);
+		user.setCreateTime(new Date());
 		return userService.userAdd(user);
 	}
 	
