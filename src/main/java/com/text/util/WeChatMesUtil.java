@@ -2,12 +2,16 @@ package com.text.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -95,26 +99,31 @@ public final class WeChatMesUtil {
 	 * @throws IOException 
 	 * @throws DocumentException 
 	 */
-	public static Map parseMsgXml(HttpServletRequest request) throws IOException, DocumentException {
+	public static Map parseMsgXml(HttpServletRequest request){
 		// 将解析结果存储在HashMap中
         Map<String, String> map = new HashMap<String, String>();
-        // 从request中取得输入流
-        InputStream inputStream = request.getInputStream();
         // 读取输入流
         SAXReader reader = new SAXReader();
-        Document document = reader.read(inputStream);
-        // 得到xml根元素
-        Element root = document.getRootElement();
-        // 得到根元素的所有子节点
-        List<Element> elementList = root.elements();
-  
-        // 遍历所有子节点
-        for (Element e : elementList)
-            map.put(e.getName(), e.getText());
-  
-        // 释放资源
-        inputStream.close();
-        inputStream = null;
+        // 从request中取得输入流
+        InputStream is = null;
+        try{
+        	is = request.getInputStream();
+        	// 得到xml根元素
+        	Document doc = reader.read(is);
+        	Element root = doc.getRootElement();
+        	// 得到根元素的所有子节点
+        	List<Element> elementList = root.elements();
+        	// 遍历所有子节点
+        	for (Element e : elementList){
+        		map.put(e.getName(), e.getText());
+        	}
+        }catch(Exception e){
+        	try{
+        		is.close();
+        	}catch(IOException e1){
+        		e1.printStackTrace();
+        	}
+        }
         return map;
 	}
 	
@@ -124,27 +133,42 @@ public final class WeChatMesUtil {
      * @param textMessage 文本消息对象   
      * @return xml   
      */    
-	public static String XMLprint(String str){  
-        XMLWriter xmlwriter=null;  
-        try{  
-            org.dom4j.Document  document =null;  
-            document=DocumentHelper.parseText(str);  
-            OutputFormat format=OutputFormat.createPrettyPrint();  
-            StringWriter writer=new StringWriter();  
-            xmlwriter=new XMLWriter(writer,format);  
-            xmlwriter.write(document);  
-            return writer.toString();  
-        }catch(Exception e){  
-            e.printStackTrace();  
-            return str;  
-        }finally{  
-            if(xmlwriter!=null){  
-                try{  
-                    xmlwriter.close();  
-                }catch(Exception e){  
-                    e.printStackTrace();  
-                }  
-            }  
-        }  
+	public static void XMLprint(HttpServletResponse response,String content,String toUserName,String fromUserName,String msgType/*这里暂时都定义为文本回复形式*/){
+		PrintWriter out;
+		String xmlStr;
+		if(content==null || toUserName==null || fromUserName==null){
+			xmlStr = "success";
+		}else{
+			Date date=new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+			String createTime = formatter.format(date);
+			
+			Document document = DocumentHelper.createDocument();  
+			Element rootElement = document.addElement("xml");  
+			Element ToUserName = rootElement.addElement("ToUserName");  
+			ToUserName.addCDATA(toUserName);  
+			Element FromUserName = rootElement.addElement("FromUserName");  
+			FromUserName.addCDATA(fromUserName);  
+			Element CreateTime = rootElement.addElement("CreateTime");  
+			CreateTime.addText(createTime);  
+			/*这里暂时都定义为文本回复形式*/
+			Element MsgType = rootElement.addElement("MsgType");  
+			MsgType.addCDATA("text"); 
+			Element Content = rootElement.addElement("Content");  
+			Content.addCDATA(content); 
+			
+			xmlStr=document.getRootElement().asXML();
+		}
+		
+		
+		try {
+			System.out.println(xmlStr);
+			out = response.getWriter();
+			out.print(xmlStr);  
+			out.close(); 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
     }  
 }

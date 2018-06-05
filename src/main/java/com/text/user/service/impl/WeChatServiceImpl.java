@@ -1,7 +1,6 @@
 package com.text.user.service.impl;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,9 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -83,12 +80,13 @@ public class WeChatServiceImpl implements WeChatService{
 	 * @throws IOException 
 	 */
 	@Override
-	public String processRequest(HttpServletRequest request) throws IOException, DocumentException {
+	public void processRequest(HttpServletRequest request,HttpServletResponse response){
 		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top/n";  
 		Map requestMap = WeChatMesUtil.parseMsgXml(request);
-		// 发送方帐号（open_id）  
+		System.out.println("解析xml成功");
+		// 公众帐号  
         String fromUserName = (String) requestMap.get("FromUserName");  
-        // 公众帐号  
+        // 发送方帐号（open_id）  
         String toUserName = (String) requestMap.get("ToUserName");  
         // 消息类型  
         String msgType = (String) requestMap.get("MsgType"); 
@@ -97,9 +95,7 @@ public class WeChatServiceImpl implements WeChatService{
         if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_TEXT)) {  
         	String content = (String) requestMap.get("Content");
         	respMessage += "您发送的是文本消息！";  
-        	if("你好".equals(content)) {
-        		respMessage += "/n你好";
-        	}
+    		respMessage += "/n内容是---"+content;
         }  
         // 图片消息  
         else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_IMAGE)) {  
@@ -148,7 +144,8 @@ public class WeChatServiceImpl implements WeChatService{
                 }  
             }  
         }  
-		return WeChatMesUtil.XMLprint(respMessage);
+        System.out.println("返回消息-"+respMessage);
+		WeChatMesUtil.XMLprint(response,respMessage,toUserName,fromUserName,msgType/*这里暂时都定义为文本回复形式*/);
 	}
 
 	/**

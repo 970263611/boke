@@ -1,10 +1,7 @@
 package com.text.user.service;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.dom4j.DocumentException;
+import javax.servlet.http.HttpServletResponse;
 
 import com.text.entity.WeChat;
 
@@ -14,6 +11,6 @@ public interface WeChatService {
 
 	String CreateMenu(String data);
 
-	String processRequest(HttpServletRequest request) throws IOException, DocumentException;
+	void processRequest(HttpServletRequest request,HttpServletResponse response);
 
 }

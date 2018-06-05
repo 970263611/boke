@@ -50,16 +50,10 @@ public class WeChatController {
 	 * @throws DocumentException 
 	 */
 	@PostMapping("/getMes")
-	public void getWeChatAndReply(HttpServletRequest request,HttpServletResponse response) throws IOException, DocumentException{
-		// 将请求、响应的编码均设置为UTF-8（防止中文乱码）  
-        request.setCharacterEncoding("UTF-8");  
-        response.setCharacterEncoding("UTF-8");  
+	public void getWeChatAndReply(HttpServletRequest request,HttpServletResponse response){
         // 调用核心业务类接收消息、处理消息  
-        String respMessage = weChatService.processRequest(request);  
+        weChatService.processRequest(request,response);  
         // 响应消息  
-        PrintWriter out = response.getWriter();  
-        out.print(respMessage);  
-        out.close(); 
 	} 
 	
 	/**
