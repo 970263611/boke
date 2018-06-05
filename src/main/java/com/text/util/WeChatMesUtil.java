@@ -3,7 +3,6 @@ package com.text.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,9 +16,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 public final class WeChatMesUtil {
 
@@ -30,6 +27,10 @@ public final class WeChatMesUtil {
 	public static final String AppID = "wx3652b18edba544ec";// 微信开发者id
 
 	public static final String AppSecret = "52bb120d7252187c1771e48e4ac72497";// 微信开发者密码
+	
+	public static final String AppID_CS = "wxec7c849d109a54f3";// 微信开发者id
+	
+	public static final String AppSecret_CS = "7c8cecb7166cb3dcab9114cb61984b34";// 微信开发者密码
 	
 	/**   
      * 返回消息类型：文本   
@@ -144,11 +145,12 @@ public final class WeChatMesUtil {
 			String createTime = formatter.format(date);
 			
 			Document document = DocumentHelper.createDocument();  
-			Element rootElement = document.addElement("xml");  
+			Element rootElement = document.addElement("xml");
+			//这里要注意，发送给微信后身份调换，要注意touser和fromuser的位置
 			Element ToUserName = rootElement.addElement("ToUserName");  
-			ToUserName.addCDATA(toUserName);  
+			ToUserName.addCDATA(fromUserName);  
 			Element FromUserName = rootElement.addElement("FromUserName");  
-			FromUserName.addCDATA(fromUserName);  
+			FromUserName.addCDATA(toUserName);  
 			Element CreateTime = rootElement.addElement("CreateTime");  
 			CreateTime.addText(createTime);  
 			/*这里暂时都定义为文本回复形式*/

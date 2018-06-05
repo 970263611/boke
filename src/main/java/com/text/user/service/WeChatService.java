@@ -9,8 +9,10 @@ public interface WeChatService {
 	
 	String Verification(WeChat weChat);
 
-	String CreateMenu(String data);
+	String CreateMenu();
 
 	void processRequest(HttpServletRequest request,HttpServletResponse response);
+
+	void weChatRegister(HttpServletRequest request, HttpServletResponse response);
 
 }

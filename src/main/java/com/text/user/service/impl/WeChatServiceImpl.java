@@ -1,6 +1,7 @@
 package com.text.user.service.impl;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,7 +11,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.text.entity.User;
 import com.text.entity.WeChat;
 import com.text.realm.RunFunction;
 import com.text.realm.SerializeUtil;
@@ -41,6 +48,8 @@ public class WeChatServiceImpl implements WeChatService{
 	
 	@Autowired
 	private SerializeUtil redisDateSourse;
+	@Autowired
+	private UserServiceImpl userServiceImpl;
 
 	/*
 	 * (non-Javadoc)
@@ -81,12 +90,12 @@ public class WeChatServiceImpl implements WeChatService{
 	 */
 	@Override
 	public void processRequest(HttpServletRequest request,HttpServletResponse response){
-		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top/n";  
+		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top\n由于个人公众号微信给的权限较少，请关注我的测试公众号：gh_9f88428b7945\n";  
 		Map requestMap = WeChatMesUtil.parseMsgXml(request);
 		System.out.println("解析xml成功");
-		// 公众帐号  
+		// 发送方帐号（open_id）  
         String fromUserName = (String) requestMap.get("FromUserName");  
-        // 发送方帐号（open_id）  
+        // 公众帐号  
         String toUserName = (String) requestMap.get("ToUserName");  
         // 消息类型  
         String msgType = (String) requestMap.get("MsgType"); 
@@ -95,7 +104,7 @@ public class WeChatServiceImpl implements WeChatService{
         if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_TEXT)) {  
         	String content = (String) requestMap.get("Content");
         	respMessage += "您发送的是文本消息！";  
-    		respMessage += "/n内容是---"+content;
+    		respMessage += "\n内容是    "+content;
         }  
         // 图片消息  
         else if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_IMAGE)) {  
@@ -118,7 +127,7 @@ public class WeChatServiceImpl implements WeChatService{
             String eventType = (String) requestMap.get("Event");  
             // 订阅  
             if (eventType.equals(WeChatMesUtil.EVENT_TYPE_SUBSCRIBE)) {  
-            	respMessage += "mo-爱心 盼星星，盼月亮，你终于来鸟~";  
+            	respMessage += "mo-爱心 盼星星，盼月亮，你终于来鸟~\n欢迎访问大花博客公众号\n网页版请访问www.loveding.top\n由于个人公众号微信给的权限较少，更多功能请关注我的测试公众号：gh_9f88428b7945\n";  
             }  
             // 取消订阅  
             else if (eventType.equals(WeChatMesUtil.EVENT_TYPE_UNSUBSCRIBE)) {  
@@ -152,26 +161,58 @@ public class WeChatServiceImpl implements WeChatService{
 	 * 微信自定义菜单创建
 	 */
 	@Override
-	public String CreateMenu(String data) {
+	public String CreateMenu() {
 		String flag = "error";
 		Jedis jedis = redisDateSourse.getRedis();
-		String accessToken = jedis.get("AccessToken");
+		String accessToken = jedis.get("AccessToken_CS");//因为个人公众号没有权限，所以这里获取测试号在redis中的accessToken
 		if(!"none".equals(accessToken)){
 			String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken;
-			/*String data = "{\"button\": [{\"name\":\"公司介绍\", \"sub_button\": [{\"type\": \"click\",\"name\": \"公司简介\",\"key\": \"m_znq\"},{\"type\": \"click\",\"name\": \"关于我们\",\"key\": \"m_xpdz\"},{\"type\": \"click\",\"name\": \"交通方式\",\"key\": \"m_jmt\"}]},";  
-	        data += "{\"name\": \"解决方案\",\"sub_button\": [{\"type\": \"click\",\"name\": \"电商解决方案\",\"key\": \"电商解决方案\"},{\"type\": \"click\",\"name\": \"HR人事管理解决方案\",\"key\": \"人事管理解决方案\"},{\"type\": \"click\",\"name\": \"物业管理方案\",\"key\": \"物业管理方案\"}]},";  
-	        data += "{\"name\": \"业务领域\",\"sub_button\": [{\"type\": \"view\",\"name\": \"业务范围\",\"url\": \"http://www.haiyusoft.com\"},{\"type\": \"click\",\"name\": \"联合研发中心\",\"key\": \"m_about\"},{\"type\": \"click\",\"name\": \"我要绑定\",\"key\": \"我要绑定\"}]}]}";  */
-	        
+	        String data = "{"
+					+ "\"button\": [{"
+					+		"\"type\": \"view\","
+					+	    "\"name\": \"主页\","
+					+	    "\"url\": \"http://www.loveding.top\""
+					+    "},"
+					+     "{"
+					+		"\"name\": \"提笔\","
+					+		"\"sub_button\": [{"
+					+			"\"type\": \"view\","
+					+			"\"name\": \"技术交流\","
+					+			"\"url\": \"http://www.loveding.top/write?type=1\""
+					+		"}, {"
+					+			"\"type\": \"view\","
+					+			"\"name\": \"我的困惑\","
+					+			"\"url\": \"http://www.loveding.top/write?type=2\""
+					+		"}, {"
+					+			"\"type\": \"view\","
+					+			"\"name\": \"谈谈生活\","
+					+			"\"url\": \"http://www.loveding.top/write?type=3\""
+					+		"}]"
+					+	"},"
+					+	"{"
+					+		"\"type\": \"view\","
+					+	    "\"name\": \"个人\","
+					+	    "\"url\": \"http://www.loveding.top/myworld\""
+					+	"},"
+					+	"{"
+					+		"\"type\": \"view\","
+					+	    "\"name\": \"一键注册\","
+					+	    "\"url\": \"http://www.loveding.top/weChatRegister\""
+					+	"}"
+					+ "]"
+					+"}";
 	        CloseableHttpResponse result = null;
 	        JSONObject json = null;
 	        try {
 	        //开启http请求准备
 	        CloseableHttpClient httpclient = HttpClients.createDefault();  
 	        HttpPost httpPost = new HttpPost(url);
-	        httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
-	        StringEntity stringEntity = new StringEntity(data);
+	        
+	        httpPost.addHeader("Content-type","application/json; charset=utf-8");
+	        httpPost.setHeader("Accept", "application/json");
+	        StringEntity stringEntity = new StringEntity(data, Charset.forName("UTF-8"));
 	        stringEntity.setContentType("text/json");
-	        stringEntity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+	        stringEntity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8"));
 	        httpPost.setEntity(stringEntity);
 	        result = httpclient.execute(httpPost);
 	        String resultStr = EntityUtils.toString(result.getEntity());
@@ -186,16 +227,90 @@ public class WeChatServiceImpl implements WeChatService{
 	        int statusCode = result.getStatusLine().getStatusCode();  
 	        if(statusCode !=200){  
 	            System.out.println("请求新建菜单失败,连接微信服务器失败");
+	            logger.info("请求新建菜单失败,连接微信服务器失败");
 	        }else if(!"0".equals(json.getString("errcode"))){
-	        	System.out.println("请求数据填写错误");
+	        	System.out.println("请求数据填写错误,错误代码"+json.getString("errcode"));
+	        	logger.info("请求数据填写错误,错误代码"+json.getString("errcode"));
 	        }else{
 	        	System.out.println("请求新建菜单成功");
+	        	logger.info("请求新建菜单成功");
 	        	flag = "success";
 	        }
 		}else{
 			logger.info("accessToken参数不正确，请重新获取");
 		}
 		return flag;
+	}
+
+	@Override
+	public void weChatRegister(HttpServletRequest request, HttpServletResponse response) {
+		Map requestMap = WeChatMesUtil.parseMsgXml(request);
+		// 发送方帐号（open_id）  
+        String open_id = (String) requestMap.get("FromUserName");  
+        // 公众帐号  
+        String toUserName = (String) requestMap.get("ToUserName");  
+        System.out.println(open_id);
+        Jedis jedis = redisDateSourse.getRedis();
+        String accessToken = jedis.get("AccessToken_CS");
+        CloseableHttpClient httpclient = HttpClients.createDefault();  
+        HttpGet httpget = new HttpGet("https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+open_id+"&lang=zh_CN");  
+        // Create a custom response handler  
+        ResponseHandler<JSONObject> responseHandler = new ResponseHandler<JSONObject>() {  
+
+            public JSONObject handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {  
+                int status = response.getStatusLine().getStatusCode();  
+                if (status >= 200 && status < 300) {  
+                    HttpEntity entity = response.getEntity();  
+                    if(null!=entity){  
+                        String result= EntityUtils.toString(entity);  
+                        //根据字符串生成JSON对象  
+                        JSONObject resultObj = JSONObject.fromObject(result);  
+                        return resultObj;  
+                    }else{  
+                        return null;  
+                    }  
+                } else {  
+                    throw new ClientProtocolException("Unexpected response status: " + status);  
+                }  
+            }
+
+        };  
+        //返回的json对象  
+        JSONObject responseBody;
+		try {
+			responseBody = httpclient.execute(httpget, responseHandler);
+			String resultMsg = "一键注册失败";
+			if(null!=responseBody){  
+				String subscribe = (String) responseBody.get("subscribe");//返回token  
+				if("0".equals(subscribe)){
+					resultMsg = "请先关注公众号";
+				}else if("1".equals(subscribe)){
+					User user = new User();
+					user.setNickname((String) responseBody.get("nickname")+"_wx");
+					String flag = userServiceImpl.userAdd(user);
+					if("success".equals(flag)){
+						resultMsg = "一键注册成功，感谢您的支持!";
+					}else{
+						
+					}
+				}
+			}
+			WeChatMesUtil.XMLprint(response,resultMsg,toUserName,open_id,null/*这里暂时都定义为文本回复形式*/);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  finally{
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+			
+		}
 	}
 
 }

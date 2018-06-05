@@ -3,6 +3,7 @@ package com.text.user.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.text.entity.WeChat;
 import com.text.realm.RunFunction;
 import com.text.user.service.WeChatService;
+import com.text.util.WeChatMesUtil;
 
 @RestController()
 @RequestMapping("wechat")
@@ -51,6 +53,13 @@ public class WeChatController {
 	 */
 	@PostMapping("/getMes")
 	public void getWeChatAndReply(HttpServletRequest request,HttpServletResponse response){
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         // 调用核心业务类接收消息、处理消息  
         weChatService.processRequest(request,response);  
         // 响应消息  
@@ -60,7 +69,15 @@ public class WeChatController {
 	 * 新建微信自定义菜单
 	 */
 	@RequestMapping("/createMenu")
-	public String CreateMenu(@Param("data") String data){
-		return weChatService.CreateMenu(data);
+	public String CreateMenu(){
+		return weChatService.CreateMenu();
+	}
+	
+	/**
+	 * 微信一键注册
+	 */
+	@RequestMapping("weChatRegister")
+	public void weChatRegister(HttpServletRequest request,HttpServletResponse response){
+		weChatService.weChatRegister(request,response);
 	}
 }
