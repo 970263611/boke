@@ -127,16 +127,16 @@ public class WeChatServiceImpl implements WeChatService{
             // 自定义菜单点击事件  
             else if (eventType.equals(WeChatMesUtil.EVENT_TYPE_CLICK)) {  
                 // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
-                String eventKey = (String) requestMap.get("EventKey");  
+                String eventKey = (String) requestMap.get("EventKey");//这个  EventKey 就是自定义菜单的key
                 if (eventKey.equals("11")) {  
                 	respMessage += "授权登录菜单项被点击";  
                 } else if (eventKey.equals("22")) {  
                     // 调用推送方法  
                     System.out.println("------------>OPENID=" + fromUserName);  
                     try {  
-                        respMessage += "您好，您的微信号与商会云账号已解绑成功!";  
+                        respMessage += "您好，您的微信号与大花博客已解绑成功!";  
                     } catch (Exception e) {  
-                    	respMessage += "您好，您的微信号与商会云账号解绑失败!";  
+                    	respMessage += "您好，您的微信号与大花博客解绑失败!";  
                     }  
                 } else if (eventKey.equals("20_PROMANAGE")) {  
                     // 推送模版  
