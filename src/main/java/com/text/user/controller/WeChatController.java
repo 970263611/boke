@@ -73,11 +73,4 @@ public class WeChatController {
 		return weChatService.CreateMenu();
 	}
 	
-	/**
-	 * 微信一键注册
-	 */
-	@RequestMapping("weChatRegister")
-	public void weChatRegister(HttpServletRequest request,HttpServletResponse response){
-		weChatService.weChatRegister(request,response);
-	}
 }
