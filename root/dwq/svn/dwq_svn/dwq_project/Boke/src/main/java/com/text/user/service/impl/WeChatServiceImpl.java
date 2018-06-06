@@ -98,7 +98,7 @@ public class WeChatServiceImpl implements WeChatService{
 	 */
 	@Override
 	public void processRequest(HttpServletRequest request,HttpServletResponse response){
-		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top\n由于个人公众号微信给的权限较少，请关注我的测试公众号：gh_9f88428b7945\n";  
+		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top\n由于个人公众号微信给的权限较少，请关注我的测试公众号："+WeChatMesUtil.Account_Number_CS+"\n";  
 		Map requestMap = WeChatMesUtil.parseMsgXml(request);
 		System.out.println("解析xml成功");
 		// 发送方帐号（open_id）  
@@ -135,7 +135,7 @@ public class WeChatServiceImpl implements WeChatService{
             String eventType = (String) requestMap.get("Event");  
             // 订阅  
             if (eventType.equals(WeChatMesUtil.EVENT_TYPE_SUBSCRIBE)) {  
-            	respMessage += "mo-爱心 盼星星，盼月亮，你终于来鸟~\n欢迎访问大花博客公众号\n网页版请访问www.loveding.top\n由于个人公众号微信给的权限较少，更多功能请关注我的测试公众号：gh_9f88428b7945\n";  
+            	respMessage += "mo-爱心 盼星星，盼月亮，你终于来鸟~\n欢迎访问大花博客公众号\n网页版请访问www.loveding.top\n由于个人公众号微信给的权限较少，更多功能请关注我的测试公众号："+WeChatMesUtil.Account_Number_CS+"\n";  
             }  
             // 取消订阅  
             else if (eventType.equals(WeChatMesUtil.EVENT_TYPE_UNSUBSCRIBE)) {  
@@ -195,8 +195,7 @@ public class WeChatServiceImpl implements WeChatService{
             					if(u != null) {
             						resultMsg = "您已经注册过本博客系统!已为您成功登陆本博客!\n您的账号是:"+u.getName()+"\n您的密码是:"+u.getPassword()+"\n请牢记您的账号,可在网页端直接登陆。";
             						//令牌验证登陆
-            						UsernamePasswordToken token=new UsernamePasswordToken(u.getName(), u.getPassword());
-        							subject.login(token);
+        							subject.login(new UsernamePasswordToken(u.getName(), u.getPassword()));
         							session.setAttribute("user", u);
             					}else {
             						User user = new User();
@@ -209,8 +208,7 @@ public class WeChatServiceImpl implements WeChatService{
             						if("success".equals(flag)){
             							resultMsg = "一键注册成功，感谢您的支持!您已成功登陆本博客!\n您的账号是:"+password+"\n您的密码是:"+password+"\n请牢记您的账号,可在网页端直接登陆。";
             							//令牌验证登陆
-                						UsernamePasswordToken token=new UsernamePasswordToken(user.getName(), user.getPassword());
-            							subject.login(token);
+            							subject.login(new UsernamePasswordToken(user.getName(), user.getPassword()));
             							session.setAttribute("user", user);
             						}else if("NickNamealReguster".equals(flag)){
             							resultMsg = "用户昵称重复，请更换微信昵称";
@@ -236,18 +234,7 @@ public class WeChatServiceImpl implements WeChatService{
             			}  
             			
             		}
-                } else if (eventKey.equals("22")) {  
-                    // 调用推送方法  
-                    System.out.println("------------>OPENID=" + fromUserName);  
-                    try {  
-                        respMessage += "您好，您的微信号与大花博客已解绑成功!";  
-                    } catch (Exception e) {  
-                    	respMessage += "您好，您的微信号与大花博客解绑失败!";  
-                    }  
-                } else if (eventKey.equals("20_PROMANAGE")) {  
-                    // 推送模版  
-                	respMessage += "模版申请中。。。";  
-                }  
+                } 
             }  
         }  
         System.out.println("返回消息-"+respMessage);
@@ -344,95 +331,6 @@ public class WeChatServiceImpl implements WeChatService{
 		return flag;
 	}
 
-	/**
-	 * 废弃
-	 */
-	@Override
-	public void weChatRegister(HttpServletRequest request, HttpServletResponse response) {
-		Map requestMap = WeChatMesUtil.parseMsgXml(request);
-		// 发送方帐号（open_id）  
-        String open_id = (String) requestMap.get("FromUserName");  
-        // 公众帐号  
-        String toUserName = (String) requestMap.get("ToUserName");  
-        System.out.println(open_id);
-        Jedis jedis = redisDateSourse.getRedis();
-        String accessToken = jedis.get("AccessToken_CS");
-        CloseableHttpClient httpclient = HttpClients.createDefault();  
-        HttpGet httpget = new HttpGet("https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+open_id+"&lang=zh_CN");  
-        // Create a custom response handler  
-        ResponseHandler<JSONObject> responseHandler = new ResponseHandler<JSONObject>() {  
-
-            public JSONObject handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {  
-                int status = response.getStatusLine().getStatusCode();  
-                if (status >= 200 && status < 300) {  
-                    HttpEntity entity = response.getEntity();  
-                    if(null!=entity){  
-                        String result= EntityUtils.toString(entity);  
-                        //根据字符串生成JSON对象  
-                        JSONObject resultObj = JSONObject.fromObject(result);  
-                        return resultObj;  
-                    }else{  
-                        return null;  
-                    }  
-                } else {  
-                    throw new ClientProtocolException("Unexpected response status: " + status);  
-                }  
-            }
-
-        };  
-        //返回的json对象  
-        JSONObject responseBody;
-		try {
-			responseBody = httpclient.execute(httpget, responseHandler);
-			Subject subject=SecurityUtils.getSubject();
-			Session session=subject.getSession();
-			String resultMsg = "一键注册失败";
-			if(null!=responseBody){  
-				String subscribe = (String) responseBody.get("subscribe");//返回token  
-				if("0".equals(subscribe)){
-					resultMsg = "请先关注公众号";
-				}else if("1".equals(subscribe)){
-					User u = weChatDao.getUserId(open_id);
-					if(u != null) {
-						resultMsg = "您已经注册过本博客系统!已为您成功登陆本博客!\n您的账号是:"+u.getName()+"\n您的密码是:"+u.getPassword()+"\n请牢记您的账号,可在网页端直接登陆。";
-						session.setAttribute("user", u);
-					}else {
-						User user = new User();
-						String password = getPass();
-						user.setNickname((String) responseBody.get("nickname")+"_wx");
-						user.setName(password);
-						user.setRealname(open_id);
-						user.setPassword(password);
-						String flag = userServiceImpl.userAdd(user);
-						if("success".equals(flag)){
-							resultMsg = "一键注册成功，感谢您的支持!您已成功登陆本博客!\n您的账号是:"+password+"\n您的密码是:"+password+"\n请牢记您的账号,可在网页端直接登陆。";
-							session.setAttribute("user", user);
-						}else if("NickNamealReguster".equals(flag)){
-							resultMsg = "用户昵称重复，请更换微信昵称";
-						}else if("alReguster".equals(flag)){
-							resultMsg = "用户名重复，请更换微信昵称";
-						}
-					}
-				}
-			}
-			WeChatMesUtil.XMLprint(response,resultMsg,toUserName,open_id,null/*这里暂时都定义为文本回复形式*/);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  finally{
-			try {
-				httpclient.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}  
-			
-		}
-	}
-	
 	public String getPass() {
 		Random r = new Random();
 		String pass = Math.abs(r.nextInt())+"";
