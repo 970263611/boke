@@ -13,6 +13,4 @@ public interface WeChatService {
 
 	void processRequest(HttpServletRequest request,HttpServletResponse response);
 
-	void weChatRegister(HttpServletRequest request, HttpServletResponse response);
-
 }
