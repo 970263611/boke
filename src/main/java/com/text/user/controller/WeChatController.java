@@ -54,6 +54,9 @@ public class WeChatController {
 	@PostMapping("/getMes")
 	public void getWeChatAndReply(HttpServletRequest request,HttpServletResponse response){
 		try {
+			/**
+			 * 这里的编码格式设置其主要作用
+			 */
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 		} catch (UnsupportedEncodingException e) {

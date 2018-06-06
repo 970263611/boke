@@ -13,4 +13,6 @@ public interface WeChatService {
 
 	void processRequest(HttpServletRequest request,HttpServletResponse response);
 
+	void weChatLogin(String code);
+
 }
