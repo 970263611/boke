@@ -32,6 +32,8 @@ public final class WeChatMesUtil {
 	
 	public static final String AppSecret_CS = "7c8cecb7166cb3dcab9114cb61984b34";// 微信开发者密码
 	
+	public static final String Account_Number_CS = "gh_9f88428b7945";//测试公众号
+	
 	/**   
      * 返回消息类型：文本   
      */    
