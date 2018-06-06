@@ -25,6 +25,7 @@ import com.text.entity.MyPhoto;
 import com.text.entity.User;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
+import com.text.user.service.WeChatService;
 
 /**
  * 跳转到index主页
@@ -38,6 +39,8 @@ public class HtmlController {
 	private UserService userService;
 	@Autowired
 	private UserDao userDao;
+	@Autowired 
+	private WeChatService weChatService;
 	  
 	/**
 	 * 默认首页
@@ -92,7 +95,7 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/index") 
-    public String ToIndex(Model model,HttpServletRequest request) {
+    public String ToIndex(Model model) {
 		
 		
 		/**
@@ -228,7 +231,24 @@ public class HtmlController {
 	 * @return
 	 */
     @RequestMapping(value="/login", method = RequestMethod.GET)
-	    public String ToLogin(Model model) {
+	    public String ToLogin(Model model,HttpServletRequest request) {
+    	String code = request.getParameter("code");
+		String state = request.getParameter("state");
+		System.out.println("state========================================="+state);
+		if(code!=null){
+			weChatService.weChatLogin(code);
+			if("write1".equals(state)){
+				ToWrite(model,"1");
+			}else if("write2".equals(state)){
+				ToWrite(model,"2");
+			}else if("write3".equals(state)){
+				ToWrite(model,"3");
+			}else if("index".equals(state)){
+				ToIndex(model);
+			}else if("myworld".equals(state)){
+				myWorld(model,request);
+			}
+		}
 	        return "login";
 	    }
 
@@ -236,10 +256,10 @@ public class HtmlController {
 	 * 用户注销
 	 */
     @RequestMapping("/loginOut")
-    public String loginOut(Model model){
+    public String loginOut(Model model,HttpServletRequest request){
     	Subject subject=SecurityUtils.getSubject();
     	subject.logout();
-    	return ToLogin(model);
+    	return ToLogin(model,request);
     }
     
     /**

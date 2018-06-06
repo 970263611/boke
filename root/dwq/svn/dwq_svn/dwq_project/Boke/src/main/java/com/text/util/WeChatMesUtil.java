@@ -34,6 +34,18 @@ public final class WeChatMesUtil {
 	
 	public static final String Account_Number_CS = "gh_9f88428b7945";//测试公众号
 	
+	public static final String LoginURL = "http://www.loveding.top/login";
+	
+	public static final String WeChat_Write_1_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write1#wechat_redirect";
+	
+	public static final String WeChat_Write_2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write2#wechat_redirect";
+	
+	public static final String WeChat_Write_3_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write3#wechat_redirect";
+	
+	public static final String WeChat_Index_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=index#wechat_redirect";
+	
+	public static final String WeChat_MyWorld_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=myworld#wechat_redirect";
+	
 	/**   
      * 返回消息类型：文本   
      */    
