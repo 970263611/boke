@@ -217,12 +217,6 @@ public class HtmlController {
 	 */
 	@RequestMapping("/register") 
     public String ToRegister(Model model) {  
-//		Subject subject=SecurityUtils.getSubject();
-//		Session session=subject.getSession();
-		//判断用户是否登陆，未登录，赋予状态noLogin
-//    	if(session.getAttribute("user_Login")==null){
-//			model.addAttribute("user_Login", "noLogin");
-//		}
 		return "login";  
     } 
 	
@@ -238,15 +232,15 @@ public class HtmlController {
 		if(code!=null){
 			weChatService.weChatLogin(code);
 			if("write1".equals(state)){
-				ToWrite(model,"1");
+				return ToWrite(model,"1");
 			}else if("write2".equals(state)){
-				ToWrite(model,"2");
+				return ToWrite(model,"2");
 			}else if("write3".equals(state)){
-				ToWrite(model,"3");
+				return ToWrite(model,"3");
 			}else if("index".equals(state)){
-				ToIndex(model);
+				return ToIndex(model);
 			}else if("myworld".equals(state)){
-				myWorld(model,request);
+				return myWorld(model,request);
 			}
 		}
 	        return "login";
