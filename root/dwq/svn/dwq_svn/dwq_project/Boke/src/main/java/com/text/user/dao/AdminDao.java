@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -22,69 +23,114 @@ public interface AdminDao {
 
 	/**
 	 * 查询所有用户信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from user")
-	public List<User> admin_select_user();
+	@Select("select * from user limit #{i},#{j}")
+	public List<User> admin_select_user(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from user")
+	public int admin_select_user_totalSize();
 
 	/**
 	 * 查询所有文章信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from article")
-	public List<Article> admin_select_article();
+	@Select("select * from article limit #{i},#{j}")
+	public List<Article> admin_select_article(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from article")
+	public int admin_select_article_totalSize();
 
 	/**
 	 * 查询所有留言信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from wordMessage")
-	public List<WordMessage> admin_select_wordMessage();
+	@Select("select * from wordMessage limit #{i},#{j}")
+	public List<WordMessage> admin_select_wordMessage(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from wordMessage")
+	public int admin_select_wordMessage_totalSize();
 
 	
 	/**
 	 * 查询所有角色信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from role")
-	public List<Role> admin_select_role();
+	@Select("select * from role limit #{i},#{j}")
+	public List<Role> admin_select_role(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from role")
+	public int admin_select_role_totalSize();
 
 	
 	/**
 	 * 查询所有权限信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from permission")
-	public List<Permission> admin_select_permission();
+	@Select("select * from permission limit #{i},#{j}")
+	public List<Permission> admin_select_permission(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from permission")
+	public int admin_select_permission_totalSize();
 
 	
 	/**
 	 * 查询所有用户个人中心文字信息
+	 * @param j 
+	 * @param iint 
 	 * @return
 	 */
-	@Select("select * from mytest")
-	public List<MyTest> admin_select_mytest();
+	@Select("select * from mytest limit #{i},#{j}")
+	public List<MyTest> admin_select_mytest(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from mytest")
+	public int admin_select_mytest_totalSize();
 
 	/**
 	 * 查询所有用户个人中心图片信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from myphoto")
-	public List<MyPhoto> admin_select_myphoto();
+	@Select("select * from myphoto limit #{i},#{j}")
+	public List<MyPhoto> admin_select_myphoto(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from myphoto")
+	public int admin_select_myphoto_totalSize();
 
 	/**
 	 * 查询所有评价信息
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from comment")
-	public List<Comment> admin_select_comment();
+	@Select("select * from comment limit #{i},#{j}")
+	public List<Comment> admin_select_comment(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from comment")
+	public int admin_select_comment_totalSize();
 	
 	/**
 	 * 查询所有登陆ip
+	 * @param j 
+	 * @param i 
 	 * @return
 	 */
-	@Select("select * from login_ip")
-	public List<LoginIP> admin_select_ip();
+	@Select("select * from login_ip limit #{i},#{j}")
+	public List<LoginIP> admin_select_ip(@Param("i")int i,@Param("j") int j);
+	
+	@Select("select COUNT(id) from login_ip")
+	public int admin_select_ip_totalSize();
 	
 	/**
 	 * 更新文章表信息
