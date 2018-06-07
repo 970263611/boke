@@ -7,6 +7,10 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.annotations.Select;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,6 +189,12 @@ public class UserServiceImpl implements UserService {
 		// 将拥护注册信息添加到数据库
 		int size = userDao.userAdd(user);
 		if (size == 1) {
+			//通过shiro获取session
+			Subject subject=SecurityUtils.getSubject();
+			Session session=subject.getSession();
+			//令牌验证登陆
+			subject.login(new UsernamePasswordToken(user.getName(), user.getPassword()));
+			session.setAttribute("user", user);
 			return "success";
 		}
 		return null;
