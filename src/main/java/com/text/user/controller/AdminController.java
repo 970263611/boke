@@ -47,8 +47,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_user")
 	@ResponseBody
-	public String admin_select_user(){
-		return json(adminDao.admin_select_user());
+	public String admin_select_user(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_user_totalSize();
+		return json(adminDao.admin_select_user((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -57,8 +60,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_article")
 	@ResponseBody
-	public String admin_select_article(){
-		return json(adminDao.admin_select_article());
+	public String admin_select_article(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_article_totalSize();
+		return json(adminDao.admin_select_article((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -67,8 +73,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_wordMessage")
 	@ResponseBody
-	public String admin_select_wordMessage(){
-		return json(adminDao.admin_select_wordMessage());
+	public String admin_select_wordMessage(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_wordMessage_totalSize();
+		return json(adminDao.admin_select_wordMessage((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -77,8 +86,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_role")
 	@ResponseBody
-	public String admin_select_role(){
-		return json(adminDao.admin_select_role());
+	public String admin_select_role(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_role_totalSize();
+		return json(adminDao.admin_select_role((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -87,8 +99,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_permission")
 	@ResponseBody
-	public String admin_select_permission(){
-		return json(adminDao.admin_select_permission());
+	public String admin_select_permission(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_permission_totalSize();
+		return json(adminDao.admin_select_permission((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -97,8 +112,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_myTest")
 	@ResponseBody
-	public String admin_select_mytest(){
-		return json(adminDao.admin_select_mytest());
+	public String admin_select_mytest(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_mytest_totalSize();
+		return json(adminDao.admin_select_mytest((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -107,8 +125,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_myPhoto")
 	@ResponseBody
-	public String admin_select_myphoto(){
-		return json(adminDao.admin_select_myphoto());
+	public String admin_select_myphoto(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_myphoto_totalSize();
+		return json(adminDao.admin_select_myphoto((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -117,8 +138,11 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_ip")
 	@ResponseBody
-	public String admin_select_ip(){
-		return json(adminDao.admin_select_ip());
+	public String admin_select_ip(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_ip_totalSize();
+		return json(adminDao.admin_select_ip((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -451,18 +475,21 @@ public class AdminController {
 	 */
 	@RequestMapping("/admin_select_comment")
 	@ResponseBody
-	public String admin_select_comment(){
-		return json(adminDao.admin_select_comment());
+	public String admin_select_comment(HttpServletRequest request){
+		String current = request.getParameter("current");
+		String rowCount = request.getParameter("rowCount");
+		int total = adminDao.admin_select_comment_totalSize();
+		return json(adminDao.admin_select_comment((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
-	public String json(List<?> list){
+	public String json(List<?> list, String current, String rowCount, int total){
 		JSONArray json = null;
 		if(list.size()>0){
 				json = JSONArray.fromObject(list);
 		}
 		 StringBuffer sb = new StringBuffer(json.toString());
-		 sb.insert(0, "{\"current\": 1,\"rowCount\": 10,\"rows\": ");
-		 sb.append(",\"total\": "+list.size()+"}");
+		 sb.insert(0, "{\"current\": "+current+",\"rowCount\": "+rowCount+",\"rows\": ");
+		 sb.append(",\"total\": "+total+"}");
 		 return sb.toString();
 	 }
 		
