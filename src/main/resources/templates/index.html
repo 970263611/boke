@@ -85,7 +85,6 @@
 
 body {
 	overflow: hidden;
-	background: url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);
 	background-size: cover;
 }
 
@@ -257,7 +256,7 @@ li {
 }
 </style>
 </head>
-<body>
+<body id="body">
 
 
 	<!--头??-->
@@ -274,7 +273,7 @@ li {
 					</button>
 
 					<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo"
-						src="http://www.loveding.top:8089/dahuablog_image/logo_white.jpg"
+						src="http://www.loveding.top:8089/dahuablog_image/new_white_logo.jpg"
 						style="height: 20px; width: 20px; float: left; position: absolute; top: 0;" /><span
 						style="font-family: cursive; margin-left: -8px;" id='logo_text'>&nbsp大花博客<span
 							style="color: red;">.</span></span></a>
@@ -320,8 +319,7 @@ li {
 			<p style="text-align: center; font-family: cursive;">世上无难事</p>
 			<p style="text-align: center; font-family: cursive;">只要肯攀登</p>
 		</div>
-		<div class="section"
-			style="background-image: url(http://www.loveding.top:8089/dahuablog_image/image_new_1.jpg);">
+		<div class="section" id="page_2">
 			<div class="container-fluid" style="padding-top: 60px;">
 				<div class="row">
 					<div class="col-xs-0 col-md-1"></div>
@@ -347,44 +345,12 @@ li {
 				</div>
 			</div>
 		</div>
-		<div class="section" style="background-image: url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);">
+		<div class="section" id="page_3">
 			<div id="img_page">
 				<div class="container" id="img_container">
 					<div class="row">
 						<div class="col-xs-12" id="img_col">
-							<div class="photowall">
-								<div class="photo01">
-									<div class="photoview">
-										<img th:src='${photo1.photo}' width="300" height="220">
-										<p th:text="${photo1.photo_test}">完美的星空</p>
-										<p th:text="${photo1.nickname}">不新鲜的萝卜皮</p>
-									</div>
-								</div>
-
-								<div class="photo02">
-									<div class="photoview">
-										<img th:src='${photo2.photo}' width="300" height="220">
-										<p th:text="${photo2.photo_test}">完美的星空</p>
-										<p th:text="${photo2.nickname}">不新鲜的萝卜皮</p>
-									</div>
-								</div>
-
-								<div class="photo03">
-									<div class="photoview">
-										<img th:src='${photo3.photo}' width="300" height="220">
-										<p th:text="${photo3.photo_test}">完美的星空</p>
-										<p th:text="${photo3.nickname}">不新鲜的萝卜皮</p>
-									</div>
-								</div>
-
-								<div class="photo04">
-									<div class="photoview">
-										<img th:src='${photo4.photo}' width="300" height="220">
-										<p th:text="${photo4.photo_test}">完美的星空</p>
-										<p th:text="${photo4.nickname}">不新鲜的萝卜皮</p>
-									</div>
-								</div>
-							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -392,34 +358,18 @@ li {
 			<div class='footer'>
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-xs-0 col-md-5"
-							style="padding-top: 20px; text-align: center;">
-							<img src="http://www.loveding.top:8089/dahuablog_image/logo_white.jpg"
-								style="height: 72px; width: 76px; float: center;">
-						</div>
+						<div id="logoDiv" class="col-xs-0 col-md-5" style="padding-top: 20px; text-align: center;"></div>
 						<div class="col-xs-12 col-md-4">
 							<div style="padding-top: 20px;">
 								<p>特别致谢：武小默 李伟涛 江东升</p>
 								<p style="margin-bottom: 3px;">请联系我：love_dingwq@163.com</p>
-								<!-- <div class="bdsharebuttonbox">
-								<span style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;">鎰熻阿鍒嗕韩锛�</span>
-								<a href="#" class="bds_weixin" data-cmd="weixin"></a>
-								<a href="#" class="bds_sqq" data-cmd="sqq"></a>
-								<a href="#" class="bds_qzone" data-cmd="qzone"></a>
-								<a href="#" class="bds_tsina" data-cmd="tsina"></a>
-								<a href="#" class="bds_douban" data-cmd="douban"></a>
-								<a href="#" class="bds_tqq" data-cmd="tqq"></a>
-								<a href="#" class="bds_renren" data-cmd="renren"></a>
-								<a href="#" class="bds_youdao" data-cmd="youdao"></a>
-								<a href="#" class="bds_more" data-cmd="more"></a>
-							</div> -->
 							<div class="bshare-custom" style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;"><span>感谢分享：</span><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
 							</div>
 						</div>
 						<div class="col-xs-12 col-md-3">
 							<div style="padding-top: 20px;">
 								<p>备案号：黑ICP备18000243号</p>
-								<p>感恩2018&nbsp&nbsp大花博客v2.0</p>
+								<p>公众号：大花博客</p>
 				    			<p>www.loveding.top</p>
 							</div>
 						</div>
@@ -465,12 +415,100 @@ li {
 <script type="text/javascript" src="js/jquery.fullPage.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
+	var flag = true;
 	$(function() {
 		$('#dowebok').fullpage({
 			sectionsColor : [ '#1bbc9b', '#4BBFC3', '#7BAABE' ],
 			anchors : [ 'page1', 'page2', 'page3' ],
 			/*continuousVertical: true,*/
-			menu : '#menu'
+			lazyLoading: true,
+			menu : '#menu',
+			
+			//延迟加载，提高用户体验
+			afterLoad: function(anchorLink, index){
+				var loadedSection = $(this);
+
+				//使用 index
+				/* if(index == 1){
+					alert("第1节停止加载");
+				} */
+				 if(index == 2){
+					/* alert("第2节停止加载"); */
+					$("#page_3").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);");
+				} 
+				/* if(index == 3){
+					alert("第3节停止加载");
+				} */
+			},
+		
+			onLeave: function(index, nextIndex, direction){
+				var leavingSection = $(this);
+	
+				//离开第一节后
+				if(index == 1 && direction =='down'){
+					/* alert("前往第2节！"); */
+					$("#page_2").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/image_new_1.jpg);");
+				}
+				
+				//离开第二节后
+				if(index == 2 && direction =='down'){
+					if(flag){
+						var photo1src = '[[${photo1.photo}]]';
+						var photo1test = '[[${photo1.photo_test}]]';
+						var photo1nickname = '[[${photo1.nickname}]]';
+						var photo2src = '[[${photo2.photo}]]';
+						var photo2test = '[[${photo2.photo_test}]]';
+						var photo2nickname = '[[${photo2.nickname}]]';
+						var photo3src = '[[${photo3.photo}]]';
+						var photo3test = '[[${photo2.photo_test}]]';
+						var photo3nickname = '[[${photo2.nickname}]]';
+						var photo4src = '[[${photo4.photo}]]';
+						var photo4test = '[[${photo4.photo_test}]]';
+						var photo4nickname = '[[${photo4.nickname}]]';
+						var html = 
+							"<div class='photowall'>"
+							+"<div class='photo01'>"
+							+	"<div class='photoview'>"
+							+			"<img src='"+photo1src+"' width='300' height='220'>"
+							+			"<p>"+photo1test+"</p>"
+							+			"<p>"+photo1nickname+"</p>"
+							+		"</div>"
+							+	"</div>"
+							+"<div class='photo02'>"
+							+	"<div class='photoview'>"
+							+		"<img src='"+photo2src+"' width='300' height='220'>"
+							+		"<p>"+photo2test+"</p>"
+							+		"<p>"+photo2nickname+"</p>"
+							+	"</div>"
+							+"</div>"
+							+"<div class='photo03'>"
+							+	"<div class='photoview'>"
+							+		"<img src='"+photo3src+"' width='300' height='220'>"
+							+		"<p>"+photo3test+"</p>"
+							+		"<p>"+photo3nickname+"</p>"
+							+	"</div>"
+							+"</div>"
+							+"<div class='photo04'>"
+							+	"<div class='photoview'>"
+							+		"<img src='"+photo4src+"' width='300' height='220'>"
+							+		"<p>"+photo4test+"</p>"
+							+		"<p>"+photo4nickname+"</p>"
+							+	"</div>"
+							+	"</div>"
+							+"</div>";
+						$("#img_col").append(html);
+						var html1 =  "<img src='http://www.loveding.top:8089/dahuablog_image/logo_white.jpg' style='height: 72px; width: 76px; float: center;margin-right: 20px;'>"+
+						"<img src='http://www.loveding.top:8089/dahuablog_image/gzh.jpg' style='height: 72px; width: 72px; float: center;'>";
+						$("#logoDiv").append(html1);
+						flag = false;
+					}
+				}
+				
+				/* else if(index == 2 && direction == 'up'){
+					alert("前往第1节！");
+				} */
+			}
+		
 		});
 
 		$(window).resize(function() {
