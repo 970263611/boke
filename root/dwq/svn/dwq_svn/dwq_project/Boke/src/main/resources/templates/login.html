@@ -333,8 +333,8 @@
                 if(data == "error"){
                 	layer.msg('注册失败', function(){});
                 }else if(data == "success"){
-                	layer.msg('注册成功')
-               		window.location.href = "/login";
+                	layer.msg('注册成功,正在为您跳转')
+               		window.location.href = "/index";
                 }else if(data == "NickNamealReguster"){
                 	layer.msg('昵称注册重复', function(){});
                 		return false;
