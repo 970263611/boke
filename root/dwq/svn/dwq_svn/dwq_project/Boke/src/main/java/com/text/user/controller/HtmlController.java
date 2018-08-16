@@ -1,10 +1,6 @@
 package com.text.user.controller;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +22,7 @@ import com.text.entity.User;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
 import com.text.user.service.WeChatService;
+import com.text.util.BokeUtil;
 
 /**
  * 跳转到index主页
@@ -41,7 +38,7 @@ public class HtmlController {
 	private UserDao userDao;
 	@Autowired 
 	private WeChatService weChatService;
-	  
+	
 	/**
 	 * 默认首页
 	 * @param model
@@ -49,39 +46,16 @@ public class HtmlController {
 	 */
 	@RequestMapping("/")
 	public String toIndex(Model model,HttpServletRequest request) {
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"newindex")){
+			return "loginToMuch";
+		}
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
-		String ipAddress = request.getHeader("x-forwarded-for");  
-        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {  
-            ipAddress = request.getHeader("Proxy-Client-IP");  
-        }  
-        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {  
-            ipAddress = request.getHeader("WL-Proxy-Client-IP");  
-        }  
-        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {  
-            ipAddress = request.getRemoteAddr();  
-            if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){  
-                //根据网卡取本机配置的IP  
-                InetAddress inet=null;  
-                try {  
-                    inet = InetAddress.getLocalHost();  
-                } catch (Exception e) {  
-                    e.printStackTrace();  
-                }  
-                ipAddress= inet.getHostAddress();  
-            }  
-        }  
-        //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割  
-        if(ipAddress!=null && ipAddress.length()>15){ //"***.***.***.***".length() = 15  
-            if(ipAddress.indexOf(",")>0){  
-                ipAddress = ipAddress.substring(0,ipAddress.indexOf(","));  
-            }  
-        }  
-	    Date date = new Date();
-        //设置要获取到什么样的时间
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //获取String类型的时间
-        String time = sdf.format(date);
+	    String time = BokeUtil.getStringTime();
 		User newUser = (User) session.getAttribute("user");
 		if(newUser == null) {
 			userDao.saveIP(ipAddress,time,0,null);
@@ -95,9 +69,14 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/index") 
-    public String ToIndex(Model model) {
-		
-		
+    public String ToIndex(Model model,HttpServletRequest request) {
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"index")){
+			return "loginToMuch";
+		}
 		/**
 		 * 查询最新照片信息
 		 * @param originalFilename
@@ -130,7 +109,14 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/single") 
-    public String ToSingel(Model model,String id) { 
+    public String ToSingel(Model model,String id,HttpServletRequest request) { 
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"single")){
+			return "loginToMuch";
+		}
 		//根据id查询单条文章的所有信息
 		Article article = userService.toSingle(id);
 		//根据id查询关联的所有评价
@@ -145,7 +131,14 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/write") 
-    public String ToWrite(Model model,String type) {  
+    public String ToWrite(Model model,String type,HttpServletRequest request) { 
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"write")){
+			return "loginToMuch";
+		}
 		model.addAttribute("type", type);
 		return "write";  
     } 
@@ -156,6 +149,13 @@ public class HtmlController {
 	 */
 	@RequestMapping("/myworld") 
     public String myWorld(Model model,HttpServletRequest request) { 
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"myworld")){
+			return "loginToMuch";
+		}
 		
  		String modify = request.getParameter("modify");
 		String articleId = request.getParameter("articleId");
@@ -216,7 +216,14 @@ public class HtmlController {
 	 * @return
 	 */
 	@RequestMapping("/register") 
-    public String ToRegister(Model model) {  
+    public String ToRegister(Model model,HttpServletRequest request) {  
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"login")){
+			return "loginToMuch";
+		}
 		return "login";  
     } 
 	
@@ -228,19 +235,23 @@ public class HtmlController {
 	    public String ToLogin(Model model,HttpServletRequest request) {
     	String code = request.getParameter("code");
 		String state = request.getParameter("state");
-		System.out.println("state========================================="+state);
 		if(code!=null){
 			weChatService.weChatLogin(code);
 			if("write1".equals(state)){
-				return ToWrite(model,"1");
+				return ToWrite(model,"1",request);
 			}else if("write2".equals(state)){
-				return ToWrite(model,"2");
+				return ToWrite(model,"2",request);
 			}else if("write3".equals(state)){
-				return ToWrite(model,"3");
+				return ToWrite(model,"3",request);
 			}else if("index".equals(state)){
-				return ToIndex(model);
+				return ToIndex(model,request);
 			}else if("myworld".equals(state)){
 				return myWorld(model,request);
+			}
+		}else{
+			String ipAddress = BokeUtil.getIP(request);
+			if(!userService.visit(ipAddress,"loginToMuch")){
+				return "loginToMuch";
 			}
 		}
 	        return "login";
@@ -257,10 +268,17 @@ public class HtmlController {
     }
     
     /**
-	 * 用户注销
+	 * 用户文章
 	 */
     @RequestMapping("/user_article")
-    public String user_article(Model model,String nickname){
+    public String user_article(Model model,String nickname,HttpServletRequest request){
+    	String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"user_article")){
+			return "loginToMuch";
+		}
     	List<Article> list = userService.select_article_user_all(nickname);
     	model.addAttribute("list", list);
     	return "user_article";
@@ -270,7 +288,14 @@ public class HtmlController {
      * 访问照片详情页面
      */
     @RequestMapping("/user_photo")
-    public String user_photo(Model model,String nickname){
+    public String user_photo(Model model,String nickname,HttpServletRequest request){
+    	String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"loginToMuch")){
+			return "loginToMuch";
+		}
     	List<MyPhoto> photos = userService.select_photo_user_all(nickname);
     	for(MyPhoto myPhoto:photos) {
     		myPhoto.setPhoto("http://www.loveding.top:8089/"+myPhoto.getUser_id() + "/" +myPhoto.getPhoto());

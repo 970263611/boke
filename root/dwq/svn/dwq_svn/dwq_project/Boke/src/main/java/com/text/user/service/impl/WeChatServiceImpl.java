@@ -359,6 +359,7 @@ public class WeChatServiceImpl implements WeChatService {
 			// 通过shiro获取session
 			Subject subject = SecurityUtils.getSubject();
 			Session session = subject.getSession();
+			SecurityUtils.getSubject().getSession().setTimeout(600000);
 			// 令牌验证登陆
 			subject.login(new UsernamePasswordToken(u.getName(), u.getPassword()));
 			session.setAttribute("user", u);
