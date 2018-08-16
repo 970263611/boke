@@ -144,4 +144,9 @@ public interface UserService {
 	 * @return
 	 */
 	List<MyPhoto> select_photo_user_all(String nickname);
+	
+	/**
+	 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+	 */
+	boolean visit(String ip,String sign);
 }

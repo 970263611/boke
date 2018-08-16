@@ -412,4 +412,26 @@ public class UserServiceImpl implements UserService {
 		return userDao.select_photo_user_all(nickname);
 	}
 
+	/**
+	 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+	 */
+	public boolean visit(String ip,String sign){
+		boolean flag = false;
+		Jedis jedis = redisDateSourse.getRedis();
+		String loginSize = jedis.get(ip+sign);
+		if(loginSize!=null && !loginSize.equals("")){
+			int size = Integer.parseInt(loginSize);
+			if(size<3){
+				jedis.set(ip+sign, (Integer.parseInt(loginSize)+1)+"");
+				jedis.expire(ip+sign, 60);
+				flag = true;
+			}
+		}else{
+			jedis.set(ip+sign, "1");
+			jedis.expire(ip+sign, 60);
+			flag = true;
+		}
+		redisDateSourse.closeRedis(jedis);
+		return flag;
+	}
 }

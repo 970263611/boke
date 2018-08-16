@@ -66,6 +66,7 @@ public class UserController {
 			subject.login(token);
 			User user = new User(username,password);
 			User newUser = userService.getUser(user);
+			SecurityUtils.getSubject().getSession().setTimeout(600000);
 	    	session.setAttribute("user", newUser);
 			session.setAttribute("user_Login","alLogin");
 	        return "success";
