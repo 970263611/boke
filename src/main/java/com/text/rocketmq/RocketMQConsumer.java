@@ -23,7 +23,7 @@ public class RocketMQConsumer {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer1");
 
         //同样也要设置NameServer地址
-        consumer.setNamesrvAddr("192.168.0.101:9876");
+        consumer.setNamesrvAddr("101.132.136.190:9876");
 
         //这里设置的是一个consumer的消费策略
         //CONSUME_FROM_LAST_OFFSET 默认策略，从该队列最尾开始消费，即跳过历史消息
@@ -32,7 +32,7 @@ public class RocketMQConsumer {
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
 
         //设置consumer所订阅的Topic和Tag，*代表全部的Tag
-        consumer.subscribe("smsFrontSmsMq_10", "*");
+        consumer.subscribe("guanzhu", "*");
 
         //设置一个Listener，主要进行消息的逻辑处理
         consumer.registerMessageListener(new MessageListenerConcurrently() {
