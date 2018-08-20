@@ -149,4 +149,11 @@ public interface UserService {
 	 * 限制当前ip1分钟内最多访问10次本页面（防爬虫增大服务器压力）
 	 */
 	boolean visit(String ip,String sign);
+
+	/**
+	 * 关注调用方法
+	 * @param articleId
+	 * @return
+	 */
+	String follow (String articleId);
 }
