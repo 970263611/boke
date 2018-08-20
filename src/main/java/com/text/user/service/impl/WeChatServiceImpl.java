@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -190,12 +191,16 @@ public class WeChatServiceImpl implements WeChatService {
 								resultMsg = "您已经注册过本博客系统!已为您成功登陆本博客!\n同时您每次从公众号访问大花博客时,将自动免密登陆\n访问测试公众号，带来更好体验,您将可以直接浏览博客内容！\n您的账号是:" + u.getName() + "\n您的密码是:"
 										+ u.getPassword() + "\n请牢记您的账号,可在网页端直接登陆。";
 							} else {
+								/**
+								 * 提供一键注册
+								 */
 								User user = new User();
 								String password = getPass();
 								user.setNickname((String) responseBody.get("nickname") + "_wx");
 								user.setName(password);
 								user.setRealname(open_id);
 								user.setPassword(password);
+								user.setCreateTime(new Date());
 								String flag = userServiceImpl.userAdd(user);
 								if ("success".equals(flag)) {
 									resultMsg = "已经为您注册成功，感谢您的支持!\n您已成功登陆本博客!\n访问测试公众号，带来更好体验,您将可以直接浏览博客内容！\n您的账号是:" + password + "\n您的密码是:" + password
