@@ -225,4 +225,12 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * 用户关注的方法
+	 */
+	@RequestMapping("follow")
+	public String follow(){
+		return "success";
+	}
+	
 }
