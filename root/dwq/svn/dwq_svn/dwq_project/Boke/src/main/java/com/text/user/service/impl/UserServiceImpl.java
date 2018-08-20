@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
 			jedis.lpush("article", ac.getCreate_time()+ac.getId());
 			jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
 			jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
+			redisDateSourse.closeRedis(jedis);
 			return "success";
 		} else {
 			return "error";
@@ -413,7 +414,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+	 * 限制当前ip1分钟内最多访问10次本页面（防爬虫增大服务器压力）
 	 */
 	public boolean visit(String ip,String sign){
 		boolean flag = false;
@@ -421,9 +422,10 @@ public class UserServiceImpl implements UserService {
 		String loginSize = jedis.get(ip+sign);
 		if(loginSize!=null && !loginSize.equals("")){
 			int size = Integer.parseInt(loginSize);
-			if(size<3){
-				jedis.set(ip+sign, (Integer.parseInt(loginSize)+1)+"");
-				jedis.expire(ip+sign, 60);
+			if(size<11){
+				int time = jedis.ttl(ip+sign).intValue();//查询剩余过期时间
+				jedis.set(ip+sign, (Integer.parseInt(loginSize)+1)+"");//覆盖访问次数
+				jedis.expire(ip+sign, time);//重新设置过期时间
 				flag = true;
 			}
 		}else{

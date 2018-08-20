@@ -63,7 +63,7 @@ public class SerializeUtil{
 			public Object get(String key)
 		     {
 		            byte[] value = getRedis().get(key.getBytes());
-		            return SerializeUtil. unserialize(value);
+		            return SerializeUtil.unserialize(value);
 		     }
 		     
 		      /**delete a key**/

@@ -9,6 +9,8 @@
 <link rel="shortcut icon" href="images/logo.ico" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <style type="text/css">
 .navbar-inverse {
 	height: 80px;
@@ -201,6 +203,42 @@ li {
 #logo_text
 {
 	font-size: 20px; 
+}
+.magnify-modal 
+{
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
+}
+
+.magnify-header .magnify-toolbar 
+{
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.magnify-stage 
+{
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-width: 0;
+}
+
+.magnify-footer .magnify-toolbar 
+{
+  background-color: rgba(0, 0, 0, .5);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.magnify-header,
+.magnify-footer 
+{
+  pointer-events: none;
+}
+
+.magnify-button 
+{
+  pointer-events: auto;
 }
 @media screen and (max-width: 768px) {
 	#collapse {
@@ -419,6 +457,7 @@ li {
 <script type="text/javascript" src="js/npm.js"></script>
 <script type="text/javascript" src="js/jquery.fullPage.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript" src="js/jquery.magnify.js"></script>
 <script>
 	var flag = true;
 	$(function() {
@@ -474,36 +513,36 @@ li {
 							"<div class='photowall'>"
 							+"<div class='photo01'>"
 							+	"<div class='photoview'>"
-							+			"<img src='"+photo1src+"' width='300' height='220'>"
+							+			"<img src='"+photo1src+"' id='p1' width='300' height='220' data-magnify='gallery' href='"+photo1src+"' data-caption='"+photo1test+"' onclick='seeBigImage()'>"
 							+			"<p>"+photo1test+"</p>"
 							+			"<p>"+photo1nickname+"</p>"
 							+		"</div>"
 							+	"</div>"
 							+"<div class='photo02'>"
 							+	"<div class='photoview'>"
-							+		"<img src='"+photo2src+"' width='300' height='220'>"
+							+		"<img src='"+photo2src+"' width='300' id='p2' height='220' data-magnify='gallery' href='"+photo2src+"' data-caption='"+photo2test+"' onclick='seeBigImage()'>"
 							+		"<p>"+photo2test+"</p>"
 							+		"<p>"+photo2nickname+"</p>"
 							+	"</div>"
 							+"</div>"
 							+"<div class='photo03'>"
 							+	"<div class='photoview'>"
-							+		"<img src='"+photo3src+"' width='300' height='220'>"
+							+		"<img src='"+photo3src+"' width='300' id='p3' height='220' data-magnify='gallery' href='"+photo3src+"' data-caption='"+photo3test+"' onclick='seeBigImage()'>"
 							+		"<p>"+photo3test+"</p>"
 							+		"<p>"+photo3nickname+"</p>"
 							+	"</div>"
 							+"</div>"
 							+"<div class='photo04'>"
 							+	"<div class='photoview'>"
-							+		"<img src='"+photo4src+"' width='300' height='220'>"
+							+		"<img src='"+photo4src+"' width='300' id='p4' height='220' data-magnify='gallery' href='"+photo4src+"' data-caption='"+photo4test+"' onclick='seeBigImage()'>"
 							+		"<p>"+photo4test+"</p>"
 							+		"<p>"+photo4nickname+"</p>"
 							+	"</div>"
 							+	"</div>"
 							+"</div>";
 						$("#img_col").append(html);
-						var html1 =  "<img src='http://www.loveding.top:8089/dahuablog_image/logo_white.jpg' style='height: 72px; width: 76px; float: center;margin-right: 20px;'>"+
-						"<img src='http://www.loveding.top:8089/dahuablog_image/gzh.jpg' style='height: 72px; width: 72px; float: center;'>";
+						var html1 =  "<img src='http://www.loveding.top:8089/dahuablog_image/logo_white.jpg' data-magnify='gallery' href='http://www.loveding.top:8089/dahuablog_image/logo_white.jpg' data-caption='博客logo' onclick='seeBigImage()' style='height: 72px; width: 76px; float: center;margin-right: 20px;'>"+
+						"<img src='http://www.loveding.top:8089/dahuablog_image/gzh.jpg' data-magnify='gallery' href='http://www.loveding.top:8089/dahuablog_image/gzh.jpg' data-caption='博客二维码' onclick='seeBigImage()' style='height: 72px; width: 72px; float: center;'>";
 						$("#logoDiv").append(html1);
 						flag = false;
 					}
@@ -530,7 +569,7 @@ li {
 		}
 		autoScrolling();
 	});
-	
+	//logo动画方法
 	$(function() {
 		$("#img_logo").animate({
 			top : "25",
@@ -669,7 +708,7 @@ li {
 		})
 	})
 	
-	
+	//分页方法
 	function go_page(page,obj,lastPage){
 		$(".active li").each(function() {
 			$(this).removeClass("active");
@@ -747,6 +786,32 @@ li {
 			});
     	}
 	}
-	
+	//点击图片的方法
+	function seeBigImage(){
+		 $('[data-magnify]').magnify({
+             draggable: true,
+             resizable: true,
+             movable: true,
+             keyboard: true,
+             title: true,
+             modalWidth: 320,
+             modalHeight: 320,
+             fixedContent: true,
+             fixedModalSize: false,
+             initMaximized: false,
+             gapThreshold: 0.02,
+             ratioThreshold: 0.1,
+             minRatio: 0.1,
+             maxRatio: 16,
+             headToolbar: ['maximize', 'close'],
+             footToolbar: ['zoomIn', 'zoomOut',  'fullscreen', , 'rotateRight'],
+             multiInstances: true,
+             initEvent: 'click',
+             initAnimation: true,
+             fixedModalPos: false,
+             zIndex: 1090,
+             dragHandle: '.magnify-modal'
+         });
+     }
 </script>
 </html>
