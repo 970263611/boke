@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="images/logo.ico" />
 <head>
 	<title>个人页面</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -160,8 +161,11 @@
 <div style="position: relative;height: 300px;">
 	<div style="background-image:url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
 	</div>
-</div>	
-<h1 style="color: white;position: absolute;top: 16%;left: 30%;" th:text=${nickname}>大花博客</h1>
+</div>
+<div style="color: white;position: absolute;top: 16%;left: 30%;">	
+	<h1 style="display: inline-block" th:text=${nickname}>大花博客</h1>
+	<img id="follow" src="images/wgz.png" style="display:none;height: 32px!important;width: 32px;margin-left: 10px;" title="关注" onclick="guanzhu()">
+</div>
 <div class="container-fluid" style="height: 160px;">
     <div class="row">
 	  	<div class="col-xs-0 col-md-1"></div>
@@ -397,7 +401,7 @@
 	  	   uploader.on( 'uploadBeforeSend', function( block, data ) {  
 	  		    // block为分块数据。  
 	  		    // file为分块对应的file对象。  
-	  		    var file = block.file;  
+	  		    var file = block.file;
 	  		    // 修改data可以控制发送哪些携带数据。  
 	  		    data.test_photo = $("#test_photo").val();  
 	  		});  
@@ -470,12 +474,13 @@
 			}
 			if('no' == modify){
 				$("#myPho").text("他的美照");
-				$("#interoduce").text("我的日志");
+				$("#interoduce").text("他的留言");
 				$("#change_j").attr("data-toggle","");
 				$("#change_j").attr("data-target","");
 				$("#change_m").attr("data-toggle","");
 				$("#change_m").attr("data-target","");
 				$("#uplaod_text").attr("style","display: none;");
+				$("#follow").show();
 			}
 		})
 	 
@@ -537,6 +542,26 @@
 	                	layer.msg('留言成功');
 	                	$("#send_word").attr("disabled", false);
 	                	$("#Modal").modal("hide");
+	                }
+	            }
+			});
+		}
+		
+		function guanzhu(){
+			var articleId = '[[${articleId}]]';
+			$.ajax({
+				type : "post",
+				url : "/follow",
+				data : {"articleId":articleId},
+				cache: false,
+				async: false,
+				error: function(request) {
+					layer.msg('关注失败', function(){});
+	            },
+	            success: function(data) {
+	                if(data == "success"){
+	                	$("#follow").attr('src','images/ygz.png');
+	                	layer.msg('关注成功');
 	                }
 	            }
 			});

@@ -166,6 +166,7 @@ public class HtmlController {
 		
 		if(articleId != null) {
 			nickname = userDao.toSingle(articleId).getCreate_user();
+			model.addAttribute("articleId",articleId);
 		}
 		
 		Subject subject=SecurityUtils.getSubject();
