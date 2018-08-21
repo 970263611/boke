@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	@Autowired
 	private SerializeUtil redisDateSourse;
+	//rocketmq地址
+	private static final String ipAddress = "101.132.136.190:9876";
 
 	/**
 	 * 向数据库新增用户信息service实现类
@@ -402,7 +404,7 @@ public class UserServiceImpl implements UserService {
         //producer.getCreateTopicKey();
         //设置NameServer地址,此处应改为实际NameServer地址，多个地址之间用；分隔
         //NameServer的地址必须有，但是也可以通过环境变量的方式设置，不一定非得写死在代码里
-        producer.setNamesrvAddr("101.132.136.190:9876");
+        producer.setNamesrvAddr(ipAddress);
         
         //调用start()方法启动一个producer实例
         try {
