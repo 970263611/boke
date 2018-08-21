@@ -49,28 +49,21 @@ public interface UserDao {
 	 * 查询所有的文章方法
 	 * @return
 	 */
-	@Select("SELECT * FROM article where id != 1 and id !=2 ORDER BY create_time DESC LIMIT 0,4")
+	@Select("SELECT * FROM article where isdelete = '0' and top = '0' ORDER BY create_time DESC LIMIT 0,6")
 	List<Article> select_article_all();
 	
 	/**
-	 * 查询第二条显示文章方法
+	 * 查询置顶的文章方法
 	 * @return
 	 */
-	@Select("SELECT * FROM article where id = 2")
-	Article select_article_two();
-	
-	/**
-	 * 查询置顶的丁伟强写的文章方法
-	 * @return
-	 */
-	@Select("SELECT * FROM article where id = 1")
-	Article select_article_one();
+	@Select("SELECT * FROM article where top = '1' ORDER BY create_time DESC")
+	List<Article> select_article_top();
 
 	/**
 	 * 分页查询对应页的文章方法
 	 * @return
 	 */
-	@Select("SELECT * FROM article where id != 1 and id !=2 ORDER BY create_time DESC LIMIT #{first},6")
+	@Select("SELECT * FROM article where isdelete = '0' and top = '0' ORDER BY create_time DESC LIMIT #{first},6")
 	List<Article> select_article_Gopage(@Param("first") int first);
 	
 	/**
@@ -230,7 +223,7 @@ public interface UserDao {
 	/**
 	 * 缓存所有文章的方法，要先执行一下在进入系统，需要管理员手动执行
 	 */
-	@Select("select * from article")
+	@Select("select * from article where isdelete = '0'")
 	List<Article> admin_redis();
 
 	/**

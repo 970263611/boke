@@ -84,18 +84,6 @@ public interface UserService {
 	 * @return
 	 */
 	List<Article> select_article_user_all(String nickname);
-	
-	/**
-	 * 查询第二条显示的文章
-	 * @return
-	 */
-	Article select_article_two();
-
-	/**
-	 * 查询置顶的丁伟强写的文章方法
-	 * @return
-	 */
-	Article select_article_one();
 
 	/**
 	 * 保存用户的铭言和格言
@@ -156,4 +144,25 @@ public interface UserService {
 	 * @return
 	 */
 	String follow (String articleId);
+	
+	/**
+	 * 查询置顶文章的方法
+	 * @return
+	 */
+	List<Article> select_article_top();
+	
+	/**
+	 * 文章置顶的方法
+	 */
+	String top(String articleId);
+
+	/**
+	 * 文章取消置顶的方法
+	 */
+	String untop(String articleId);
+
+	/**
+	 * 文章删除的方法
+	 */
+	String isdel(String articleId);
 }
