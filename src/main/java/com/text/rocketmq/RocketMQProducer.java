@@ -2,11 +2,14 @@ package com.text.rocketmq;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.rocketmq.client.exception.MQClientException;
 import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.alibaba.rocketmq.client.producer.SendResult;
 import com.alibaba.rocketmq.common.message.Message;
 import com.alibaba.rocketmq.remoting.common.RemotingHelper;
+import com.text.entity.Follow;
+import com.text.realm.SerializeUtil;
  
 /**
  * Created by lance on 2017/2/10.
@@ -27,12 +30,15 @@ public class RocketMQProducer {
         producer.start();
 
         //发送10条消息到Topic为TopicTest，tag为TagA，消息内容为“Hello RocketMQ”拼接上i的值
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 1; i++) {
+        	Follow f = new Follow();
+        	f.setParentId(1);
+        	f.setChildId(2);
+        	f.setCreateTime(new Date());
             try {
-                Message msg = new Message("guanzhu",// topic
-                        "TagA",// tag
-                        ("dwq" + i)
-                        .getBytes()// body
+                Message msg = new Message("boke",// topic
+                        "follow",// tag
+                        JSONObject.toJSONString(f).getBytes()// body
                 );
                 
                 //调用producer的send()方法发送消息
