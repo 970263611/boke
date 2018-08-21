@@ -192,7 +192,7 @@ ul
 									     <div style="padding-left:0px;">
 									         <div style="background-color: #0080003b;">
 									            <h4 style="padding: 5px;font-size: 15px;">
-									               <a th:text=${comment.create_user}></a> (愿这世界如童话，抱着想象实现它)
+									               <a th:text=${comment.create_user} th:href="@{/myworld(modify=no,articleId=${comment.id})}"></a> (愿这世界如童话，抱着想象实现它)
 									               <span th:text=${comment.create_time}></span>
 									            </h4>
 									         </div>

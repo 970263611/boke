@@ -100,7 +100,12 @@ public class HtmlController {
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
 		session.setAttribute("allPage",userDao.pageNum());
-		
+		User user = (User) session.getAttribute("user");
+		if(user!=null){
+			model.addAttribute("roleId",user.getRowId()+"");
+		}else{
+			model.addAttribute("roleId","2");
+		}
         return "index";  
     } 
 	

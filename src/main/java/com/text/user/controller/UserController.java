@@ -190,14 +190,16 @@ public class UserController {
 	 */
 	@RequestMapping("go_page_first")
 	public List<Article> go_page_first(){
-		List<Article> list = userService.select_article_all();
-		//查询第二条显示的文章
-		Article a_two = userService.select_article_two();
-		//查询置顶的丁伟强写的文章方法
-		Article a_one = userService.select_article_one();
+		List<Article> tops = userService.select_article_top();
+		List<Article> list = new ArrayList<>();
+		if(tops.size()>6){
+			tops = tops.subList(0, 6);
+		}else{
+			list = userService.select_article_all();
+			list = list.subList(0, 6-tops.size());
+		}
 		List<Article> data = new ArrayList<Article>();
-		data.add(a_one);
-		data.add(a_two);
+		data.addAll(tops);
 		data.addAll(list);
 		return data;
 	}
@@ -231,6 +233,30 @@ public class UserController {
 	@RequestMapping("follow")
 	public String follow(String articleId){
 		return userService.follow(articleId);
+	}
+	
+	/**
+	 * 文章置顶的方法
+	 */
+	@RequestMapping("top")
+	public String top(String articleId){
+		return userService.top(articleId);
+	}
+	
+	/**
+	 * 文章取消置顶的方法
+	 */
+	@RequestMapping("untop")
+	public String untop(String articleId){
+		return userService.untop(articleId);
+	}
+	
+	/**
+	 * 文章删除的方法
+	 */
+	@RequestMapping("isdel")
+	public String isdel(String articleId){
+		return userService.isdel(articleId);
 	}
 	
 }

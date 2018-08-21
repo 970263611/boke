@@ -362,7 +362,7 @@ li {
 			<p style="text-align: center; font-family: cursive;">世上无难事</p>
 			<p style="text-align: center; font-family: cursive;">只要肯攀登</p>
 		</div>
-		<div class="section" id="page_2">
+		<div class="section" id="index_page_2">
 			<div class="container-fluid" style="padding-top: 60px;">
 				<div class="row">
 					<div class="col-xs-0 col-md-1"></div>
@@ -388,7 +388,7 @@ li {
 				</div>
 			</div>
 		</div>
-		<div class="section" id="page_3">
+		<div class="section" id="index_page_3">
 			<div id="img_page">
 				<div class="container" id="img_container">
 					<div class="row">
@@ -478,7 +478,7 @@ li {
 				} */
 				 if(index == 2){
 					/* alert("第2节停止加载"); */
-					$("#page_3").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);");
+					$("#index_page_3").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);");
 				} 
 				/* if(index == 3){
 					alert("第3节停止加载");
@@ -491,7 +491,7 @@ li {
 				//离开第一节后
 				if(index == 1 && direction =='down'){
 					/* alert("前往第2节！"); */
-					$("#page_2").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/image_new_1.jpg);");
+					$("#index_page_2").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/image_new_1.jpg);");
 				}
 				
 				//离开第二节后
@@ -655,10 +655,20 @@ li {
             	$("#textList li").remove();
             	var html = "";
            		for(var a = 0;a<data.length;a++){
+           			var btn = "";
+           			var role = '[[${rowId}]]';
+           			if(role=='1'){
+           				btn = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+")'>"
+           					 +"<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+")'>"
+           					 +"<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+")'>";
+           			}
            			html += "<li>"
             				+"<a href='single.html?id="+data[a].id+"'><div>"
-            				+"<h3>"+data[a].title+"</h3></div></a>"
-							+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
+            				+"<h3 style='display: inline-block;'>"+data[a].title+"</h3>"
+            				+"</div></a>"
+							+"<div>"
+							+ btn
+            				+"<span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
 							+"<span>"+data[a].create_time+"</span>"
 							+"</div></li>";
            		}
@@ -813,5 +823,59 @@ li {
              dragHandle: '.magnify-modal'
          });
      }
+	//置顶
+	function totop(articleId){
+		$.ajax({
+			type : "post",
+			url : "/top",
+			data : {"articleId":articleId},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('置顶失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('置顶成功');
+                }
+            }
+		});
+	}
+	//取消置顶
+	function untop(articleId){
+		$.ajax({
+			type : "post",
+			url : "/untop",
+			data : {"articleId":articleId},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('取消置顶失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('取消置顶成功');
+                }
+            }
+		});
+	}
+	//删除
+	function del(articleId){
+		$.ajax({
+			type : "post",
+			url : "/isdel",
+			data : {"articleId":articleId},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('删除失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	layer.msg('删除成功');
+                }
+            }
+		});
+	}
 </script>
 </html>

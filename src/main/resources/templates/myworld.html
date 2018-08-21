@@ -8,6 +8,8 @@
 	<title>个人页面</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/webuploader.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <style type="text/css">
    .navbar-inverse 
 	{
@@ -59,6 +61,10 @@
 	img
 	{
 		height: 137px!important;
+	}
+	.magnify-image
+	{
+		height:auto!important;
 	}
 	.webuploader-pick{
 		color:#333;
@@ -194,7 +200,7 @@
     				<!--显示图片的地方 -->
 					<div th:each="iter,iterStat:${image_list}" class="col-xs-4 col-md-4" >
 						<figure>
-							<img th:src='${iter.image}' class="img-responsive">
+							<img th:src='${iter.image}' th:href='${iter.image}' data-magnify='gallery' data-caption='${iter.text}' class="img-responsive">
 							<figcaption><p th:text=${iter.text}></p></figcaption>
 						</figure>
 					</div>
@@ -317,6 +323,7 @@
 <script type="text/javascript" src="js/npm.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script src="js/webuploader.js"></script>
+<script type="text/javascript" src="js/jquery.magnify.js"></script>
 <script>
 		window.onload = function() {
 			var winHeight = document.documentElement.clientHeight;
@@ -482,6 +489,31 @@
 				$("#uplaod_text").attr("style","display: none;");
 				$("#follow").show();
 			}
+			
+			 $('[data-magnify]').magnify({
+	             draggable: true,
+	             resizable: true,
+	             movable: true,
+	             keyboard: true,
+	             title: true,
+	             modalWidth: 320,
+	             modalHeight: 320,
+	             fixedContent: true,
+	             fixedModalSize: false,
+	             initMaximized: false,
+	             gapThreshold: 0.02,
+	             ratioThreshold: 0.1,
+	             minRatio: 0.1,
+	             maxRatio: 16,
+	             headToolbar: ['maximize', 'close'],
+	             footToolbar: ['zoomIn', 'zoomOut',  'fullscreen', , 'rotateRight'],
+	             multiInstances: true,
+	             initEvent: 'click',
+	             initAnimation: true,
+	             fixedModalPos: false,
+	             zIndex: 1090,
+	             dragHandle: '.magnify-modal'
+	         });
 		})
 	 
 	//保存铭言和简介
@@ -561,12 +593,18 @@
 	            success: function(data) {
 	                if(data == "success"){
 	                	$("#follow").attr('src','images/ygz.png');
+	                	$("#follow").attr("onclick", null); 
 	                	layer.msg('关注成功');
+	                	//延时三秒，防止一直点击出现问题
+	             		setTimeout("closeCol()",3000);
 	                }
 	            }
 			});
 		}
 
+		function closeCol(){
+			$("#follow").attr("onclick", "guanzhu()"); 
+		} 
 </script>
 </body>
 </html>

@@ -30,6 +30,7 @@ import com.text.realm.RedisCacheConfiguration;
 import com.text.realm.SerializeUtil;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
+import com.text.util.RedisUtil;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.SortingParams;
@@ -74,24 +75,40 @@ public class UserServiceImpl implements UserService {
         sortingParameters.alpha();
 		// 通过排序article这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
 		if (jedis.llen("article") != 0) {
-			List<String> timeStr = jedis.sort("article",sortingParameters).subList(0, 4);
+			List<String> timeStr = jedis.sort("article",sortingParameters).subList(0, 6);
 			if (timeStr.size() > 0) {
-				for (String a:timeStr) {
-					byte[] value = jedis.get(a.getBytes());
-					Object object = SerializeUtil.unserialize(value);
-					if (object != null) {
-						Article ac = (Article) object;
-						list.add(ac);
-					}
-				}
+				list = RedisUtil.hgetArticle(timeStr, jedis);
 			}
 		} else {
 			list = userDao.select_article_all();
-			for (Article ac : list) {
-				jedis.lpush("article", ac.getCreate_time()+ac.getId());
-				jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-				jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
+			RedisUtil.hsetArticle(list,jedis);
+		}
+		redisDateSourse.closeRedis(jedis);
+		return list;
+	}
+
+	/**
+	 * 查询数据库，返回文章信息，返回到index页面显示
+	 * 
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public List<Article> select_article_top() {
+		List<Article> list = new ArrayList<Article>();;
+		Jedis jedis = redisDateSourse.getRedis();
+		SortingParams sortingParameters = new SortingParams();  
+		sortingParameters.desc(); 
+        sortingParameters.alpha();
+		// 通过排序top这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
+		if (jedis.llen("top") != 0) {
+			List<String> timeStr = jedis.sort("article",sortingParameters).subList(0, 6);
+			if (timeStr.size() > 0) {
+				list = RedisUtil.hgetArticle(timeStr, jedis);
 			}
+		} else {
+			list = userDao.select_article_top();
+			RedisUtil.hsetArticle(list,jedis);
 		}
 		redisDateSourse.closeRedis(jedis);
 		return list;
@@ -105,9 +122,7 @@ public class UserServiceImpl implements UserService {
 		Jedis jedis = redisDateSourse.getRedis();
 		int size = userDao.saveArticle(ac);
 		if (size == 1) {
-			jedis.lpush("article", ac.getCreate_time()+ac.getId());
-			jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
+			RedisUtil.hsetArticleSingle(ac,jedis);
 			redisDateSourse.closeRedis(jedis);
 			return "success";
 		} else {
@@ -122,17 +137,12 @@ public class UserServiceImpl implements UserService {
 	public Article toSingle(String id) {
 		Jedis jedis = redisDateSourse.getRedis();
 		Article ac = null;
-		byte[] value = jedis.get(String.valueOf(id).getBytes());
-		if(value!=null) {
-			Object object = SerializeUtil.unserialize(value);
-			if (object != null) {
-				ac = (Article) object;
-			}
+		String value = jedis.hget("article_" + id, "id");
+		if(RedisUtil.notEnpty(value)) {
+			ac = RedisUtil.hgetArticleSingle(id, jedis);
 		}else {
 			ac = userDao.toSingle(id);
-			jedis.lpush("article", ac.getCreate_time()+ac.getId());
-			jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
+			RedisUtil.hsetArticleSingle(ac,jedis);
 		}
 		redisDateSourse.closeRedis(jedis);
 		return ac;
@@ -217,50 +227,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 查询第二条显示的文章
-	 * 
-	 * @return
-	 */
-	@Override
-	public Article select_article_two() {
-		Jedis jedis = redisDateSourse.getRedis();
-		Article ac = null;
-		if(jedis.get("top2") != null) {
-			byte[] bytes = jedis.get(jedis.get("top2").getBytes());
-			ac = (Article) SerializeUtil.unserialize(bytes);
-		}else {
-			ac = (Article) userDao.select_article_two();
-			jedis.set("top2", ac.getCreate_time()+ac.getId());
-			jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-		}
-		redisDateSourse.closeRedis(jedis);
-		return ac;
-	}
-
-	/**
-	 * 查询置顶的丁伟强写的文章方法
-	 * 
-	 * @return
-	 */
-	@Override
-	public Article select_article_one() {
-		Jedis jedis = redisDateSourse.getRedis();
-		Article ac = null;
-		if(jedis.get("top1") != null) {
-			byte[] bytes = jedis.get(jedis.get("top1").getBytes());
-			ac = (Article) SerializeUtil.unserialize(bytes);
-		}else {
-			ac = (Article) userDao.select_article_one();
-			jedis.set("top1", ac.getCreate_time()+ac.getId());
-			jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-		}
-		redisDateSourse.closeRedis(jedis);
-		return ac;
-	}
-
-	/**
 	 * 保存用户的铭言和格言
 	 */
 	@Override
@@ -284,42 +250,40 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public List<Article> Go_page(int page) {
-		int first = (page - 1) * 6 - 1;
-		List<Article> list = new ArrayList<Article>();
-		Jedis jedis = redisDateSourse.getRedis();
-		SortingParams sortingParameters = new SortingParams();  
-        sortingParameters.desc(); 
-        sortingParameters.alpha();
-		// 通过排序article这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
-        Long size = jedis.llen("article");
-        List<String> timeStr = null;
-		if (size - first + 1 > 0) {
-			//由于sublist的特殊性，所以要特殊写，不能沿用mysql的数字
-			if(size > first-1+6) {
-				timeStr = jedis.sort("article",sortingParameters).subList(first-1, first-1+6);
-			}else {
-				timeStr = jedis.sort("article",sortingParameters).subList(first-1,size.intValue());
-			}
-			if (timeStr.size() > 0) {
-				for (String a:timeStr) {
-					byte[] value = jedis.get(a.getBytes());
-					Object object = SerializeUtil.unserialize(value);
-					if (object != null) {
-						Article ac = (Article) object;
-						list.add(ac);
-					}
-				}
-			}
-		} else {
-			list = userDao.select_article_Gopage(first-1);
-			for (Article ac : list) {
-				jedis.lpush("article", ac.getCreate_time()+ac.getId());
-				jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-				jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			}
+		int first = (page - 1) * 6 + 1;
+		List<Article> tops = select_article_top();
+		List<Article> total = select_article_top();
+		if(tops.size()>0){
+			tops = tops.subList(first-1, first-1+6);
+			total.addAll(tops);
 		}
-		redisDateSourse.closeRedis(jedis);
-		return list;
+		if(total.size()>=6){
+			return total;
+		}else{
+			Jedis jedis = redisDateSourse.getRedis();
+			SortingParams sortingParameters = new SortingParams();  
+			sortingParameters.desc(); 
+			sortingParameters.alpha();
+			// 通过排序article这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
+			Long size = jedis.llen("article");
+			List<String> timeStr = null;
+			if (size - first + 1 > 0) {
+				//由于sublist的特殊性，所以要特殊写，不能沿用mysql的数字
+				if(size > first-1+6-tops.size()) {
+					timeStr = jedis.sort("article",sortingParameters).subList(first-1, first-1+6-tops.size());
+				}else {
+					timeStr = jedis.sort("article",sortingParameters).subList(first-1,size.intValue());
+				}
+				if (timeStr.size() > 0) {
+					total.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+				}
+			} else {
+				total = userDao.select_article_Gopage(first-1);
+				RedisUtil.hsetArticle(total,jedis);
+			}
+			redisDateSourse.closeRedis(jedis);
+		}
+		return total;
 	}
 
 	/**
@@ -338,21 +302,7 @@ public class UserServiceImpl implements UserService {
 		List<Article> list = userDao.admin_redis();
 		Jedis jedis = redisDateSourse.getRedis();
 		Logger logger = LoggerFactory.getLogger(RedisCacheConfiguration.class);
-		for (Article ac : list) {
-			if(ac.getId()!=1 && ac.getId()!=2) {
-				jedis.lpush("article", ac.getCreate_time()+ac.getId());
-				jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-				jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			}else if(ac.getId()==1) {
-				jedis.set("top1", ac.getCreate_time()+ac.getId());
-				jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-				jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			}else if(ac.getId()==2) {
-				jedis.set("top2", ac.getCreate_time()+ac.getId());
-				jedis.set((ac.getCreate_time()+ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-				jedis.set(String.valueOf(ac.getId()).getBytes(), SerializeUtil.serialize(ac));
-			}
-		}
+		RedisUtil.hsetArticle(list,jedis);
 		redisDateSourse.closeRedis(jedis);
 		logger.info("------所有文章缓存成功------");
 		return "redis_success";
@@ -490,5 +440,29 @@ public class UserServiceImpl implements UserService {
         producer.shutdown();
         return "success";
     }
+
+	/**
+	 * 文章置顶的方法
+	 */
+	@Override
+	public String top(String articleId) {
+		return "success";
+	}
+
+	/**
+	 * 文章取消置顶的方法
+	 */
+	@Override
+	public String untop(String articleId) {
+		return "success";
+	}
+
+	/**
+	 * 文章删除的方法
+	 */
+	@Override
+	public String isdel(String articleId) {
+		return "success";
+	}
 
 }
