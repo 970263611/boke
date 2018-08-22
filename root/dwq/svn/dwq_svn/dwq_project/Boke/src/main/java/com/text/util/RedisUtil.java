@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.text.entity.Article;
-import com.text.realm.SerializeUtil;
 
 import redis.clients.jedis.Jedis;
 

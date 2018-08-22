@@ -1,14 +1,10 @@
 package com.text.user.service;
 
-import java.util.HashMap;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Select;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
-import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 
@@ -153,16 +149,19 @@ public interface UserService {
 	
 	/**
 	 * 文章置顶的方法
+	 * @param time 
 	 */
-	String top(String articleId);
+	String top(String articleId, String time);
 
 	/**
 	 * 文章取消置顶的方法
+	 * @param time 
 	 */
-	String untop(String articleId);
+	String untop(String articleId, String time);
 
 	/**
 	 * 文章删除的方法
+	 * @param time 
 	 */
-	String isdel(String articleId);
+	String isdel(String articleId, String time);
 }

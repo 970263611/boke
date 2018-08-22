@@ -102,9 +102,9 @@ public class HtmlController {
 		session.setAttribute("allPage",userDao.pageNum());
 		User user = (User) session.getAttribute("user");
 		if(user!=null){
-			model.addAttribute("roleId",user.getRowId()+"");
+			model.addAttribute("rowId",user.getRowId()+"");
 		}else{
-			model.addAttribute("roleId","2");
+			model.addAttribute("rowId","2");
 		}
         return "index";  
     } 

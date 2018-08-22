@@ -658,9 +658,14 @@ li {
            			var btn = "";
            			var role = '[[${rowId}]]';
            			if(role=='1'){
-           				btn = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+")'>"
-           					 +"<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+")'>"
-           					 +"<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+")'>";
+           				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
+           				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
+           				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
+           				if(data[a].top == '0'){
+           					btn = top + del;
+           				}else{
+           					btn = untop + del;
+           				}
            			}
            			html += "<li>"
             				+"<a href='single.html?id="+data[a].id+"'><div>"
@@ -824,11 +829,11 @@ li {
          });
      }
 	//置顶
-	function totop(articleId){
+	function totop(articleId,time){
 		$.ajax({
 			type : "post",
 			url : "/top",
-			data : {"articleId":articleId},
+			data : {"articleId":articleId,"time":time},
 			cache: false,
 			async: false,
 			error: function(request) {
@@ -842,11 +847,11 @@ li {
 		});
 	}
 	//取消置顶
-	function untop(articleId){
+	function untop(articleId,time){
 		$.ajax({
 			type : "post",
 			url : "/untop",
-			data : {"articleId":articleId},
+			data : {"articleId":articleId,"time":time},
 			cache: false,
 			async: false,
 			error: function(request) {
@@ -860,11 +865,11 @@ li {
 		});
 	}
 	//删除
-	function del(articleId){
+	function del(articleId,time){
 		$.ajax({
 			type : "post",
 			url : "/isdel",
-			data : {"articleId":articleId},
+			data : {"articleId":articleId,"time":time},
 			cache: false,
 			async: false,
 			error: function(request) {

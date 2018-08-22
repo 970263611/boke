@@ -23,7 +23,6 @@ import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
-import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
 
 @RestController
@@ -33,8 +32,6 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private HttpServletRequest request;
-	@Autowired
-	private UserDao userDao;
 	
 	/**
 	 * 获取当前时间的公用方法
@@ -239,24 +236,24 @@ public class UserController {
 	 * 文章置顶的方法
 	 */
 	@RequestMapping("top")
-	public String top(String articleId){
-		return userService.top(articleId);
+	public String top(String articleId,String time){
+		return userService.top(articleId,time);
 	}
 	
 	/**
 	 * 文章取消置顶的方法
 	 */
 	@RequestMapping("untop")
-	public String untop(String articleId){
-		return userService.untop(articleId);
+	public String untop(String articleId,String time){
+		return userService.untop(articleId,time);
 	}
 	
 	/**
 	 * 文章删除的方法
 	 */
 	@RequestMapping("isdel")
-	public String isdel(String articleId){
-		return userService.isdel(articleId);
+	public String isdel(String articleId,String time){
+		return userService.isdel(articleId,time);
 	}
 	
 }

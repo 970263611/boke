@@ -38,7 +38,7 @@ public class RocketMQUtil implements ApplicationContextAware{
         return applicationContext;
     }
     
-    static UserServiceImpl userServiceImpl = (UserServiceImpl) getApplicationContext().getBean("userServiceImpl");
+    
 	
 	/**
 	 * 生产者公用方法
@@ -101,6 +101,8 @@ public class RocketMQUtil implements ApplicationContextAware{
 	 * @param beanName      调用的dao层bean的名字
 	 */
 	public static void customer(String ip,String customerName,String topicName){
+		
+		final UserServiceImpl userServiceImpl = (UserServiceImpl) getApplicationContext().getBean("userServiceImpl");
 		
 		//声明并初始化一个consumer
         //需要一个consumer group名字作为构造方法的参数，这里为consumer1
