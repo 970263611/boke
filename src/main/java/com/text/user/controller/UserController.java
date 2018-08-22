@@ -175,30 +175,7 @@ public class UserController {
 	@RequestMapping("go_page")
 	public List<Article> Go_page(){
 		String page = request.getParameter("page");
-		if(Integer.parseInt(page)>1) {
-			return userService.Go_page(Integer.parseInt(page));
-		}else {
-			return null;
-		}
-	}
-	
-	/**
-	 * 分页跳转，传过来页数
-	 */
-	@RequestMapping("go_page_first")
-	public List<Article> go_page_first(){
-		List<Article> tops = userService.select_article_top();
-		List<Article> list = new ArrayList<>();
-		if(tops.size()>6){
-			tops = tops.subList(0, 6);
-		}else{
-			list = userService.select_article_all();
-			list = list.subList(0, 6-tops.size());
-		}
-		List<Article> data = new ArrayList<Article>();
-		data.addAll(tops);
-		data.addAll(list);
-		return data;
+		return userService.Go_page(Integer.parseInt(page));
 	}
 	
 	/**

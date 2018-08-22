@@ -30,6 +30,26 @@ public class RedisUtil {
 	}
 	
 	/**
+	 * 在redis中批量装配置顶文章信息
+	 */
+	public static void hsetTopArticle(List<Article> list,Jedis jedis){
+		for (Article ac : list) {
+			jedis.lpush("top", ac.getCreate_time()+"*"+ac.getId());
+			if(notEnpty(ac.getId()+"")){
+				jedis.hset("article_" + ac.getId() + "","id",ac.getId() + "");
+				jedis.hset("article_" + ac.getId()+"", "title", ac.getTitle()+"");
+				jedis.hset("article_" + ac.getId()+"", "content", ac.getContent()+"");
+				jedis.hset("article_" + ac.getId()+"", "lead", ac.getLead()+"");
+				jedis.hset("article_" + ac.getId()+"", "create_user", ac.getCreate_user()+"");
+				jedis.hset("article_" + ac.getId()+"", "create_time", ac.getCreate_time()+"");
+				jedis.hset("article_" + ac.getId()+"", "type", ac.getType()+"");
+				jedis.hset("article_" + ac.getId()+"", "isdelete", ac.getIsdelete()+"");
+				jedis.hset("article_" + ac.getId()+"", "top", ac.getTop()+"");
+			}
+		}
+	}
+	
+	/**
 	 * 在redis中批量拆解文章信息
 	 */
 	public static List<Article> hgetArticle(List<String> list,Jedis jedis){

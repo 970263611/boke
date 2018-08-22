@@ -44,23 +44,16 @@ public interface UserDao {
 	 * 查询所有的文章方法
 	 * @return
 	 */
-	@Select("SELECT * FROM article where isdelete = '0' and top = '0' ORDER BY create_time DESC LIMIT 0,6")
-	List<Article> select_article_all();
+	@Select("SELECT * FROM article where isdelete = '0' and top = '0' ORDER BY create_time DESC")
+	List<Article> select_article_untop();
 	
 	/**
 	 * 查询置顶的文章方法
 	 * @return
 	 */
-	@Select("SELECT * FROM article where top = '1' ORDER BY create_time DESC")
+	@Select("SELECT * FROM article where isdelete = '0' and top = '1' ORDER BY create_time DESC")
 	List<Article> select_article_top();
 
-	/**
-	 * 分页查询对应页的文章方法
-	 * @return
-	 */
-	@Select("SELECT * FROM article where isdelete = '0' and top = '0' ORDER BY create_time DESC LIMIT #{first},6")
-	List<Article> select_article_Gopage(@Param("first") int first);
-	
 	/**
 	 * 添加一条文章信息
 	 * @param article

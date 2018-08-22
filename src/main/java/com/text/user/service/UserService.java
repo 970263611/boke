@@ -24,13 +24,6 @@ public interface UserService {
 	String Userlogin(User user);
 
 	/**
-	 * 查询数据库，返回文章信息，返回到index页面显示
-	 * @param user
-	 * @return index
-	 */
-	List<Article> select_article_all();
-
-	/**
 	 * 保存文章方法
 	 * @param article 
 	 * @return 返回到index页面
@@ -140,12 +133,6 @@ public interface UserService {
 	 * @return
 	 */
 	String follow (String articleId);
-	
-	/**
-	 * 查询置顶文章的方法
-	 * @return
-	 */
-	List<Article> select_article_top();
 	
 	/**
 	 * 文章置顶的方法

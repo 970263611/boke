@@ -24,6 +24,7 @@ import com.text.entity.MyPhoto;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.realm.RedisCacheConfiguration;
+import com.text.realm.RunFunction;
 import com.text.realm.SerializeUtil;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
@@ -65,65 +66,69 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 查询数据库，返回文章信息，返回到index页面显示
-	 * 
-	 * @param user
-	 * @return
+	 * 查询分页
 	 */
 	@Override
-	public List<Article> select_article_all() {
-		List<Article> list = new ArrayList<Article>();;
+	public List<Article> Go_page(int page) {
 		Jedis jedis = redisDateSourse.getRedis();
+		int articleSize = page * 6;//默认一页6条
+		int firstArticle = (page-1)*6;//本页第一条文章的位置
 		SortingParams sortingParameters = new SortingParams();  
 		sortingParameters.desc(); 
         sortingParameters.alpha();
-		// 通过排序article这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
-		if (jedis.llen("article") != 0) {
-			List<String> timeStr = jedis.sort("article",sortingParameters).subList(0, 6);
-			if (timeStr.size() > 0) {
-				list = RedisUtil.hgetArticle(timeStr, jedis);
-			}
-		} else {
-			list = userDao.select_article_all();
-			RedisUtil.hsetArticle(list,jedis);
+        List<String> timeStr = new ArrayList<>();
+        int size = jedis.llen("top").intValue();
+        List<Article> acList = new ArrayList<>();
+        int asize = jedis.llen("article").intValue();
+        if (size != 0) {
+	        if(size > articleSize) {
+	        	timeStr = jedis.sort("top",sortingParameters).subList(firstArticle, 6);
+	        	acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+	        	return acList;
+	        }else {
+	        	if(size/6+1==page) {
+	        		timeStr = jedis.sort("top",sortingParameters).subList(firstArticle,size);
+	        		acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+	        	}
+	        	if(asize != 0) {
+	        		List<String> notops = new ArrayList<>();
+	        		if(asize>(articleSize-size)){
+	        			if((size+asize)/6-(size/6)>0) {
+	        				if((page-1)*6-size<0) {
+	        					notops = jedis.sort("article",sortingParameters).subList(0, articleSize-size);
+	        				}else {
+	        					notops = jedis.sort("article",sortingParameters).subList((page-1)*6-size, articleSize-size);
+	        				}
+	        			}else {
+	        				notops = jedis.sort("article",sortingParameters).subList(0, 6-size%6);
+	        			}
+	        		}else {
+	        			notops = jedis.sort("article",sortingParameters).subList(0, asize);
+	        		}
+	        		acList.addAll(RedisUtil.hgetArticle(notops,jedis));
+	        	}else {
+	        		acList.addAll(userDao.select_article_untop());
+	    			RedisUtil.hsetArticle(acList,jedis);
+	    			Go_page(page);
+	        	}
+	        }
+        }else {
+        	if(userDao.select_article_top().size()==0) {
+        		if(asize>=6) {
+        			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, 6),jedis);
+        		}else {
+        			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, asize),jedis);
+        		}
+        	}else {
+        		acList.addAll(userDao.select_article_top());
+        		RedisUtil.hsetTopArticle(acList,jedis);
+        		Go_page(page);
+        	}
 		}
-		redisDateSourse.closeRedis(jedis);
-		return list;
+        redisDateSourse.closeRedis(jedis);
+		return acList;
 	}
-
-	/**
-	 * 查询数据库，返回文章信息，返回到index页面显示
-	 * 
-	 * @param user
-	 * @return
-	 */
-	@Override
-	public List<Article> select_article_top() {
-		List<Article> list = new ArrayList<Article>();
-		Jedis jedis = redisDateSourse.getRedis();
-		SortingParams sortingParameters = new SortingParams();  
-		sortingParameters.desc(); 
-        sortingParameters.alpha();
-		// 通过排序top这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
-		if (jedis.llen("top") != 0) {
-			List<String> timeStr = new ArrayList<>();
-			Long size = jedis.llen("top");
-			if(size > 6) {
-				timeStr = jedis.sort("top",sortingParameters).subList(0, 6);
-			}else {
-				timeStr = jedis.sort("top",sortingParameters).subList(0,size.intValue());
-			}
-			if (timeStr.size() > 0) {
-				list = RedisUtil.hgetArticle(timeStr, jedis);
-			}
-		} else {
-			list = userDao.select_article_top();
-			RedisUtil.hsetArticle(list,jedis);
-		}
-		redisDateSourse.closeRedis(jedis);
-		return list;
-	}
-
+	
 	/**
 	 * 保存文章方法事物层实现
 	 */
@@ -256,49 +261,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * 查询分页其他页（第一页除外）
-	 */
-	@Override
-	public List<Article> Go_page(int page) {
-		int first = (page - 1) * 6 + 1;
-		List<Article> tops = select_article_top();
-		List<Article> total = new ArrayList<>();
-		if(tops.size()>(first-1+6)){
-			tops = tops.subList(first-1, first-1+6);
-			total.addAll(tops);
-		}else{
-			
-		}
-		if(total.size()>=6){
-			return total;
-		}else{
-			Jedis jedis = redisDateSourse.getRedis();
-			SortingParams sortingParameters = new SortingParams();  
-			sortingParameters.desc(); 
-			sortingParameters.alpha();
-			// 通过排序article这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
-			Long size = jedis.llen("article");
-			List<String> timeStr = null;
-			if (size - first + 1 > 0) {
-				//由于sublist的特殊性，所以要特殊写，不能沿用mysql的数字
-				if(size > first-1+6-tops.size()) {
-					timeStr = jedis.sort("article",sortingParameters).subList(first-1, first-1+6-tops.size());
-				}else {
-					timeStr = jedis.sort("article",sortingParameters).subList(first-1,size.intValue());
-				}
-				if (timeStr.size() > 0) {
-					total.addAll(RedisUtil.hgetArticle(timeStr, jedis));
-				}
-			} else {
-				total = userDao.select_article_Gopage(first-1);
-				RedisUtil.hsetArticle(total,jedis);
-			}
-			redisDateSourse.closeRedis(jedis);
-		}
-		return total;
-	}
-
-	/**
 	 * 查询文章条数，便于前端分页
 	 */
 	@Override
@@ -314,7 +276,20 @@ public class UserServiceImpl implements UserService {
 		List<Article> list = userDao.admin_redis();
 		Jedis jedis = redisDateSourse.getRedis();
 		Logger logger = LoggerFactory.getLogger(RedisCacheConfiguration.class);
-		RedisUtil.hsetArticle(list,jedis);
+		List<Article> topAc = new ArrayList<>();
+		List<Article> untopAc = new ArrayList<>();
+		for(Article ac:list) {
+			if(ac.getTop().equals("1")) {
+				topAc.add(ac);
+			}else {
+				untopAc.add(ac);
+			}
+		}
+		RedisUtil.hsetTopArticle(topAc,jedis);
+		RedisUtil.hsetArticle(untopAc,jedis);
+		/*RunFunction run = new RunFunction();
+		run.statusCheck_new(jedis);
+		run.statusCheck_CS_new(jedis);*/
 		redisDateSourse.closeRedis(jedis);
 		logger.info("------所有文章缓存成功------");
 		return "redis_success";
