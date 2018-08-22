@@ -6,12 +6,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.text.realm.SerializeUtil;
-
-import redis.clients.jedis.Jedis;
-
 public class BokeUtil {
 	
 	/**

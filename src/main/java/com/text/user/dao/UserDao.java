@@ -1,7 +1,5 @@
 package com.text.user.dao;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -14,13 +12,10 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.type.JdbcType;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
-import com.text.entity.MyTest;
-import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 

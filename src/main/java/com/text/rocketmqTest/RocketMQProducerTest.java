@@ -7,9 +7,7 @@ import com.alibaba.rocketmq.client.exception.MQClientException;
 import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.alibaba.rocketmq.client.producer.SendResult;
 import com.alibaba.rocketmq.common.message.Message;
-import com.alibaba.rocketmq.remoting.common.RemotingHelper;
 import com.text.entity.Follow;
-import com.text.realm.SerializeUtil;
  
 /**
  * Created by lance on 2017/2/10.

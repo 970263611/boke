@@ -15,9 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import com.alibaba.rocketmq.common.message.MessageExt;
 import com.text.entity.Article;
 import com.text.entity.Comment;
@@ -418,7 +416,11 @@ public class UserServiceImpl implements UserService {
 	 * 文章置顶的方法
 	 */
 	@Override
-	public String top(String articleId) {
+	public String top(String articleId,String time) {
+		Jedis jedis = redisDateSourse.getRedis();
+		jedis.lpush("top", time+"*"+articleId);
+		jedis.hset("article_" + articleId+"", "top", "1");
+		redisDateSourse.closeRedis(jedis);
 		RocketMQUtil.producer(ipAddress, producterName, topicName, "top", articleId);
 		return "success";
 	}
@@ -427,7 +429,11 @@ public class UserServiceImpl implements UserService {
 	 * 文章取消置顶的方法
 	 */
 	@Override
-	public String untop(String articleId) {
+	public String untop(String articleId,String time) {
+		Jedis jedis = redisDateSourse.getRedis();
+		jedis.lrem("top", 0, time+"*"+articleId);
+		jedis.hset("article_" + articleId+"", "top", "0");
+		redisDateSourse.closeRedis(jedis);
 		RocketMQUtil.producer(ipAddress, producterName, topicName, "untop", articleId);
 		return "success";
 	}
@@ -436,7 +442,10 @@ public class UserServiceImpl implements UserService {
 	 * 文章删除的方法
 	 */
 	@Override
-	public String isdel(String articleId) {
+	public String isdel(String articleId,String time) {
+		Jedis jedis = redisDateSourse.getRedis();
+		jedis.del("article_" + articleId);
+		redisDateSourse.closeRedis(jedis);
 		RocketMQUtil.producer(ipAddress, producterName, topicName, "isdel", articleId);
 		return "success";
 	}

@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 本项目中没有用到此类，但是作为参考，以后可以研究使用
+ * 本项目中没有用到此类，但是作为参考，以后可以研究使用,实现将request中的参数键值对化
  * @author love-ding
  *
  */
