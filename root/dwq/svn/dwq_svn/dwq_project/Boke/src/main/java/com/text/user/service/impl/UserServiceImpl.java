@@ -99,14 +99,20 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public List<Article> select_article_top() {
-		List<Article> list = new ArrayList<Article>();;
+		List<Article> list = new ArrayList<Article>();
 		Jedis jedis = redisDateSourse.getRedis();
 		SortingParams sortingParameters = new SortingParams();  
 		sortingParameters.desc(); 
         sortingParameters.alpha();
 		// 通过排序top这个键，得到排序后想要的值，再根据值（就是对应文章对象的键）去查出文章对象的byte数组转换后返回
 		if (jedis.llen("top") != 0) {
-			List<String> timeStr = jedis.sort("article",sortingParameters).subList(0, 6);
+			List<String> timeStr = new ArrayList<>();
+			Long size = jedis.llen("top");
+			if(size > 6) {
+				timeStr = jedis.sort("top",sortingParameters).subList(0, 6);
+			}else {
+				timeStr = jedis.sort("top",sortingParameters).subList(0,size.intValue());
+			}
 			if (timeStr.size() > 0) {
 				list = RedisUtil.hgetArticle(timeStr, jedis);
 			}
@@ -256,10 +262,12 @@ public class UserServiceImpl implements UserService {
 	public List<Article> Go_page(int page) {
 		int first = (page - 1) * 6 + 1;
 		List<Article> tops = select_article_top();
-		List<Article> total = select_article_top();
-		if(tops.size()>0){
+		List<Article> total = new ArrayList<>();
+		if(tops.size()>(first-1+6)){
 			tops = tops.subList(first-1, first-1+6);
 			total.addAll(tops);
+		}else{
+			
 		}
 		if(total.size()>=6){
 			return total;
