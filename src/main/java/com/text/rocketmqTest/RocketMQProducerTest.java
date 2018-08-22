@@ -1,4 +1,4 @@
-package com.text.rocketmq;
+package com.text.rocketmqTest;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ import com.text.realm.SerializeUtil;
 /**
  * Created by lance on 2017/2/10.
  */
-public class RocketMQProducer {
+public class RocketMQProducerTest {
  
 	public static void main(String[] args) throws MQClientException, InterruptedException {
 

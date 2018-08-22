@@ -260,4 +260,12 @@ public interface UserDao {
 	@Insert("insert into login_ip (LoginIP,loginTime,userId,userName) values (#{LoginIP},#{loginTime},#{userId},#{userName})")
 	void saveIP(@Param("LoginIP") String ip,@Param("loginTime") String time,@Param("userId") int userId,@Param("userName") String userName);
 
+	/**
+	 * 通过文章id查询文章信息
+	 * @param articleId
+	 * @return
+	 */
+	@Select("select * from article where id = #{0}")
+	Article getArticleById(String articleId);
+
 }

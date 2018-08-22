@@ -1,4 +1,4 @@
-package com.text.rocketmq;
+package com.text.rocketmqTest;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import com.alibaba.rocketmq.common.message.MessageExt;
 /**
  * Created by lance on 2017/2/10.
  */
-public class RocketMQConsumer {
+public class RocketMQConsumerTest {
  
 	public static void main(String[] args) throws InterruptedException, MQClientException {
 	    

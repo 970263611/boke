@@ -1,12 +1,11 @@
 package com.text.user.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.ibatis.annotations.Select;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -16,14 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.rocketmq.client.exception.MQClientException;
-import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
-import com.alibaba.rocketmq.client.producer.SendResult;
-import com.alibaba.rocketmq.common.message.Message;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import com.alibaba.rocketmq.common.message.MessageExt;
 import com.text.entity.Article;
 import com.text.entity.Comment;
+import com.text.entity.Follow;
 import com.text.entity.MyPhoto;
-import com.text.entity.PageData;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.realm.RedisCacheConfiguration;
@@ -31,6 +30,7 @@ import com.text.realm.SerializeUtil;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
 import com.text.util.RedisUtil;
+import com.text.util.RocketMQUtil;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.SortingParams;
@@ -44,6 +44,10 @@ public class UserServiceImpl implements UserService {
 	private SerializeUtil redisDateSourse;
 	//rocketmq地址
 	private static final String ipAddress = "101.132.136.190:9876";
+	//产生者组
+	private static final String producterName = "dwq";
+	//topic名称
+	private static final String topicName = "boke";
 
 	/**
 	 * 向数据库新增用户信息service实现类
@@ -398,48 +402,15 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String follow(String articleId) {
-		 //声明并初始化一个producer
-        //需要一个producer group名字作为构造方法的参数，这里为producer1
-        DefaultMQProducer producer = new DefaultMQProducer("dwq");
-        //producer.getCreateTopicKey();
-        //设置NameServer地址,此处应改为实际NameServer地址，多个地址之间用；分隔
-        //NameServer的地址必须有，但是也可以通过环境变量的方式设置，不一定非得写死在代码里
-        producer.setNamesrvAddr(ipAddress);
-        
-        //调用start()方法启动一个producer实例
-        try {
-			producer.start();
-		} catch (MQClientException e1) {
-			e1.printStackTrace();
-		}
-
-        //发送10条消息到Topic为TopicTest，tag为TagA，消息内容为“Hello RocketMQ”拼接上i的值
-        for (int i = 0; i < 3; i++) {
-            try {
-                Message msg = new Message("guanzhu",// topic
-                        "guanzhu_dwq",// tag
-                        ("dwq" + i)
-                        .getBytes()// body
-                );
-                
-                //调用producer的send()方法发送消息
-                //这里调用的是同步的方式，所以会有返回结果
-                SendResult sendResult = producer.send(msg);
-                
-                //打印返回结果，可以看到消息发送的状态以及一些相关信息
-                System.out.println(sendResult);
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-            }
-        }
-
-        //发送完消息之后，调用shutdown()方法关闭producer
-        producer.shutdown();
+		Article ac = userDao.getArticleById(articleId);
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		User user = (User) session.getAttribute("user");
+		Follow follow = new Follow();
+		follow.setParentId(ac.getId());;
+		follow.setChildId(user.getId());
+		follow.setCreateTime(new Date());
+		RocketMQUtil.producer(ipAddress, producterName, topicName, "follow", JSONObject.toJSONString(follow));
         return "success";
     }
 
@@ -448,6 +419,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String top(String articleId) {
+		RocketMQUtil.producer(ipAddress, producterName, topicName, "top", articleId);
 		return "success";
 	}
 
@@ -456,6 +428,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String untop(String articleId) {
+		RocketMQUtil.producer(ipAddress, producterName, topicName, "untop", articleId);
 		return "success";
 	}
 
@@ -464,7 +437,20 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String isdel(String articleId) {
+		RocketMQUtil.producer(ipAddress, producterName, topicName, "isdel", articleId);
 		return "success";
+	}
+
+	/**
+	 * 消费者消费方法
+	 * @param msgs
+	 */
+	public void custom(List<MessageExt> msgs) {
+		/*for (MessageExt msg : msgs) {
+			String topic = msg.getTags();
+			String body = new String(msg.getBody());
+			Follow follow = JSON.parseObject(new String(msg.getBody()), Follow.class);
+        }*/
 	}
 
 }
