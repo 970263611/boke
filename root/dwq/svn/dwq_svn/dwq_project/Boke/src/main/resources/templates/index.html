@@ -649,7 +649,8 @@ li {
 	$(function() {
 		$.ajax({
 			type : "post",
-			url : "/go_page_first",
+			url : "/go_page",
+			data : {"page":'1'},
 			dataType : "json",
             success: function(data) {
             	$("#textList li").remove();
@@ -742,64 +743,34 @@ li {
 		$("#previousParent").removeClass("active");
 		$("#lastPageParent").removeClass("active");
 		$("#page_"+page).parent().addClass('active');
-		if(page==1){
-			$.ajax({
-				type : "post",
-				url : "/go_page_first",
-				dataType : "json",
-				cache: true,
-	            success: function(data) {
-	            	$("#textList li").remove();
-	            	var html = "";
-	           		for(var a = 0;a<data.length;a++){
-	           			html += "<li>"
-	            				+"<a href='single.html?id="+data[a].id+"'><div>"
-	            				+"<h3>"+data[a].title+"</h3></div></a>"
-								+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
-								+"<span>"+data[a].create_time+"</span>"
-								+"</div></li>";
-	           		}
-		           		if(page-1<=0){
-			            	$("#previousChild").attr("onclick","go_page(1)")
-	           			}else{
-			            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
-	           			}
-	           			if(page+1<=Math.ceil(lastPage/6)){
-			            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
-	           			}
-		            	$('#textList').append(html);
-	            }
-			});
-    	}else if(page>1){
-			$.ajax({
-				type : "post",
-				url : "/go_page",
-				data : {"page":page},
-				dataType : "json",
-				cache: true,
-	            success: function(data) {
-	            	$("#textList li").remove();
-	            	var html = "";
-	           		for(var a = 0;a<data.length;a++){
-	           			html += "<li>"
-	            				+"<a href='single.html?id="+data[a].id+"'><div>"
-	            				+"<h3>"+data[a].title+"</h3></div></a>"
-								+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
-								+"<span>"+data[a].create_time+"</span>"
-								+"</div></li>";
-	           		}
-		           		if(page-1<=0){
-			            	$("#previousChild").attr("onclick","go_page(1)")
-	           			}else{
-			            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
-	           			}
-	           			if(page+1<=Math.ceil(lastPage/6)){
-			            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
-	           			}
-		            	$('#textList').append(html);
-	            }
-			});
-    	}
+		$.ajax({
+			type : "post",
+			url : "/go_page",
+			data : {"page":page},
+			dataType : "json",
+			cache: true,
+            success: function(data) {
+            	$("#textList li").remove();
+            	var html = "";
+           		for(var a = 0;a<data.length;a++){
+           			html += "<li>"
+            				+"<a href='single.html?id="+data[a].id+"'><div>"
+            				+"<h3>"+data[a].title+"</h3></div></a>"
+							+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
+							+"<span>"+data[a].create_time+"</span>"
+							+"</div></li>";
+           		}
+	           		if(page-1<=0){
+		            	$("#previousChild").attr("onclick","go_page(1)")
+           			}else{
+		            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
+           			}
+           			if(page+1<=Math.ceil(lastPage/6)){
+		            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
+           			}
+	            	$('#textList').append(html);
+            }
+		});
 	}
 	//点击图片的方法
 	function seeBigImage(){
