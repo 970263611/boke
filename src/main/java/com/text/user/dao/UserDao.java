@@ -15,6 +15,7 @@ import org.apache.ibatis.type.JdbcType;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
+import com.text.entity.Follow;
 import com.text.entity.MyPhoto;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
@@ -255,5 +256,11 @@ public interface UserDao {
 	 */
 	@Select("select * from article where id = #{0}")
 	Article getArticleById(String articleId);
+	
+	/**
+	 * 查询所有关注关系
+	 */
+	@Select("select * from follow")
+	List<Follow> getFollows();
 
 }
