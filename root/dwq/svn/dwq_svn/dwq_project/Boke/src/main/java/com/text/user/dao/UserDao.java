@@ -206,7 +206,7 @@ public interface UserDao {
 	/**
 	 * 查询文章条数，便于前端分页
 	 */
-	@Select("select count(id) from article")
+	@Select("select count(id) from article where isdelete = '0'")
 	int pageNum();
 
 	/**

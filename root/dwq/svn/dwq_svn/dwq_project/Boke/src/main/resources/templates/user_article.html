@@ -136,33 +136,31 @@ ul
 			<!-- /.container-fluid -->
 		</div>
 	</nav>
-	<div style="background-image:url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;">
-	</div>
-				<div class="container-fluid" style="padding-top: 139px;">
-				<div class="row">
-					<div class="col-xs-0 col-md-1"></div>
-					<div class="col-xs-12 col-md-8">
-						<div style="background-color: #ffffff78;">
-							<ul class="list-group" style="padding: 1px 0 20px 60px;">
-								<li th:each="alist: ${list}">
-									<a href="single.html" target="_blank" th:href="@{/single(id=${alist.id})}">
-										<div>
-											<h3 th:text="${alist.title}">title</h3>
-										</div>
-									</a>
+	<div style="background-image:url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);position: absolute;bottom: 0;top: 0;left: 0;right: 0;background-size: cover;"></div>
+		<div class="container-fluid" style="padding-top: 139px;">
+			<div class="row">
+				<div class="col-xs-0 col-md-1"></div>
+				<div class="col-xs-12 col-md-8">
+					<div style="background-color: #ffffff78;">
+						<ul class="list-group" style="padding: 1px 0 20px 60px;">
+							<li th:each="alist: ${list}">
+								<a href="single.html" target="_blank" th:href="@{/single(id=${alist.id})}">
 									<div>
-										<span>by- </span>
-										<a href="javascript:scroll(0,0)" th:onclick="'go_people('+${alist.id}+');'" th:text=${alist.create_user}></a>
-										<span th:text=${alist.create_time}></span>
+										<h3 th:text="${alist.title}">title</h3>
 									</div>
-								</li>
-							</ul>
-						</div>
+								</a>
+								<div>
+									<span>by- </span>
+									<a href="javascript:scroll(0,0)" th:onclick="'go_people('+${alist.id}+');'" th:text=${alist.create_user}></a>
+									<span th:text=${alist.create_time}></span>
+								</div>
+							</li>
+						</ul>
 					</div>
-					<div class="col-xs-0 col-md-3"></div>
 				</div>
+				<div class="col-xs-0 col-md-3"></div>
 			</div>
-
+		</div>
 	<div class='footer'>
 		<div
 			style="text-align: center; padding-top: 20px; padding-bottom: 10px;">
