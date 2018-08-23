@@ -692,7 +692,7 @@ li {
 			success : function(data) {
 				var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
 							"<li class='disabled' id='previous'>" +
-						    	"<a id='previousChild' onclick='go_page(2,this,"+data+")'>" +
+						    	"<a id='previousChild'>" +
 						    		"<span>&lt;</span>" +
 						    	"</a>" +
 					    	"</li>";
@@ -765,8 +765,10 @@ li {
            			}else{
 		            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
            			}
-           			if(page+1<=Math.ceil(lastPage/6)){
+           			if(page+1<Math.ceil(lastPage/6)){
 		            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
+           			}else{
+           				$("#go_next_page").attr("onclick","")
            			}
 	            	$('#textList').append(html);
             }

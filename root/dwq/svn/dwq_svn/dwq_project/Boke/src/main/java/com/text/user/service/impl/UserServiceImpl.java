@@ -2,6 +2,7 @@ package com.text.user.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,7 +25,6 @@ import com.text.entity.MyPhoto;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.realm.RedisCacheConfiguration;
-import com.text.realm.RunFunction;
 import com.text.realm.SerializeUtil;
 import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
@@ -70,62 +70,124 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public List<Article> Go_page(int page) {
+		//开启redis连接
 		Jedis jedis = redisDateSourse.getRedis();
+		//设定截止到当前页一共需要的文章条数
 		int articleSize = page * 6;//默认一页6条
-		int firstArticle = (page-1)*6;//本页第一条文章的位置
+		//本页第一条文章的位置
+		int firstArticle = (page-1)*6;
+		/**
+		 * redis排序方式
+		 */
 		SortingParams sortingParameters = new SortingParams();  
 		sortingParameters.desc(); 
         sortingParameters.alpha();
+        //新建装在置顶文章标题的list
         List<String> timeStr = new ArrayList<>();
+        //置顶文章的数量
         int size = jedis.llen("top").intValue();
+        //最后返回的list，所有要返回的数据装在这里面
         List<Article> acList = new ArrayList<>();
+        //非置顶文章的数量
         int asize = jedis.llen("article").intValue();
+        //当redis中置顶文章数量为0的时候
         if (size != 0) {
+        	//当redis中置顶文章数量大于当前页（包含前面的页）所需要的总文章条数
 	        if(size > articleSize) {
+	        	//将文章标题从redis中取出
 	        	timeStr = jedis.sort("top",sortingParameters).subList(firstArticle, 6);
+	        	//将文章从redis中取出
 	        	acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+	        	//返回文章信息
 	        	return acList;
+	        	//当redis中置顶文章不大于当前页（包含前面的页）所需要的总文章条数
 	        }else {
-	        	if(size/6+1==page) {
-	        		timeStr = jedis.sort("top",sortingParameters).subList(firstArticle,size);
-	        		acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+	        	//当置顶文章数量取余本页所需要6条为0的时候
+	        	if(size%6==0){
+	        		//判断当前页是否有置顶文章，通过置顶文章总数除于当前一页6条如果等于当前的页码（则本页有置顶文章）
+	        		if(size/6==page) {
+	        			//到此可以保证前面的都是置顶文章，排序redis中的置顶文章取出当前页所需要第一条，就是置顶文章里面对应的那条，取到置顶文章条数结束，因为到此可以保证置顶文章数量不够本页的条数
+	        			timeStr = jedis.sort("top",sortingParameters).subList(firstArticle,size);
+	        			//将取出的文章放到返回的list里面
+	        			acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+	        		}
+        		//当置顶文章数量取余本页所需要6条不为0的时候
+	        	}else{
+	        		//判断当前页是否有置顶文章，通过置顶文章总数除于当前一页6条加上1如果等于当前的页码（则本页有置顶文章）
+	        		if(size/6+1==page) {
+	        			//到此可以保证前面的都是置顶文章，排序redis中的置顶文章取出当前页所需要第一条，就是置顶文章里面对应的那条，取到置顶文章条数结束，因为到此可以保证置顶文章数量不够本页的条数
+	        			timeStr = jedis.sort("top",sortingParameters).subList(firstArticle,size);
+	        			//将取出的文章放到返回的list里面
+	        			acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
+	        		}
 	        	}
+	        	//当非置顶文章数量不为0的时候
 	        	if(asize != 0) {
+	        		//定义非置顶文章标题的list
 	        		List<String> notops = new ArrayList<>();
+	        		//当非置顶文章的数量大于当前页（包含前面的页）所需要的总文章条数减去置顶文章的数量时
 	        		if(asize>(articleSize-size)){
+	        			//当置顶文章数量和非置顶文章数量的和除于6（一共的页数，本应加1，等式后面也要加1，抵消了）减去置顶文章数量除于6（即置顶文章的页数）大于0的时候（说明文章不全是置顶文章，存在非置顶文章）
 	        			if((size+asize)/6-(size/6)>0) {
+	        				//当当前页码减1乘上6(截止到前一页所需要的文章总数)减去置顶文章数小于0的时候（说明本页有置顶文章，但是置顶文章有不够本页时）
 	        				if((page-1)*6-size<0) {
+	        					//redis中取出非置顶文章的标题
 	        					notops = jedis.sort("article",sortingParameters).subList(0, articleSize-size);
 	        				}else {
+	        					//说明本页没有置顶文章，全是非置顶文章，在redis中取出所需要的非置顶文章标题
+	        					//(page-1)*6-size本页减1乘上6减去置顶文章数为非置顶文章填补给置顶文章的个数，从这个取开始取（截止到本页所需要的减去置顶文章）个（填补给置顶文章凑齐本页个数，保证个数正确）
 	        					notops = jedis.sort("article",sortingParameters).subList((page-1)*6-size, articleSize-size);
 	        				}
+        				//当置顶文章数量和非置顶文章数量的和除于6（一共的页数，本应加1，等式后面也要加1，抵消了）减去置顶文章数量除于6*（即置顶文章的页数）不大于0的时候（说明不全是置顶文章，存在非置顶文章，所以从0开始取，取本页减去置顶文章个数剩余的个数）
 	        			}else {
 	        				notops = jedis.sort("article",sortingParameters).subList(0, 6-size%6);
 	        			}
+        			//当非置顶文章的总数量不够填补本页了
 	        		}else {
+	        			//从redis中取出所有非置顶文章标题
 	        			notops = jedis.sort("article",sortingParameters).subList(0, asize);
 	        		}
+	        		//根据标题从redis中取出应该返回的非置顶文章添加到返回的list中
 	        		acList.addAll(RedisUtil.hgetArticle(notops,jedis));
+        		//当非置顶文章个数为0的时候
 	        	}else {
-	        		acList.addAll(userDao.select_article_untop());
-	    			RedisUtil.hsetArticle(acList,jedis);
-	    			Go_page(page);
+	        		//从数据库中取出所有的非置顶文章
+	        		List<Article> untops = userDao.select_article_untop();
+	        		//将所有的非置顶文章缓存到redis中
+	    			RedisUtil.hsetArticle(untops,jedis);
+	    			//递归调用并返回
+	    			return Go_page(page);
 	        	}
 	        }
+        //当置顶文章个数为0的时候
         }else {
+        	//判断数据库置顶文章个数是否为0，当为0的情况时
         	if(userDao.select_article_top().size()==0) {
-        		if(asize>=6) {
+        		//从redis中查询非置顶文章的个数
+        		int newasize = jedis.llen("article").intValue();
+        		//当redis中非置顶文章个数大于等于6的时候（足够填充本页）
+        		if(newasize>=6) {
+        			//从redis取出非置顶文章的前6条
         			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, 6),jedis);
+    			//当redis中非置顶文章个数不足够填充本页时
         		}else {
+        			//取出redis中所有的非置顶文章
         			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, asize),jedis);
         		}
+    		//判断数据库置顶文章个数是否为0，当不为0的情况时	
         	}else {
-        		acList.addAll(userDao.select_article_top());
+        		List<Article> topac = userDao.select_article_top();
+        		//查询出数据库所有的置顶文章
+        		acList.addAll(topac);
+        		//将置顶文章缓存到redis中
         		RedisUtil.hsetTopArticle(acList,jedis);
-        		Go_page(page);
+        		//递归调用并返回
+    			return Go_page(page);
         	}
 		}
+        //关闭redis连接，释放资源
         redisDateSourse.closeRedis(jedis);
+        //返回文章信息给前端
 		return acList;
 	}
 	
@@ -287,9 +349,20 @@ public class UserServiceImpl implements UserService {
 		}
 		RedisUtil.hsetTopArticle(topAc,jedis);
 		RedisUtil.hsetArticle(untopAc,jedis);
-		/*RunFunction run = new RunFunction();
-		run.statusCheck_new(jedis);
-		run.statusCheck_CS_new(jedis);*/
+		List<Follow> follows = userDao.getFollows();
+		HashSet<Integer> set = new HashSet<>();
+		for(Follow follow:follows){
+			set.add(follow.getParentId());
+		}
+		for(Integer parentId:set){
+			List<Integer> childList = new ArrayList<>();
+			for(Follow follow:follows){
+				if(parentId == follow.getParentId()){
+					childList.add(follow.getChildId());
+				}
+			}
+			jedis.set(("follow_"+parentId).getBytes(), SerializeUtil.serialize(childList));
+		}
 		redisDateSourse.closeRedis(jedis);
 		logger.info("------所有文章缓存成功------");
 		return "redis_success";
