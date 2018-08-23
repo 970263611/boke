@@ -72,10 +72,12 @@ public class UserServiceImpl implements UserService {
 	public List<Article> Go_page(int page) {
 		//开启redis连接
 		Jedis jedis = redisDateSourse.getRedis();
+		//限定一页装载的文章数量
+		int pageSize = 6;
 		//设定截止到当前页一共需要的文章条数
-		int articleSize = page * 6;//默认一页6条
+		int articleSize = page * pageSize;
 		//本页第一条文章的位置
-		int firstArticle = (page-1)*6;
+		int firstArticle = (page-1)*pageSize;
 		/**
 		 * redis排序方式
 		 */
@@ -95,26 +97,26 @@ public class UserServiceImpl implements UserService {
         	//当redis中置顶文章数量大于当前页（包含前面的页）所需要的总文章条数
 	        if(size > articleSize) {
 	        	//将文章标题从redis中取出
-	        	timeStr = jedis.sort("top",sortingParameters).subList(firstArticle, 6);
+	        	timeStr = jedis.sort("top",sortingParameters).subList(firstArticle, pageSize);
 	        	//将文章从redis中取出
 	        	acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
 	        	//返回文章信息
 	        	return acList;
 	        	//当redis中置顶文章不大于当前页（包含前面的页）所需要的总文章条数
 	        }else {
-	        	//当置顶文章数量取余本页所需要6条为0的时候
-	        	if(size%6==0){
-	        		//判断当前页是否有置顶文章，通过置顶文章总数除于当前一页6条如果等于当前的页码（则本页有置顶文章）
-	        		if(size/6==page) {
+	        	//当置顶文章数量取余本页所需要文章数量为0的时候
+	        	if(size%pageSize==0){
+	        		//判断当前页是否有置顶文章，通过置顶文章总数除于当前一页所需要文章数量如果等于当前的页码（则本页有置顶文章）
+	        		if(size/pageSize==page) {
 	        			//到此可以保证前面的都是置顶文章，排序redis中的置顶文章取出当前页所需要第一条，就是置顶文章里面对应的那条，取到置顶文章条数结束，因为到此可以保证置顶文章数量不够本页的条数
 	        			timeStr = jedis.sort("top",sortingParameters).subList(firstArticle,size);
 	        			//将取出的文章放到返回的list里面
 	        			acList.addAll(RedisUtil.hgetArticle(timeStr, jedis));
 	        		}
-        		//当置顶文章数量取余本页所需要6条不为0的时候
+        		//当置顶文章数量取余本页所需要文章数量不为0的时候
 	        	}else{
-	        		//判断当前页是否有置顶文章，通过置顶文章总数除于当前一页6条加上1如果等于当前的页码（则本页有置顶文章）
-	        		if(size/6+1==page) {
+	        		//判断当前页是否有置顶文章，通过置顶文章总数除于当前一页所需要文章数量加上1如果等于当前的页码（则本页有置顶文章）
+	        		if(size/pageSize+1==page) {
 	        			//到此可以保证前面的都是置顶文章，排序redis中的置顶文章取出当前页所需要第一条，就是置顶文章里面对应的那条，取到置顶文章条数结束，因为到此可以保证置顶文章数量不够本页的条数
 	        			timeStr = jedis.sort("top",sortingParameters).subList(firstArticle,size);
 	        			//将取出的文章放到返回的list里面
@@ -125,22 +127,22 @@ public class UserServiceImpl implements UserService {
 	        	if(asize != 0) {
 	        		//定义非置顶文章标题的list
 	        		List<String> notops = new ArrayList<>();
-	        		//当非置顶文章的数量大于当前页（包含前面的页）所需要的总文章条数减去置顶文章的数量时
-	        		if(asize>(articleSize-size)){
-	        			//当置顶文章数量和非置顶文章数量的和除于6（一共的页数，本应加1，等式后面也要加1，抵消了）减去置顶文章数量除于6（即置顶文章的页数）大于0的时候（说明文章不全是置顶文章，存在非置顶文章）
-	        			if((size+asize)/6-(size/6)>0) {
-	        				//当当前页码减1乘上6(截止到前一页所需要的文章总数)减去置顶文章数小于0的时候（说明本页有置顶文章，但是置顶文章有不够本页时）
-	        				if((page-1)*6-size<0) {
+	        		//当非置顶文章的数量大于等于当前页（包含前面的页）所需要的总文章条数减去置顶文章的数量时
+	        		if(asize>=(articleSize-size)){
+	        			//当置顶文章数量和非置顶文章数量的和除于本页所需要文章数量（一共的页数，本应加1，等式后面也要加1，抵消了）减去置顶文章数量除于本页所需要文章数量（即置顶文章的页数）大于0的时候（说明文章不全是置顶文章，存在非置顶文章）
+	        			if((size+asize)/pageSize-(size/pageSize)>0) {
+	        				//当当前页码减1乘上本页所需要文章数量(截止到前一页所需要的文章总数)减去置顶文章数小于0的时候（说明本页有置顶文章，但是置顶文章有不够本页时）
+	        				if((page-1)*pageSize-size<0) {
 	        					//redis中取出非置顶文章的标题
 	        					notops = jedis.sort("article",sortingParameters).subList(0, articleSize-size);
 	        				}else {
 	        					//说明本页没有置顶文章，全是非置顶文章，在redis中取出所需要的非置顶文章标题
-	        					//(page-1)*6-size本页减1乘上6减去置顶文章数为非置顶文章填补给置顶文章的个数，从这个取开始取（截止到本页所需要的减去置顶文章）个（填补给置顶文章凑齐本页个数，保证个数正确）
-	        					notops = jedis.sort("article",sortingParameters).subList((page-1)*6-size, articleSize-size);
+	        					//(page-1)*本页所需要文章数量-size本页减1乘上本页所需要文章数量减去置顶文章数为非置顶文章填补给置顶文章的个数，从这个取开始取（截止到本页所需要的减去置顶文章）个（填补给置顶文章凑齐本页个数，保证个数正确）
+	        					notops = jedis.sort("article",sortingParameters).subList((page-1)*pageSize-size, articleSize-size);
 	        				}
-        				//当置顶文章数量和非置顶文章数量的和除于6（一共的页数，本应加1，等式后面也要加1，抵消了）减去置顶文章数量除于6*（即置顶文章的页数）不大于0的时候（说明不全是置顶文章，存在非置顶文章，所以从0开始取，取本页减去置顶文章个数剩余的个数）
+        				//当置顶文章数量和非置顶文章数量的和除于每页所需要文章数量（一共的页数，本应加1，等式后面也要加1，抵消了）减去置顶文章数量除于每页所需要文章数量*（即置顶文章的页数）不大于0的时候（说明不全是置顶文章，存在非置顶文章，所以从0开始取，取本页减去置顶文章个数剩余的个数）
 	        			}else {
-	        				notops = jedis.sort("article",sortingParameters).subList(0, 6-size%6);
+	        				notops = jedis.sort("article",sortingParameters).subList(0, pageSize-size%pageSize);
 	        			}
         			//当非置顶文章的总数量不够填补本页了
 	        		}else {
@@ -165,10 +167,10 @@ public class UserServiceImpl implements UserService {
         	if(userDao.select_article_top().size()==0) {
         		//从redis中查询非置顶文章的个数
         		int newasize = jedis.llen("article").intValue();
-        		//当redis中非置顶文章个数大于等于6的时候（足够填充本页）
-        		if(newasize>=6) {
-        			//从redis取出非置顶文章的前6条
-        			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, 6),jedis);
+        		//当redis中非置顶文章个数大于等于本页所需要文章数量的时候（足够填充本页）
+        		if(newasize>=pageSize) {
+        			//从redis取出非置顶文章的前本页所需要文章数量条
+        			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, pageSize),jedis);
     			//当redis中非置顶文章个数不足够填充本页时
         		}else {
         			//取出redis中所有的非置顶文章
@@ -456,15 +458,26 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String follow(String articleId) {
-		Article ac = userDao.getArticleById(articleId);
+		Integer parentId = userDao.getUserIdByArticleId(articleId);
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
 		User user = (User) session.getAttribute("user");
-		Follow follow = new Follow();
-		follow.setParentId(ac.getId());;
-		follow.setChildId(user.getId());
-		follow.setCreateTime(new Date());
-		RocketMQUtil.producer(ipAddress, producterName, topicName, "follow", JSONObject.toJSONString(follow));
+		Jedis jedis = redisDateSourse.getRedis();
+		byte[] bytes = jedis.get(("follow_"+parentId).getBytes());
+		List<Integer> childIds = (List<Integer>) SerializeUtil.unserialize(bytes);//取出关注用户的子集
+		if(childIds.contains(user.getId())){//如果子集包含当前登录用户
+			System.out.println("此用户已经关注了");
+			return "successed";
+		}else{
+			Follow follow = new Follow();
+			follow.setParentId(parentId);;
+			follow.setChildId(user.getId());
+			follow.setCreateTime(new Date());
+			RocketMQUtil.producer(ipAddress, producterName, topicName, "follow", JSONObject.toJSONString(follow));
+			childIds.add(user.getId());
+			jedis.set(("follow_"+parentId).getBytes(), SerializeUtil.serialize(childIds));
+		}
+		redisDateSourse.closeRedis(jedis);
         return "success";
     }
 
@@ -476,6 +489,7 @@ public class UserServiceImpl implements UserService {
 		Jedis jedis = redisDateSourse.getRedis();
 		jedis.lpush("top", time+"*"+articleId);
 		jedis.hset("article_" + articleId+"", "top", "1");
+		jedis.lrem("article", 0, time+"*"+articleId);
 		redisDateSourse.closeRedis(jedis);
 		RocketMQUtil.producer(ipAddress, producterName, topicName, "top", articleId);
 		return "success";
@@ -489,6 +503,7 @@ public class UserServiceImpl implements UserService {
 		Jedis jedis = redisDateSourse.getRedis();
 		jedis.lrem("top", 0, time+"*"+articleId);
 		jedis.hset("article_" + articleId+"", "top", "0");
+		jedis.lpush("article", time+"*"+articleId);
 		redisDateSourse.closeRedis(jedis);
 		RocketMQUtil.producer(ipAddress, producterName, topicName, "untop", articleId);
 		return "success";
