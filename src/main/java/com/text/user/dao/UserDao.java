@@ -263,4 +263,12 @@ public interface UserDao {
 	@Select("select * from follow")
 	List<Follow> getFollows();
 
+	/**
+	 * 根据文章id查询创建人id
+	 * @param articleId
+	 * @return
+	 */
+	@Select("select id from user where nickname = (select create_user from article where id = #{0})")
+	Integer getUserIdByArticleId(String articleId);
+
 }

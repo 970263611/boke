@@ -240,6 +240,13 @@ li {
 {
   pointer-events: auto;
 }
+.hot
+{
+    float: right;
+    margin-top: 20px;
+    margin-right: 50px;
+    float:right;
+}
 @media screen and (max-width: 768px) {
 	#collapse {
 		background: #000;
@@ -295,6 +302,10 @@ li {
 	.footer 
 	{
 		background-color: black;
+	}
+	.hot
+	{
+	    margin-right: 0px;
 	}
 }
 </style>
@@ -658,6 +669,7 @@ li {
            		for(var a = 0;a<data.length;a++){
            			var btn = "";
            			var role = '[[${rowId}]]';
+           			var topImage = "";
            			if(role=='1'){
            				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
            				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
@@ -668,10 +680,13 @@ li {
            					btn = untop + del;
            				}
            			}
+           			if(data[a].top == '1'){
+       					topImage = "<img src='images/hot.png' class='hot'>"
+       				}
            			html += "<li>"
             				+"<a href='single.html?id="+data[a].id+"'><div>"
             				+"<h3 style='display: inline-block;'>"+data[a].title+"</h3>"
-            				+"</div></a>"
+            				+topImage+"</div></a>"
 							+"<div>"
 							+ btn
             				+"<span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
@@ -720,29 +735,39 @@ li {
 						    	"</li>" +
 							    "<li id='lastPageParent'><a onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>尾页</a></li>";
             	$("#go_any_page").append(html);
+            	$("#previous").addClass("disabled");
+        		$("#previousParent").addClass("disabled");
 			}
 		})
 	})
 	
 	//分页方法
 	function go_page(page,obj,lastPage){
+		//分页页码控制开始
 		$(".active li").each(function() {
 			$(this).removeClass("active");
 		});
 		$(obj).parent().addClass("active");
 		if(page!=1){
 			$("#previous").removeClass("disabled"); 
+			$("#previousParent").removeClass("disabled");
 		}else{
 			$("#previous").addClass("disabled");
+			$("#previousParent").addClass("disabled");
 		}
 		if(Math.ceil(lastPage/6) == page){
 			$("#lastPage").addClass("disabled");
+			$("#lastPageParent").addClass("disabled");
 		}else{
 			$("#lastPage").removeClass("disabled");
+			$("#lastPageParent").removeClass("disabled");
 		}
+		$("#previous").removeClass("active");
+		$("#lastPage").removeClass("active");
 		$("#previousParent").removeClass("active");
 		$("#lastPageParent").removeClass("active");
 		$("#page_"+page).parent().addClass('active');
+		//分页页码控制结束
 		$.ajax({
 			type : "post",
 			url : "/go_page",
@@ -753,24 +778,42 @@ li {
             	$("#textList li").remove();
             	var html = "";
            		for(var a = 0;a<data.length;a++){
+           			var btn = "";
+           			var role = '[[${rowId}]]';
+           			var topImage = "";
+           			if(role=='1'){
+           				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
+           				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
+           				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
+           				if(data[a].top == '0'){
+           					btn = top + del;
+           				}else{
+           					btn = untop + del;
+           				}
+           			}
+           			if(data[a].top == '1'){
+       					topImage = "<img src='images/hot.png' class='hot'>"
+       				}
            			html += "<li>"
             				+"<a href='single.html?id="+data[a].id+"'><div>"
-            				+"<h3>"+data[a].title+"</h3></div></a>"
-							+"<div><span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
+            				+"<h3 style='display:inline-block'>"+data[a].title+"</h3>"+topImage+"</div></a>"
+							+"<div>"
+							+ btn
+            				+"<span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
 							+"<span>"+data[a].create_time+"</span>"
 							+"</div></li>";
            		}
-	           		if(page-1<=0){
-		            	$("#previousChild").attr("onclick","go_page(1)")
-           			}else{
-		            	$("#previousChild").attr("onclick","go_page("+(page-1)+")")
-           			}
-           			if(page+1<Math.ceil(lastPage/6)){
-		            	$("#go_next_page").attr("onclick","go_page("+(page+1)+")")
-           			}else{
-           				$("#go_next_page").attr("onclick","")
-           			}
-	            	$('#textList').append(html);
+           		if(page-1<=0){
+	            	$("#previousChild").attr("onclick","")
+       			}else{
+	            	$("#previousChild").attr("onclick","go_page("+(page-1)+",this,"+lastPage+")")
+       			}
+       			if(page<Math.ceil(lastPage/6)){
+	            	$("#go_next_page").attr("onclick","go_page("+(page+1)+",this,"+lastPage+")")
+       			}else{
+       				$("#go_next_page").attr("onclick","")
+       			}
+            	$('#textList').append(html);
             }
 		});
 	}
