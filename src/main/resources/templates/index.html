@@ -1,902 +1,541 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <head>
-<title>首页</title>
-<link rel="shortcut icon" href="images/logo.ico" />
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css">
-<link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
-<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<style type="text/css">
-.navbar-inverse {
-	height: 80px;
-	border-color: white;
-}
-
-.navbar-inverse .navbar-nav>li>a {
-	color: white;
-}
-
-.navbar-inverse .navbar-brand {
-	color: white;
-}
-
-.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover,
-	.navbar-inverse .navbar-nav>.open>a:focus {
-	color: #fff;
-	background-color: #08080800;
-}
-
-.section {
-	text-align: left;
-	font: 10px "Microsoft Yahei";
-	background-size: cover;
-}
-
-.footer {
-	color: white;
-	clear: both;
-	background-color: #000000a6;
-	position: absolute;
-	width: 100%;
-	bottom:0;
-}
-
-#speak 
-{
-	margin-left: -30px;
-}
-
-#menu {
-	margin: 0;
-	padding: 0;
-	position: fixed;
-	right: 10px;
-	bottom: 10px;
-	list-style-type: none;
-	z-index: 70;
-}
-
-#menu li {
-	float: left;
-	margin: 0 10px 0 0;
-	font-size: 14px;
-}
-
-#menu a {
-	float: left;
-	padding: 5px 10px;
-	background-color: #ffffff8f;
-	color: #333;
-	text-decoration: none;
-}
-
-#menu .active a {
-	color: #fff;
-	background-color: #333;
-}
-
-* {
-	margin: 0;
-	padding: 0;
-}
-
-body {
-	overflow: hidden;
-	background-size: cover;
-}
-
-#img_container {
-	width: 100%;
-	height: 100%;
-}
-
-.photowall {
-	position: relative;
-	height: 100%;
-	width: 100%;
-	display: -webkit-box; /*使用CSS3的盒模型之流式布局*/
-	display: -moz-box;
-	display: box;
-	-webkit-box-pack: center; /*定义盒模型内部元素在水平方向上居于中间位置*/
-	-moz-box-pack: center;
-	-o-box-pack: center;
-	-ms-box-pack: center;
-	box-pack: center;
-	-webkit-box-align: center; /*定义盒模型内部元素在垂直方向上居于中间位置*/
-	-moz-box-align: center;
-	-o-box-align: center;
-	-ms-box-align: center;
-	box-align: center;
-}
-
-.photoview {
-	position: relative;
-	background-color: #f2eada;
-	margin: 5px;
-	padding: 10px 10px 20px 10px;
-	text-align: center;
-	font-size: 20px;
-	box-shadow: .2em .2em .8em #130c0e; /*给照片添加阴影效果，富有立体感*/
-}
-
-.photoview p {
-	margin-top: 5px; /*设置照片内显示文字段落的外上边距*/
-}
-
-.photo01 {
-	-weikit-transform-origin: right bottom; /*设置右下角为旋转基准点 */
-	-moz-transform-origin: right bottom;
-	-o-transform-origin: right bottom;
-	-ms-transform-origin: right bottom;
-	transform-origin: right bottom;
-	transform: rotate(10deg); /*以右下角为基准点顺时针旋转10°*/
-	-webkit-transform: rotate(10deg);
-	-moz-transform: rotate(10deg);
-	-o-transform: rotate(10deg);
-	-ms-transform: rotate(10deg);
-}
-
-.photo02 {
-	-weikit-transform-origin: right bottom; /*设置右下角为旋转基准点 */
-	-moz-transform-origin: right bottom;
-	-o-transform-origin: right bottom;
-	-ms-transform-origin: right bottom;
-	transform-origin: right bottom;
-	transform: rotate(-20deg); /*以右下角为基准点逆时针旋转20°*/
-	-webkit-transform: rotate(-20deg);
-	-moz-transform: rotate(-20deg);
-	-o-transform: rotate(-20deg);
-	-ms-transform: rotate(-20deg);
-}
-
-.photo03 {
-	-weikit-transform-origin: left top; /*设置左上角为旋转基准点 */
-	-moz-transform-origin: left top;
-	-o-transform-origin: left top;
-	-ms-transform-origin: left top;
-	transform-origin: left top;
-	transform: rotate(20deg); /*以左上角为基准点顺时针旋转20°*/
-	-webkit-transform: rotate(20deg);
-	-moz-transform: rotate(20deg);
-	-o-transform: rotate(20deg);
-	-ms-transform: rotate(20deg);
-}
-
-.photo04 {
-	-weikit-transform-origin: left bottom; /*设置左下角为旋转基准点 */
-	-moz-transform-origin: left bottom;
-	-o-transform-origin: left bottom;
-	-ms-transform-origin: left bottom;
-	transform-origin: left bottom;
-	transform: rotate(-20deg); /*以左下角为基准点逆时针旋转20°*/
-	-webkit-transform: rotate(-20deg);
-	-moz-transform: rotate(-20deg);
-	-o-transform: rotate(-20deg);
-	-ms-transform: rotate(-20deg);
-}
-
-#img_page 
-{
-	padding-bottom: 50px;
-}
-
-a:link 
-{
-	text-decoration:none;  
-} 
-a:visited 
-{
-	color:purple;
-} 
-li {
-	list-style-type:none;
-}
-#gopage
-{
-	margin: 20px 0 -50px;
-}
-#logo_text
-{
-	font-size: 20px; 
-}
-.magnify-modal 
-{
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
-}
-
-.magnify-header .magnify-toolbar 
-{
-  background-color: rgba(0, 0, 0, .5);
-}
-
-.magnify-stage 
-{
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  border-width: 0;
-}
-
-.magnify-footer .magnify-toolbar 
-{
-  background-color: rgba(0, 0, 0, .5);
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.magnify-header,
-.magnify-footer 
-{
-  pointer-events: none;
-}
-
-.magnify-button 
-{
-  pointer-events: auto;
-}
-.hot
-{
-    float: right;
-    margin-top: 20px;
-    margin-right: 50px;
-    float:right;
-}
-@media screen and (max-width: 768px) {
-	#collapse {
-		background: #000;
-		float: right;
-	}
-	.navbar-header {
-		padding-top: 15px;
-	}
-	.navbar-inverse {
-		height: 100px;
-	}
-	.navbar-inverse .navbar-toggle {
-		border-color: #3330;
-	}
-	#speak {
-		margin-left: 0px;
-		width: 150px;
-	}
-	#img_col {
-		overflow: hidden;
-	}
-	.photo01 {
-		transform-origin: inherit;
-	}
-	.photo02 {
-		transform-origin: inherit;
-	}
-	.photo03 {
-		transform-origin: inherit;
-	}
-	.photo04 {
-		transform-origin: inherit;
-	}
-	.photowall {
-		display: block;
-	}
-	#img_page {
-		padding-top: 100px;
-		padding-bottom: 292px;
-	}
-	#gopage
-	{
-		margin: -20px 0 -50px;
-	}
-	h3
-	{
-		font-size: 20px;
-	}
-	#logo_text
-	{
-		font-size: 16px; 
-	}
-	.footer 
-	{
-		background-color: black;
-	}
-	.hot
-	{
-	    margin-right: 0px;
-	}
-}
-</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="images/logo.ico" />
+	<title>首页</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/dwq.css">
+	<style>
+		#noticediv
+		{
+		    background-color: white;
+		    display: inline-block;
+		    position: absolute;
+		    top: 96px;
+		    right: 195px;
+		    width: 300px;
+		    border-radius: 1px;
+		    box-shadow: 0 0 0 1px #9e9e9e;
+        	outline: 3px solid #607d8b52;
+		}
+		@media screen and (max-width: 768px)
+		{
+			#noticediv
+			{
+			    top: 66px;
+			    right: 0px;
+			    width: auto;
+			    width:230px;
+		    }
+		}	
+	</style>
 </head>
-<body id="body">
+<body>
+<header>
+  <div class="tophead">
+    <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
+    <div id="mnav">
+      <h2><span class="navicon"></span></h2>
+      <ul>
+        <li><a href="index">首页</a></li>
+        <li><a href="images">照片墙</a></li>
+        <li><a href="#" onclick='shownotice()' id='notice'>消息</a></li>
+        <li><a href="write">提笔</a></li>
+        <li><a href="myworld">个人</a></li>
+        <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
+		<a th:case=* th:text='${session.user.nickname}'
+		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
+      </ul>
+    </div>
+    <nav class="topnav" id="topnav">
+      <ul>
+        <li th:switch="${session.user}">
+			<a th:case=null></a>
+			<a th:case=* th:if="${session.user.rowId} == 1" href="admin">进入后台管理页面</a>
+		</li>
+        <li><a href="index">首页</a></li>
+        <li><a href="images">照片墙</a></li>
+        <li><a href="#" onclick='shownotice()' id='notice_phone'>消息</a></li>
+        <li><a href="write">提笔</a></li>
+        <li><a href="myworld">个人</a></li>
+        <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
+		<a th:case=* th:text='${session.user.nickname}'
+		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-
-	<!--头??-->
-	<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgba(0,0,0,0);">
-		<div class="container" style="padding-top: 15px;">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" id="head_1" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#collapse"
-						aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-
-					<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo"
-						src="http://www.loveding.top:8089/dahuablog_image/new_white_logo.jpg"
-						style="height: 20px; width: 20px; float: left; position: absolute; top: 0;" /><span
-						style="font-family: cursive; margin-left: -8px;" id='logo_text'>&nbsp大花博客<span
-							style="color: red;">.</span></span></a>
-				</div>
-
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li th:switch="${session.user}">
-							<a th:case=null></a>
-							<a th:case=* th:if="${session.user.rowId} == 1" href="admin">进入后台管理页面</a>
-						</li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-haspopup="true"
-							aria-expanded="false">提笔 <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="/write?type=1">技术交流</a></li>
-								<li><a href="/write?type=2">我的困惑</a></li>
-								<li><a href="/write?type=3">谈谈生活</a></li>
-							</ul></li>
-						<li><a href="myworld">个人</a></li>
-						<li><a href="javascript:scroll(0,0)" onclick="words_block()">留言</a></li>
-						<li th:switch="${session.user}">
-							<a th:case=null href="login">登陆</a>
-							<a th:case=* th:text='${session.user.nickname}' class="dropdown"
-							href="javascript:void(0);" onclick="loginOut()">登陆</a>
-						</li>
-					</ul>
-				</div>
-				<!-- /.navbar-collapse -->
-			</div>
-			<!-- /.container-fluid -->
-		</div>
-	</nav>
-	<ul id="menu">
-		<li data-menuanchor="page1" class="active"><a href="#page1">一</a></li>
-		<li data-menuanchor="page2"><a href="#page2">二</a></li>
-		<li data-menuanchor="page3"><a href="#page3">三</a></li>
-	</ul>
-	<div id="dowebok">
-		<div class="section"
-			style="background-image: url(http://www.loveding.top:8089/dahuablog_image/image_1.jpg); color: white; font-size: 50px;">
-			<p style="text-align: center; font-family: cursive;">世上无难事</p>
-			<p style="text-align: center; font-family: cursive;">只要肯攀登</p>
-		</div>
-		<div class="section" id="index_page_2">
-			<div class="container-fluid" style="padding-top: 60px;">
-				<div class="row">
-					<div class="col-xs-0 col-md-1"></div>
-					<div class="col-xs-12 col-md-8">
-						<div style="background-color: rgba(255,255,255,0.4);">
-							<ul id='textList' class="list-group" style="padding:10px;padding-top:1px;">
-							</ul>
-						</div>
-					</div>
-					<div class="col-xs-0 col-md-3"></div>
-				</div>
-			</div>
-			<div class='container-fluid'>
-				<div class='row'>
-				  	<div class='col-xs-0 col-md-1'></div>
-				    <div class='col-xs-12 col-md-8' style='text-align: center;' id='gopage'>
-						<nav aria-label='...'>
-						    <ul class='pagination' id='go_any_page'>
-						  	</ul>
-						</nav>
-					</div>
-					<div class='col-xs-0 col-md-3'></div>
-				</div>
-			</div>
-		</div>
-		<div class="section" id="index_page_3">
-			<div id="img_page">
-				<div class="container" id="img_container">
-					<div class="row">
-						<div class="col-xs-12" id="img_col">
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class='footer'>
-				<div class="container-fluid">
-					<div class="row">
-						<div id="logoDiv" class="col-xs-0 col-md-5" style="padding-top: 20px; text-align: center;"></div>
-						<div class="col-xs-12 col-md-4">
-							<div style="padding-top: 20px;">
-								<p>特别致谢：武小默 李伟涛 江东升</p>
-								<p style="margin-bottom: 3px;">请联系我：love_dingwq@163.com</p>
-							<div class="bshare-custom" style="float: left;margin-top: 6px;margin-right: 6px;margin-bottom: 6px;"><span>感谢分享：</span><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script></div>
-							</div>
-						</div>
-						<div class="col-xs-12 col-md-3">
-							<div style="padding-top: 20px;">
-								<p>公众号：大花博客（dahuaboke）</p>
-				    			<p>版本号：3.0-3 时间：2018-06-07</p>
-								<p>备案号：黑ICP备18000243号</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div style="text-align: center; padding-bottom: 10px;">
-					<p>
-						<small class="block">&copy; September 1 2017. Website all information from 
-							<a title="大花">大花博客</a>- All Rights Reserved 版权所有
-						</small>
-					</p>
-				</div>
-			</div>
+<div>
+	<img src="images/top.jpg">
+</div>
+<div class='allplace'>
+	<div class="col-xs-12 col-md-8 leftplace">
+	<div id='textList'>
+	
+	</div>
+	<div style="background-color: white;height: 35px;margin-bottom: 10px;">
+		<div aria-label='...'>
+		    <ul class='pagination' id='go_any_page' style="margin:0px auto;">
+		    
+		  	</ul>
 		</div>
 	</div>
-	<!-- 模态框 -->
-	<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="exampleModalLabel">编辑我的留言</h4>
-	      </div>
-	      <div class="modal-body">
-	        <form>
-	          <div class="form-group">
-	            <label for="message-text" class="control-label">留言信息:</label>
-	            <textarea class="form-control" id="message"></textarea>
-	          </div>
-	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="button" class="btn btn-primary" id='send_word' onclick="submmit_words()">留言</button>
-	      </div>
+	</div>
+	<div class="col-xs-12 col-md-4 rightplace" >
+		<div class="cloud" style="margin-top: 0px;">
+	      <h2 class="hometitle">添加标签</h2>
+	      <ul id='tags'>
+	        <a>大花真帅</a> <a>网站好美</a> <a>我好喜欢</a> <a>大花无敌</a> <a>茉莉花帅</a> <a>想嫁</a> <a>折服</a> <a>666</a><a>厉害</a> <a>无敌寂寞</a> <a>不要脸</a> <a>嘿嘿</a>
+	      </ul>
 	    </div>
-	  </div>
+	    <div class='aboutme'>
+			<h2 class="ab_title">关于我</h2>
+			<div class='mine_img'>
+				<img src="images/mine.jpg" style='border-radius: 50%;width: 100px;height: 100px;' alt="">
+			</div>
+			<div class="ab_con" style='margin-left: 63px;'>
+		        <p>姓名：茉莉花。。。。。。</p>
+		        <p>职业：啥也不会的小程序猿</p>
+		        <p>公众号：大花博客（dahuaboke）</p>
+		        <p>邮箱：love_dingwq@163.com</p>
+		      </div>
+		</div>
+		<div style="margin-top: 20px;">
+			<textarea class="form-control message" name="message" id="message" rows="1" placeholder="给我留言" style='height: 120px;'></textarea>
+			<button type="submit" onclick='submmit_words()' id='send_word' class="btn submit_btn2 form-control">提交</button>
+		</div>
+	    <div class="cloud" style="margin-top: 20px;">
+	   	  <h2 class="hometitle">致谢分享</h2>
+	      <p style='margin-top:10px;margin-left: 10px;'>特别致谢：武小默 李伟涛 江东升</p>
+	      <p style='margin-left: 10px;'>请联系我</p>
+	      <div class="col-xs-6 col-md-6" >
+	      	<img src="images/myweixin.jpg">
+	      </div>
+      	  <div class="col-xs-6 col-md-6" >
+      	  	<img src="http://www.loveding.top:8089/dahuablog_image/gzh.jpg">
+      	  </div>
+	    </div>
 	</div>
-</body>
+</div>
+<div>
+	<footer style="height: 60px;">
+	  <p>Design by 大花博客 黑ICP备18000243号</p>
+	</footer>
+</div>
+<div style='display:none;' id='noticediv'>
+    <a>提醒</a><a style='float:right' onclick='shownotice()'>关闭</a>
+        <ul id='noticeText'>
+        </ul>
+ </div>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/npm.js"></script>
-<script type="text/javascript" src="js/jquery.fullPage.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
-<script type="text/javascript" src="js/jquery.magnify.js"></script>
 <script>
-	var flag = true;
-	$(function() {
-		$('#dowebok').fullpage({
-			sectionsColor : [ '#1bbc9b', '#4BBFC3', '#7BAABE' ],
-			anchors : [ 'page1', 'page2', 'page3' ],
-			/*continuousVertical: true,*/
-			lazyLoading: true,
-			menu : '#menu',
-			
-			//延迟加载，提高用户体验
-			afterLoad: function(anchorLink, index){
-				var loadedSection = $(this);
+console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问file:///C:/Users/love-ding/Desktop/html/mine.html");
+window.onload = function ()
+{
+	var oh2 = document.getElementsByTagName("h2")[0];
+	var oUl = document.getElementsByTagName("ul")[0];
+	oh2.onclick = function ()
+	{
+		var style = oUl.style;
+		style.display = style.display == "block" ? "none" : "block";
+		oh2.className = style.display == "block" ? "open" : ""
+	}
+}
+var obj=null;
+var As=document.getElementById('topnav').getElementsByTagName('a');
+obj = As[0];
+for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
+obj=As[i];}
+obj.id='topnav_current';
 
-				//使用 index
-				/* if(index == 1){
-					alert("第1节停止加载");
-				} */
-				 if(index == 2){
-					/* alert("第2节停止加载"); */
-					$("#index_page_3").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/bg.jpg);");
-				} 
-				/* if(index == 3){
-					alert("第3节停止加载");
-				} */
-			},
-		
-			onLeave: function(index, nextIndex, direction){
-				var leavingSection = $(this);
-	
-				//离开第一节后
-				if(index == 1 && direction =='down'){
-					/* alert("前往第2节！"); */
-					$("#index_page_2").attr("style","background-image: url(http://www.loveding.top:8089/dahuablog_image/image_new_1.jpg);");
-				}
-				
-				//离开第二节后
-				if(index == 2 && direction =='down'){
-					if(flag){
-						var photo1src = '[[${photo1.photo}]]';
-						var photo1test = '[[${photo1.photo_test}]]';
-						var photo1nickname = '[[${photo1.nickname}]]';
-						var photo2src = '[[${photo2.photo}]]';
-						var photo2test = '[[${photo2.photo_test}]]';
-						var photo2nickname = '[[${photo2.nickname}]]';
-						var photo3src = '[[${photo3.photo}]]';
-						var photo3test = '[[${photo3.photo_test}]]';
-						var photo3nickname = '[[${photo3.nickname}]]';
-						var photo4src = '[[${photo4.photo}]]';
-						var photo4test = '[[${photo4.photo_test}]]';
-						var photo4nickname = '[[${photo4.nickname}]]';
-						var html = 
-							"<div class='photowall'>"
-							+"<div class='photo01'>"
-							+	"<div class='photoview'>"
-							+			"<img src='"+photo1src+"' id='p1' width='300' height='220' data-magnify='gallery' href='"+photo1src+"' data-caption='"+photo1test+"' onclick='seeBigImage()'>"
-							+			"<p>"+photo1test+"</p>"
-							+			"<p>"+photo1nickname+"</p>"
-							+		"</div>"
-							+	"</div>"
-							+"<div class='photo02'>"
-							+	"<div class='photoview'>"
-							+		"<img src='"+photo2src+"' width='300' id='p2' height='220' data-magnify='gallery' href='"+photo2src+"' data-caption='"+photo2test+"' onclick='seeBigImage()'>"
-							+		"<p>"+photo2test+"</p>"
-							+		"<p>"+photo2nickname+"</p>"
-							+	"</div>"
-							+"</div>"
-							+"<div class='photo03'>"
-							+	"<div class='photoview'>"
-							+		"<img src='"+photo3src+"' width='300' id='p3' height='220' data-magnify='gallery' href='"+photo3src+"' data-caption='"+photo3test+"' onclick='seeBigImage()'>"
-							+		"<p>"+photo3test+"</p>"
-							+		"<p>"+photo3nickname+"</p>"
-							+	"</div>"
-							+"</div>"
-							+"<div class='photo04'>"
-							+	"<div class='photoview'>"
-							+		"<img src='"+photo4src+"' width='300' id='p4' height='220' data-magnify='gallery' href='"+photo4src+"' data-caption='"+photo4test+"' onclick='seeBigImage()'>"
-							+		"<p>"+photo4test+"</p>"
-							+		"<p>"+photo4nickname+"</p>"
-							+	"</div>"
-							+	"</div>"
-							+"</div>";
-						$("#img_col").append(html);
-						var html1 =  "<img src='http://www.loveding.top:8089/dahuablog_image/logo_white.jpg' data-magnify='gallery' href='http://www.loveding.top:8089/dahuablog_image/logo_white.jpg' data-caption='博客logo' onclick='seeBigImage()' style='height: 72px; width: 76px; float: center;margin-right: 20px;'>"+
-						"<img src='http://www.loveding.top:8089/dahuablog_image/gzh.jpg' data-magnify='gallery' href='http://www.loveding.top:8089/dahuablog_image/gzh.jpg' data-caption='博客二维码' onclick='seeBigImage()' style='height: 72px; width: 72px; float: center;'>";
-						$("#logoDiv").append(html1);
-						flag = false;
-					}
-				}
-				
-				/* else if(index == 2 && direction == 'up'){
-					alert("前往第1节！");
-				} */
-			}
-		
-		});
-
-		$(window).resize(function() {
-			autoScrolling();
-		});
-
-		function autoScrolling() {
-			var $ww = $(window).width();
-			if ($ww < 1024) {
-				$.fn.fullpage.setAutoScrolling(false);
-			} else {
-				$.fn.fullpage.setAutoScrolling(true);
-			}
-		}
-		autoScrolling();
+$("#tags a").click(function(event){
+	var tag = event.target.innerText;
+	$.ajax({
+		type : "post",
+		url : "/saveTags",
+		data : {"tag":tag},
+		cache: false,
+		async: false,
+        success: function(data) {
+            if(data == "success"){
+            	layer.msg('添加标签成功');
+            }
+        }
 	});
-	//logo动画方法
-	$(function() {
-		$("#img_logo").animate({
-			top : "25",
-			opacity : 1
-		}, 2000, function() {
-			$(this).css({
-				position : "initial"
-			});
-			$(this).css({
-				top : "auto"
-			});
-		})
-		/*window.location.href="index.html";*/
-	})
-	$("body").click(function(e) {
-		var id = e.target.offsetParent.id;
-		if (e.target.tabIndex == -1 && id != "head_1") {
-			var flag = $("#collapse").attr("aria-expanded");
-			if (flag == "true") {
-				$("#collapse").removeClass("in");
-			}
-		}
-	})
+})
 
-	
-	function words_block() {
-		$("#Modal").modal("show");
+//提交留言
+function submmit_words(){
+	var words_mess = $("#message").val();
+	$("#send_word").attr("disabled", true);
+	if(words_mess==null || words_mess==""){
+		$("#send_word").attr("disabled", false);
+		layer.msg('请填写留言后在提交', function(){});
+		return false;
 	}
-
-	
-	//提交留言
-	function submmit_words(){
-		var words_mess = $("#message").val();
-		$("#send_word").attr("disabled", true);
-		if(words_mess==null || words_mess==""){
+	$.ajax({
+		type : "post",
+		url : "/words_mess",
+		data : {"words_mess":words_mess},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('留言失败', function(){});
 			$("#send_word").attr("disabled", false);
-			layer.msg('请填写留言后在提交', function(){});
-			return false;
-		}
-		$.ajax({
-			type : "post",
-			url : "/words_mess",
-			data : {"words_mess":words_mess},
-			cache: false,
-			async: false,
-			error: function(request) {
-				layer.msg('留言失败', function(){});
-				$("#send_word").attr("disabled", false);
-            },
-            success: function(data) {
-                if(data == "success"){
-                	layer.msg('留言成功');
-                	$("#send_word").attr("disabled", false);
-                	$("#Modal").modal("hide");
-                }
+        },
+        success: function(data) {
+            if(data == "success"){
+            	layer.msg('留言成功');
+            	$("#send_word").attr("disabled", false);
+            	$("#message").val("");
             }
+        }
+	});
+}
+
+function loginOut(){
+	layer.msg('确定要退出么？', {
+		  time: 0 //不自动关闭
+		  ,btn: ['咋的，有意见？', '你说退就退啊！']
+		  ,yes: function(index){
+		    layer.close(index);
+		    window.location.href = "loginOut";
+		  }
 		});
-	}
+}
 
-	function loginOut(){
-		layer.msg('确定要退出么？', {
-			  time: 0 //不自动关闭
-			  ,btn: ['咋的，有意见？', '你说退就退啊！']
-			  ,yes: function(index){
-			    layer.close(index);
-			    window.location.href = "loginOut";
-			  }
-			});
-	}
+//进入其他人主页的方法
+function go_people(id) {
+	window.location.href = "/myworld?modify=no&articleId=" + id;
+}
 
-	//进入其他人主页的方法
-	function go_people(id) {
-		window.location.href = "/myworld?modify=no&articleId=" + id;
-	}
-
-	//默认加载初始的第一页的文章
-	$(function() {
-		$.ajax({
-			type : "post",
-			url : "/go_page",
-			data : {"page":'1'},
-			dataType : "json",
-            success: function(data) {
-            	$("#textList li").remove();
-            	var html = "";
-           		for(var a = 0;a<data.length;a++){
-           			var btn = "";
-           			var role = '[[${rowId}]]';
-           			var topImage = "";
-           			if(role=='1'){
-           				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
-           				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
-           				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
-           				if(data[a].top == '0'){
-           					btn = top + del;
-           				}else{
-           					btn = untop + del;
-           				}
-           			}
-           			if(data[a].top == '1'){
-       					topImage = "<img src='images/hot.png' class='hot'>"
+//默认加载初始的第一页的文章
+$(function() {
+	$.ajax({
+		type : "post",
+		url : "/go_page",
+		data : {"page":'1'},
+		dataType : "json",
+        success: function(data) {
+        	var html = "";
+       		 for(var a = 0;a<data.length;a++){
+	  			var btn = "";
+	   			var topImage = "";
+				var head = "<div style='position: absolute; right: 36px; top: 10%;'>";
+				var foot = "</div>";
+       			var role = '[[${rowId}]]';
+       			if(role=='1'){
+       				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				if(data[a].top == '0'){
+       					btn = head + top + del + topImage;
+       				}else{
+       					btn = head + untop + del + topImage;
        				}
-           			html += "<li>"
-            				+"<a href='single.html?id="+data[a].id+"'><div>"
-            				+"<h3 style='display: inline-block;'>"+data[a].title+"</h3>"
-            				+topImage+"</div></a>"
-							+"<div>"
-							+ btn
-            				+"<span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
-							+"<span>"+data[a].create_time+"</span>"
-							+"</div></li>";
-           		}
-	            	$('#textList').append(html);
-            }
-		});
-	})
-	
-	//默认加载初始的第一页的页码
-	$(function() {
-		$.ajax({
-			type : "post",
-			url : "/pageNum",
-			dataType : "json",
-			success : function(data) {
-				var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
-							"<li class='disabled' id='previous'>" +
-						    	"<a id='previousChild'>" +
-						    		"<span>&lt;</span>" +
-						    	"</a>" +
-					    	"</li>";
-				for (var a = 0; a < Math.ceil(data / 6); a++) {
-					if(a==0){
-						html += "<li class='active'>" +
-					    			"<a id='page_" + (a + 1) +
-					    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
-					    				"<span class='sr-only'>(current)</span>" +
-				    				"</a>" +
-			    				"</li>";
-					}else{
-						html += "<li>" +
-					    			"<a id='page_" + (a + 1) +
-					    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
-					    				"<span class='sr-only'>(current)</span>" +
-				    				"</a>" +
-    							"</li>";
-					}
-				}
-						html+=	"<li id='lastPage'>" +
-							    	"<a id='go_next_page' onclick='go_page(2,this,"+data+")'>" +
-							    		"<span>&gt;</span>" +
-							    	"</a>" +
-						    	"</li>" +
-							    "<li id='lastPageParent'><a onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>尾页</a></li>";
-            	$("#go_any_page").append(html);
-            	$("#previous").addClass("disabled");
-        		$("#previousParent").addClass("disabled");
-			}
-		})
-	})
-	
-	//分页方法
-	function go_page(page,obj,lastPage){
-		//分页页码控制开始
-		$(".active li").each(function() {
-			$(this).removeClass("active");
-		});
-		$(obj).parent().addClass("active");
-		if(page!=1){
-			$("#previous").removeClass("disabled"); 
-			$("#previousParent").removeClass("disabled");
-		}else{
-			$("#previous").addClass("disabled");
-			$("#previousParent").addClass("disabled");
-		}
-		if(Math.ceil(lastPage/6) == page){
-			$("#lastPage").addClass("disabled");
-			$("#lastPageParent").addClass("disabled");
-		}else{
-			$("#lastPage").removeClass("disabled");
-			$("#lastPageParent").removeClass("disabled");
-		}
-		$("#previous").removeClass("active");
-		$("#lastPage").removeClass("active");
-		$("#previousParent").removeClass("active");
-		$("#lastPageParent").removeClass("active");
-		$("#page_"+page).parent().addClass('active');
-		//分页页码控制结束
-		$.ajax({
-			type : "post",
-			url : "/go_page",
-			data : {"page":page},
-			dataType : "json",
-			cache: true,
-            success: function(data) {
-            	$("#textList li").remove();
-            	var html = "";
-           		for(var a = 0;a<data.length;a++){
-           			var btn = "";
-           			var role = '[[${rowId}]]';
-           			var topImage = "";
-           			if(role=='1'){
-           				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
-           				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
-           				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
-           				if(data[a].top == '0'){
-           					btn = top + del;
-           				}else{
-           					btn = untop + del;
-           				}
-           			}
-           			if(data[a].top == '1'){
-       					topImage = "<img src='images/hot.png' class='hot'>"
-       				}
-           			html += "<li>"
-            				+"<a href='single.html?id="+data[a].id+"'><div>"
-            				+"<h3 style='display:inline-block'>"+data[a].title+"</h3>"+topImage+"</div></a>"
-							+"<div>"
-							+ btn
-            				+"<span>by- </span><a onclick='go_people("+data[a].id+")'>"+data[a].create_user+"</a></span>"
-							+"<span>"+data[a].create_time+"</span>"
-							+"</div></li>";
-           		}
-           		if(page-1<=0){
-	            	$("#previousChild").attr("onclick","")
        			}else{
-	            	$("#previousChild").attr("onclick","go_page("+(page-1)+",this,"+lastPage+")")
+       				btn = head;
        			}
-       			if(page<Math.ceil(lastPage/6)){
-	            	$("#go_next_page").attr("onclick","go_page("+(page+1)+",this,"+lastPage+")")
+       			if(data[a].top == '1'){
+       				topImage = "<span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true' title='置顶'></span>";
+   				}
+       			btn = btn + topImage + foot;
+       			if(data[a].type=='1'){
+       				type='技术交流';
+       			}else if(data[a].type=='1'){
+       				type='我的困惑';
        			}else{
-       				$("#go_next_page").attr("onclick","")
+       				type='谈谈生活';
        			}
+       			html += 
+           			"<div class='article'>"+
+						"<div class='article_inside'>"+
+							"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>"+
+								"<a>"+data[a].title+"</a>"+
+							"</h3>"+
+							"<div class='content'>"+
+								"<span>"+
+									data[a].lead+
+								"</span>"+
+							"</div>"+
+							"<div class='article_img_div'>"+
+								"<span class='type'>"+type+"</span>"+
+								"<span class='time'>"+data[a].create_time+"</span>"+
+								"<span class='view'>"+data[a].see+"</span>"+
+								"<span class='glyphicon glyphicon-user' aria-hidden='true' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
+							"</div>"+
+							btn +
+							"<div class='readall'>"+
+								"<span onclick='gpSingle("+data[a].id+")'><a style='color: green;'>阅读全文</a></span>"+
+							"</div>"+
+						"</div>"+
+					"</div>";
+       		}
             	$('#textList').append(html);
-            }
-		});
+        }
+	});
+})
+
+//默认加载初始的第一页的页码
+$(function() {
+	$.ajax({
+		type : "post",
+		url : "/pageNum",
+		dataType : "json",
+		success : function(data) {
+			var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
+						"<li class='disabled' id='previous'>" +
+					    	"<a id='previousChild'>" +
+					    		"<span>&lt;</span>" +
+					    	"</a>" +
+				    	"</li>";
+			for (var a = 0; a < Math.ceil(data / 6); a++) {
+				if(a==0){
+					html += "<li class='active'>" +
+				    			"<a id='page_" + (a + 1) +
+				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+				    				"<span class='sr-only'>(current)</span>" +
+			    				"</a>" +
+		    				"</li>";
+				}else{
+					html += "<li>" +
+				    			"<a id='page_" + (a + 1) +
+				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+				    				"<span class='sr-only'>(current)</span>" +
+			    				"</a>" +
+							"</li>";
+				}
+			}
+					html+=	"<li id='lastPage'>" +
+						    	"<a id='go_next_page' onclick='go_page(2,this,"+data+")'>" +
+						    		"<span>&gt;</span>" +
+						    	"</a>" +
+					    	"</li>" +
+						    "<li id='lastPageParent'><a onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>尾页</a></li>";
+        	$("#go_any_page").append(html);
+        	$("#previous").addClass("disabled");
+    		$("#previousParent").addClass("disabled");
+		}
+	})
+})
+
+//分页方法
+function go_page(page,obj,lastPage){
+	//分页页码控制开始
+	$("#go_any_page li").each(function() {
+		$(this).removeClass("active");
+	});
+	$(obj).parent().addClass("active");
+	if(page!=1){
+		$("#previous").removeClass("disabled"); 
+		$("#previousParent").removeClass("disabled");
+	}else{
+		$("#previous").addClass("disabled");
+		$("#previousParent").addClass("disabled");
 	}
-	//点击图片的方法
-	function seeBigImage(){
-		 $('[data-magnify]').magnify({
-             draggable: true,
-             resizable: true,
-             movable: true,
-             keyboard: true,
-             title: true,
-             modalWidth: 320,
-             modalHeight: 320,
-             fixedContent: true,
-             fixedModalSize: false,
-             initMaximized: false,
-             gapThreshold: 0.02,
-             ratioThreshold: 0.1,
-             minRatio: 0.1,
-             maxRatio: 16,
-             headToolbar: ['maximize', 'close'],
-             footToolbar: ['zoomIn', 'zoomOut',  'fullscreen', , 'rotateRight'],
-             multiInstances: true,
-             initEvent: 'click',
-             initAnimation: true,
-             fixedModalPos: false,
-             zIndex: 1090,
-             dragHandle: '.magnify-modal'
-         });
-     }
-	//置顶
-	function totop(articleId,time){
+	if(Math.ceil(lastPage/6) == page){
+		$("#lastPage").addClass("disabled");
+		$("#lastPageParent").addClass("disabled");
+	}else{
+		$("#lastPage").removeClass("disabled");
+		$("#lastPageParent").removeClass("disabled");
+	}
+	$("#previous").removeClass("active");
+	$("#lastPage").removeClass("active");
+	$("#previousParent").removeClass("active");
+	$("#lastPageParent").removeClass("active");
+	$("#page_"+page).parent().addClass('active');
+	//分页页码控制结束
+	$.ajax({
+		type : "post",
+		url : "/go_page",
+		data : {"page":page},
+		dataType : "json",
+		cache: true,
+        success: function(data) {
+        	$("#textList").empty();
+        	var html = "";
+       		for(var a = 0;a<data.length;a++){
+       			var btn = "";
+       			var role = '[[${rowId}]]';
+       			var topImage = "";
+   				var head = "<div>";
+				var foot = "</div>";
+       			if(role=='1'){
+       				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				if(data[a].top == '0'){
+       					btn = head + top + del + topImage;
+       				}else{
+       					btn = head + untop + del + topImage;
+       				}
+       			}else{
+       				btn = head;
+       			}
+       			if(data[a].top == '1'){
+       				topImage = "<span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true' title='置顶'></span>";
+   				}
+       			btn = btn + topImage + foot;
+       			if(data[a].type=='1'){
+       				type='技术交流';
+       			}else if(data[a].type=='1'){
+       				type='我的困惑';
+       			}else{
+       				type='谈谈生活';
+       			}
+       			html += "<div class='article'>"+
+							"<div class='article_inside'>"+
+								"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>"+
+									"<a>"+data[a].title+"</a>"+
+								"</h3>"+
+								"<div class='content'>"+
+									"<span>"+
+									   data[a].lead+
+									"</span>"+
+								"</div>"+
+								"<div class='article_img_div'>"+
+									"<span class='type'>"+type+"</span>"+
+									"<span class='time'>"+data[a].create_time+"</span>"+
+									"<span class='view'>"+data[a].see+"</span>"+
+									"<span class='glyphicon glyphicon-user' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
+								"</div>"+
+								btn + 
+								"<div class='readall'>"+
+									"<span onclick='gpSingle("+data[a].id+")'><a href='#' style='color: green;'>阅读全文</a></span>"+
+								"</div>"+
+							"</div>"+
+						"</div>";
+       		}
+       		if(page-1<=0){
+            	$("#previousChild").attr("onclick","")
+   			}else{
+            	$("#previousChild").attr("onclick","go_page("+(page-1)+",this,"+lastPage+")")
+   			}
+   			if(page<Math.ceil(lastPage/6)){
+            	$("#go_next_page").attr("onclick","go_page("+(page+1)+",this,"+lastPage+")")
+   			}else{
+   				$("#go_next_page").attr("onclick","")
+   			}
+        	$('#textList').append(html);
+        }
+	});
+}
+
+//置顶
+function totop(articleId,time){
+	$.ajax({
+		type : "post",
+		url : "/top",
+		data : {"articleId":articleId,"time":time},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('置顶失败', function(){});
+        },
+        success: function(data) {
+            if(data == "success"){
+            	window.location.reload();
+            }
+        }
+	});
+}
+//取消置顶
+function untop(articleId,time){
+	$.ajax({
+		type : "post",
+		url : "/untop",
+		data : {"articleId":articleId,"time":time},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('取消置顶失败', function(){});
+        },
+        success: function(data) {
+            if(data == "success"){
+            	window.location.reload();
+            }
+        }
+	});
+}
+//删除
+function del(articleId,time){
+	$.ajax({
+		type : "post",
+		url : "/isdel",
+		data : {"articleId":articleId,"time":time},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('删除失败', function(){});
+        },
+        success: function(data) {
+            if(data == "success"){
+            	layer.msg('删除成功');
+            }
+        }
+	});
+}
+
+$(function(){
+	$.ajax({
+		type : "post",
+		url : "/getNotice",
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('获取消息失败', function(){});
+        },
+        success: function(data) {
+            if(data != ""){
+            	var html ="";
+            	for(var a=0;a<data.length;a++){
+            		html += "<li>" + data[a] + "</li>";
+            	}
+            	$("#noticeText").append(html);
+            	$("#notice").text("消息("+data.length+")");
+            	$("#notice_phone").text("消息("+data.length+")");
+            }
+        }
+	});
+})
+
+function gpSingle(id){
+	window.location.href='single?id='+id;
+}
+
+function shownotice(){
+	if('' == '[[${session.user}]]'){
+		layer.msg('请登录后查看消息', function(){});
+		return false;
+	}
+	if($('#noticediv').is(':hidden')){
+		$("#noticediv").show();
 		$.ajax({
 			type : "post",
-			url : "/top",
-			data : {"articleId":articleId,"time":time},
+			url : "/delNotice",
 			cache: false,
 			async: false,
 			error: function(request) {
-				layer.msg('置顶失败', function(){});
-            },
-            success: function(data) {
-                if(data == "success"){
-                	layer.msg('置顶成功');
-                }
-            }
+				layer.msg('获取消息失败', function(){});
+	        },
+	        success: function(data) {
+	        	if(data=='success'){
+		        	$("#notice").text("消息");
+	            	$("#notice_phone").text("消息");
+	        	}
+	        }
 		});
+	}else{
+		$("#noticediv").hide();
 	}
-	//取消置顶
-	function untop(articleId,time){
-		$.ajax({
-			type : "post",
-			url : "/untop",
-			data : {"articleId":articleId,"time":time},
-			cache: false,
-			async: false,
-			error: function(request) {
-				layer.msg('取消置顶失败', function(){});
-            },
-            success: function(data) {
-                if(data == "success"){
-                	layer.msg('取消置顶成功');
-                }
-            }
-		});
-	}
-	//删除
-	function del(articleId,time){
-		$.ajax({
-			type : "post",
-			url : "/isdel",
-			data : {"articleId":articleId,"time":time},
-			cache: false,
-			async: false,
-			error: function(request) {
-				layer.msg('删除失败', function(){});
-            },
-            success: function(data) {
-                if(data == "success"){
-                	layer.msg('删除成功');
-                }
-            }
-		});
-	}
+}
 </script>
+</body>
 </html>

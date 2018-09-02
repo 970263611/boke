@@ -46,6 +46,8 @@ public final class WeChatMesUtil {
 	
 	public static final String WeChat_MyWorld_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=myworld#wechat_redirect";
 	
+	public static final String WeChat_Image_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=images#wechat_redirect";
+	
 	/**   
      * 返回消息类型：文本   
      */    

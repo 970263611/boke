@@ -260,11 +260,15 @@ public class WeChatServiceImpl implements WeChatService {
 			String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + accessToken;
 			String data = "{" + "\"button\": [" + "{"
 					+ "\"type\": \"view\"," + "\"name\": \"主页\"," + "\"url\": \"" + WeChatMesUtil.WeChat_Index_URL
-					+ "\"" + "}," + "{" + "\"name\": \"提笔\"," + "\"sub_button\": [{" + "\"type\": \"view\","
+					+ "\"" + "}," + 
+					/*"{" + "\"name\": \"提笔\"," + "\"sub_button\": [{" + "\"type\": \"view\","
 					+ "\"name\": \"技术交流\"," + "\"url\": \"" + WeChatMesUtil.WeChat_Write_1_URL + "\"" + "}, {"
 					+ "\"type\": \"view\"," + "\"name\": \"我的困惑\"," + "\"url\": \"" + WeChatMesUtil.WeChat_Write_2_URL
 					+ "\"" + "}, {" + "\"type\": \"view\"," + "\"name\": \"谈谈生活\"," + "\"url\": \""
-					+ WeChatMesUtil.WeChat_Write_3_URL + "\"" + "}]" + "}," + "{" + "\"type\": \"view\","
+					+ WeChatMesUtil.WeChat_Write_3_URL + "\"" + "}]" + "}," */
+					"{" + "\"type\": \"view\","
+					+ "\"name\": \"图片\"," + "\"url\": \"" + WeChatMesUtil.WeChat_Image_URL + "\"" + "},"
+					+ "{" + "\"type\": \"view\","
 					+ "\"name\": \"个人\"," + "\"url\": \"" + WeChatMesUtil.WeChat_MyWorld_URL + "\"" + "}" + "]" + "}";
 			CloseableHttpResponse result = null;
 			JSONObject json = null;

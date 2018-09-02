@@ -1,5 +1,6 @@
 package com.text.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.text.entity.Article;
@@ -151,4 +152,34 @@ public interface UserService {
 	 * @param time 
 	 */
 	String isdel(String articleId, String time);
+
+	HashMap getmyandly(String uId);
+
+	/**
+	 * 查询用户的关注关系
+	 */
+	String checkFolllw(String articleId);
+
+	/**
+	 * 像redis中存储访问量
+	 * @param id
+	 */
+	void setSee(String id);
+
+	/**
+	 * 用户添加标签存储方法
+	 */
+	String saveTags(String tag);
+
+	/**
+	 * 获取消息
+	 * @param id
+	 * @return
+	 */
+	List<String> getNotices(int id);
+
+	/**
+	 * 查看后删除消息
+	 */
+	String delNotice(int id);
 }

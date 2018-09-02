@@ -91,9 +91,7 @@
 							class="icon-bar"></span>
 					</button>
 
-					<a class="navbar-brand" href="index.html" id="speak"><img id="img_logo"
-						src="images/logo_white.jpg"
-						style="height: 20px; width: 20px; float: left; position: initial; top: auto;" /><span
+					<a class="navbar-brand" href="index.html" id="speak"><span
 						style="font-family: cursive; margin-left: -8px;" id='logo_text'>&nbsp大花博客<span
 							style="color: red;">.</span></span></a>
 				</div>
@@ -149,8 +147,7 @@
 				        <tr>
 				            <th data-column-id="id">ID</th>
 				            <th data-column-id="title">标题</th>
-				            <th data-column-id="content">正文</th>
-				            <th data-column-id="lead">导语</th>
+				            <th data-column-id="lead">正文</th>
 				            <th data-column-id="create_user">创建人</th>
 				            <th data-column-id="create_time">创建时间</th>
 				            <th data-column-id="type">类别</th>
@@ -513,8 +510,6 @@
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/npm.js"></script>
-<script type="text/javascript" src="js/jquery.fullPage.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="js/jquery.bootgrid.min.js"></script>
 <script type="text/javascript" src="js/jquery.bootgrid.fa.min.js"></script>
@@ -585,7 +580,7 @@
 		        	return "<a onclick=\"edit_article('"
 				        	+ row.id + "\',\'"
 							+ row.title + "\',\'"
-							+ row.content + "\',\'"
+							+ row.lead + "\',\'"
 							+ row.lead + "\',\'"
 							+ row.create_user + "\',\'"
 							+ row.create_time + "\',\'"

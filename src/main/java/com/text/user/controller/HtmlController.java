@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.alibaba.fastjson.JSON;
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
@@ -77,20 +78,6 @@ public class HtmlController {
 		if(!userService.visit(ipAddress,"index")){
 			return "loginToMuch";
 		}
-		/**
-		 * 查询最新照片信息
-		 * @param originalFilename
-		 * @return
-		 */
-		List<MyPhoto> photo = userService.select_all_four();
-		
-		for(MyPhoto pho:photo) {
-			pho.setPhoto("http://www.loveding.top:8089/"+pho.getUser_id() + "/" + pho.getPhoto());
-		}
-		model.addAttribute("photo1",photo.get(0));
-		model.addAttribute("photo2",photo.get(1));
-		model.addAttribute("photo3",photo.get(2));
-		model.addAttribute("photo4",photo.get(3));
 		
 		//分页下一页功能(废弃)
 //		Subject subject=SecurityUtils.getSubject();
@@ -109,6 +96,11 @@ public class HtmlController {
         return "index";  
     } 
 	
+	@RequestMapping("images")
+	public String images() {
+		return "images";
+	}
+	
 	/**
 	 * 访问文章详情页面后台跳转方法
 	 * @return
@@ -124,6 +116,7 @@ public class HtmlController {
 		}
 		//根据id查询单条文章的所有信息
 		Article article = userService.toSingle(id);
+		userService.setSee(id);
 		//根据id查询关联的所有评价
 		List<Comment> commentList= userService.select_message(id);
 		model.addAttribute("article", article);
@@ -172,13 +165,19 @@ public class HtmlController {
 		if(articleId != null) {
 			nickname = userDao.toSingle(articleId).getCreate_user();
 			model.addAttribute("articleId",articleId);
+		}else {
+			model.addAttribute("articleId","no");
 		}
 		
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
 		User user = (User) session.getAttribute("user");
 		
-		if(modify != null && !"".equals(modify) && nickname != null && !"".equals(nickname) && !nickname.equals(user.getNickname())) {
+		if(modify == null && user == null) {
+			return "login";
+		}
+		
+		if(((modify != null && modify.equals("no") && user == null) || modify != null && !"".equals(modify) && nickname != null && !"".equals(nickname) && !nickname.equals(user.getNickname()))) {
 			User nickname_user = new User();
 			nickname_user.setNickname(nickname);
 			userId = Integer.parseInt(userDao.user_seNickname(nickname_user));
@@ -189,12 +188,9 @@ public class HtmlController {
 			userId = user.getId();
 			Identification = 2;
 		}
-		List<Article> mylist = userService.select_article_mine(nickname);
-		String test1 = userDao.select_myworld_test1(userId);
-		String test2 = userDao.select_myworld_test2(userId);
+		List<Article> mylist = userService.select_article_user_all(nickname);
+		model.addAttribute("userId",userId);
 		model.addAttribute("list",mylist);
- 		model.addAttribute("test1",test1);
-		model.addAttribute("test2",test2);
 		List<MyPhoto> myPhotoList = userDao.select_all(userId);
 		List<HashMap<String,String>> image_list = new ArrayList<>();
 		if(myPhotoList.size() > 0) {
@@ -207,14 +203,24 @@ public class HtmlController {
 			}
 			model.addAttribute("image_list",image_list);
 		}
+		List<String> html = new ArrayList<>();
 		if(Identification == 1) {
 			model.addAttribute("modify",modify);
-			model.addAttribute("nickname",userDao.select_user(userId).getNickname());
+			String newnickname = userDao.select_user(userId).getNickname();
+			for(int i=0;i<newnickname.length();i++) {
+				html.add(String.valueOf(newnickname.charAt(i)));
+			}
+			model.addAttribute("newnickname",html);
+			model.addAttribute("nickname",newnickname);
 		}else if(Identification == 2) {
 			model.addAttribute("modify","yes");
+			for(int i=0;i<nickname.length();i++) {
+				html.add(String.valueOf(nickname.charAt(i)));
+			}
+			model.addAttribute("newnickname",html);
 			model.addAttribute("nickname",nickname);
 		}
-		return "myworld";  
+		return "myword";  
     } 
 	
 	/**
@@ -251,7 +257,7 @@ public class HtmlController {
 				return ToWrite(model,"3",request);
 			}else if("index".equals(state)){
 				return ToIndex(model,request);
-			}else if("myworld".equals(state)){
+			}else if("myword".equals(state)){
 				return myWorld(model,request);
 			}
 		}else{

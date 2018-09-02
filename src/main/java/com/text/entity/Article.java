@@ -24,6 +24,7 @@ public class Article implements Serializable{
 	private String type;	   //文章类型---技术交流1，我的困惑2，谈谈生活3，情感交流4
 	private String isdelete;   //是否删除0不删除，1删除
 	private String top;        //是否置顶0不置顶，1置顶
+	private int see;           //访问量
 	
 	public int getId() {
 		return id;
@@ -78,6 +79,12 @@ public class Article implements Serializable{
 	}
 	public void setTop(String top) {
 		this.top = top;
+	}
+	public int getSee() {
+		return see;
+	}
+	public void setSee(int see) {
+		this.see = see;
 	}
 	
 	

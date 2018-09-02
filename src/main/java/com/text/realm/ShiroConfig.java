@@ -64,8 +64,9 @@ public class ShiroConfig {
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
 //        filterChainDefinitionMap.put("/**", "authc");
         filterChainDefinitionMap.put("/loginOut", "authc");
-        filterChainDefinitionMap.put("/myworld", "authc");
+        /*filterChainDefinitionMap.put("/myworld", "authc");*/
         filterChainDefinitionMap.put("/write", "authc");
+        filterChainDefinitionMap.put("/notice", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         logger.info("Shiro拦截器工厂类注入成功");

@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.text.entity.Article;
 import com.text.entity.Comment;
+import com.text.entity.MyPhoto;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.user.service.UserService;
@@ -110,7 +113,11 @@ public class UserController {
 		String message = request.getParameter("message");
 		Comment comment = new Comment();
 		comment.setA_id(a_id);
-		comment.setCreate_user(user.getNickname());
+		if(user==null) {
+			comment.setCreate_user("游客");
+		}else {
+			comment.setCreate_user(user.getNickname());
+		}
 		comment.setCreate_time(getTime());
 		comment.setMessage(message);
 		return userService.comment_insert(comment);
@@ -128,6 +135,8 @@ public class UserController {
 		WordMessage wordMessage = new WordMessage();
 		if(user!=null){
 			wordMessage.setCreate_user(user.getNickname());
+		}else {
+			wordMessage.setCreate_user("游客");
 		}
 		wordMessage.setCreate_time(getTime());
 		wordMessage.setMessage(message);
@@ -187,21 +196,6 @@ public class UserController {
 	}
 	
 	/**
-	 * 判断用户是否登陆
-	 */
-	@RequestMapping("userLoginOr")
-	public String userLoginOr() {
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
-		User user = (User) session.getAttribute("user");
-		if(user==null) {
-			return null;
-		}else {
-			return user.getNickname();
-		}
-	}
-	
-	/**
 	 * 用户关注的方法
 	 */
 	@RequestMapping("follow")
@@ -233,4 +227,72 @@ public class UserController {
 		return userService.isdel(articleId,time);
 	}
 	
+	@RequestMapping("getMYandLY")
+	public HashMap getmyandly(String uId) {
+		return userService.getmyandly(uId);
+	}
+	
+	/**
+	 * 照片页面获取照片
+	 */
+	@RequestMapping("getImages")
+	public List<MyPhoto> getImages(){
+		/**
+		 * 查询最新照片信息
+		 * @param originalFilename
+		 * @return
+		 */
+		List<MyPhoto> photo = userService.select_all_four();
+		
+		for(MyPhoto pho:photo) {
+			pho.setPhoto("http://www.loveding.top:8089/"+pho.getUser_id() + "/" + pho.getPhoto());
+		}
+		return photo;
+
+	}
+	
+	/**
+	 * 查询用户的关注关系
+	 */
+	@RequestMapping("checkFolllw")
+	public String checkFolllw(String articleId) {
+		return userService.checkFolllw(articleId);
+	}
+	
+	/**
+	 * 用户添加标签存储方法
+	 */
+	@RequestMapping("saveTags")
+	public String saveTags(String tag) {
+		return userService.saveTags(tag);
+	}
+	
+	/**
+	 * 获取消息
+	 */
+	@RequestMapping("getNotice")
+	public List<String> getNotice(){
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		User user = (User) session.getAttribute("user");
+		if(user!=null) {
+			List<String> notices = userService.getNotices(user.getId());
+			return notices;
+		}
+		return null;
+	}
+	
+	/**
+	 * 查看后删除消息
+	 */
+	@RequestMapping("delNotice")
+	public String delNotice(){
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		User user = (User) session.getAttribute("user");
+		if(user!=null) {
+			return userService.delNotice(user.getId());
+		}
+		return null;
+	}
 }

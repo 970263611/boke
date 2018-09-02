@@ -65,7 +65,7 @@ public class RocketMQUtil implements ApplicationContextAware{
 		}
 
 	    //发送10条消息到Topic为TopicTest，tag为TagA，消息内容为“Hello RocketMQ”拼接上i的值
-	    for (int i = 0; i < 3; i++) {
+	    for (int i = 0; i < 1; i++) {
 	        try {
 	            Message msg = new Message(topicName,// topic
 	            		tagName,// tag

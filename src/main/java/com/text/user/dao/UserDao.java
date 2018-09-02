@@ -145,7 +145,7 @@ public interface UserDao {
 	 * @param nickname
 	 * @return
 	 */
-	@Select("select * from article where create_user = #{0}")
+	@Select("select * from article where create_user = #{0} and isdelete='0' GROUP BY(create_time) DESC")
 	List<Article> select_article_user_all(String nickname);
 
 	/**
@@ -185,7 +185,7 @@ public interface UserDao {
 	 * @param originalFilename
 	 * @return
 	 */
-	@Select("select * from myphoto where user_id = #{0} ORDER BY(update_time) DESC limit 0,3")
+	@Select("select * from myphoto where user_id = #{0} ORDER BY(update_time) DESC")
 	List<MyPhoto> select_all(int id);
 	
 	/**
@@ -193,7 +193,7 @@ public interface UserDao {
 	 * @param originalFilename
 	 * @return
 	 */
-	@Select("SELECT a.*, b.nickname FROM myphoto a LEFT join user b on a.user_id = b.id ORDER BY(a.update_time) DESC LIMIT 0,4")
+	@Select("SELECT a.*, b.nickname FROM myphoto a LEFT join user b on a.user_id = b.id ORDER BY(a.update_time) DESC LIMIT 0,12")
 	List<MyPhoto> select_all_four();
 
 	/**
@@ -270,5 +270,18 @@ public interface UserDao {
 	 */
 	@Select("select id from user where nickname = (select create_user from article where id = #{0})")
 	Integer getUserIdByArticleId(String articleId);
+
+	/**
+	 * 定时方法，批量存储文章访问量到数据库
+	 * @param articles
+	 */
+	@Update({
+		"<script>"+
+			"<foreach separator=';' item='article' collection='articles'>"+
+				"update article set see = #{article.see} where id = #{article.id}"+
+			"</foreach>"+
+		"</script>"
+	})
+	void beachSaveSee(@Param("articles")List<Article> articles);
 
 }

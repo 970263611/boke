@@ -2,6 +2,7 @@ package com.text.user.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.Follow;
 import com.text.entity.MyPhoto;
+import com.text.entity.Tag;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.realm.RedisCacheConfiguration;
@@ -68,6 +70,8 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 查询分页
 	 */
+	//判定文章分页调用为第几次调用
+    int dy = 1;
 	@Override
 	public List<Article> Go_page(int page) {
 		//开启redis连接
@@ -163,32 +167,59 @@ public class UserServiceImpl implements UserService {
 	        }
         //当置顶文章个数为0的时候
         }else {
+        	//从redis中查询非置顶文章的个数
+        	int newasize = jedis.llen("article").intValue();
         	//判断数据库置顶文章个数是否为0，当为0的情况时
-        	if(userDao.select_article_top().size()==0) {
-        		//从redis中查询非置顶文章的个数
-        		int newasize = jedis.llen("article").intValue();
+        	if(newasize!=0) {
+        		//获取所有非置顶的文章标题
+        		List<String> articles = jedis.sort("article",sortingParameters);
+        		//新建一个list用于接收截取后的标题
+    			List<String>  titles = new ArrayList<>();
         		//当redis中非置顶文章个数大于等于本页所需要文章数量的时候（足够填充本页）
-        		if(newasize>=pageSize) {
+        		if(newasize>=articleSize) {
+        			//截取操作
+        			for(int a=firstArticle;a<articleSize;a++) {
+        				titles.add(articles.get(a));
+        			}
         			//从redis取出非置顶文章的前本页所需要文章数量条
-        			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, pageSize),jedis);
+        			acList = RedisUtil.hgetArticle(titles,jedis);
     			//当redis中非置顶文章个数不足够填充本页时
         		}else {
+        			//截取操作
+        			for(int a=firstArticle;a<newasize;a++) {
+        				titles.add(articles.get(a));
+        			}
         			//取出redis中所有的非置顶文章
-        			acList = RedisUtil.hgetArticle(jedis.sort("article",sortingParameters).subList(0, asize),jedis);
+        			acList = RedisUtil.hgetArticle(titles,jedis);
         		}
     		//判断数据库置顶文章个数是否为0，当不为0的情况时	
         	}else {
+        		if(dy==2) {
+        			//从数据库中取出所有的非置顶文章
+	        		List<Article> untops = userDao.select_article_untop();
+	        		//将所有的非置顶文章缓存到redis中
+	    			RedisUtil.hsetArticle(untops,jedis);
+	    			//递归调用并返回
+	    			return Go_page(page);
+        		}
         		List<Article> topac = userDao.select_article_top();
         		//查询出数据库所有的置顶文章
         		acList.addAll(topac);
         		//将置顶文章缓存到redis中
         		RedisUtil.hsetTopArticle(acList,jedis);
+        		//调用次数加一
+        		dy = dy + 1;
         		//递归调用并返回
     			return Go_page(page);
         	}
 		}
         //关闭redis连接，释放资源
         redisDateSourse.closeRedis(jedis);
+        for(Article a:acList) {
+        	a.setCreate_time(a.getCreate_time().replaceFirst("19-", ""));
+        	a.setCreate_time(a.getCreate_time().replaceFirst("18-", ""));
+        	a.setCreate_time(a.getCreate_time().replaceFirst("17-", ""));
+        }
         //返回文章信息给前端
 		return acList;
 	}
@@ -198,10 +229,26 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public String save_article(Article ac) {
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		User user = (User) session.getAttribute("user");
 		Jedis jedis = redisDateSourse.getRedis();
 		int size = userDao.saveArticle(ac);
 		if (size == 1) {
 			RedisUtil.hsetArticleSingle(ac,jedis);
+			byte[] childs = jedis.get(("follow_"+user.getId()).getBytes());
+			List<Integer> childIds = (List<Integer>) SerializeUtil.unserialize(childs);
+			if(childIds!=null) {
+				for(Integer id:childIds) {
+					byte[] noticeByte = jedis.hget("notice".getBytes(), (id+"").getBytes());
+					List<String> notices = new ArrayList<>();
+					if(SerializeUtil.unserialize(noticeByte)!=null) {
+						notices.addAll((List<String>) SerializeUtil.unserialize(noticeByte));
+					}
+					notices.add("您关注的"+ac.getCreate_user()+"刚刚发布了一篇名字为"+ac.getTitle()+"的文章");
+					jedis.hset("notice".getBytes(), (id+"").getBytes(), SerializeUtil.serialize(notices));
+				}
+			}
 			redisDateSourse.closeRedis(jedis);
 			return "success";
 		} else {
@@ -464,9 +511,15 @@ public class UserServiceImpl implements UserService {
 		User user = (User) session.getAttribute("user");
 		Jedis jedis = redisDateSourse.getRedis();
 		byte[] bytes = jedis.get(("follow_"+parentId).getBytes());
+		@SuppressWarnings("unchecked")
 		List<Integer> childIds = (List<Integer>) SerializeUtil.unserialize(bytes);//取出关注用户的子集
-		if(childIds.contains(user.getId())){//如果子集包含当前登录用户
+		if(user == null) {
+			redisDateSourse.closeRedis(jedis);
+			return "nouser";
+		}
+		if(childIds !=null && childIds.contains(user.getId())){//如果子集包含当前登录用户
 			System.out.println("此用户已经关注了");
+			redisDateSourse.closeRedis(jedis);
 			return "successed";
 		}else{
 			Follow follow = new Follow();
@@ -474,8 +527,18 @@ public class UserServiceImpl implements UserService {
 			follow.setChildId(user.getId());
 			follow.setCreateTime(new Date());
 			RocketMQUtil.producer(ipAddress, producterName, topicName, "follow", JSONObject.toJSONString(follow));
+			if(childIds == null) {
+				childIds = new ArrayList<>();
+			}
 			childIds.add(user.getId());
 			jedis.set(("follow_"+parentId).getBytes(), SerializeUtil.serialize(childIds));
+			byte[] noticeByte = jedis.hget("notice".getBytes(), (parentId+"").getBytes());
+			List<String> notices = new ArrayList<>();
+			if(SerializeUtil.unserialize(noticeByte)!=null) {
+				notices.addAll((List<String>) SerializeUtil.unserialize(noticeByte));
+			}
+			notices.add(user.getNickname()+"刚刚关注了你");
+			jedis.hset("notice".getBytes(), (parentId+"").getBytes(), SerializeUtil.serialize(notices));
 		}
 		redisDateSourse.closeRedis(jedis);
         return "success";
@@ -531,6 +594,109 @@ public class UserServiceImpl implements UserService {
 			String body = new String(msg.getBody());
 			Follow follow = JSON.parseObject(new String(msg.getBody()), Follow.class);
         }*/
+	}
+	/**
+	 * 获取用户的名言和留言
+	 */
+	@Override
+	public HashMap getmyandly(String uId) {
+		int userId = Integer.parseInt(uId);
+		String test1 = userDao.select_myworld_test1(userId);
+		String test2 = userDao.select_myworld_test2(userId);
+		HashMap map = new HashMap<>();
+		map.put("test1", test1);
+		map.put("test2", test2);
+		return map;
+	}
+	
+	/**
+	 * 查询用户的关注关系
+	 */
+	@Override
+	public String checkFolllw(String articleId) {
+		Integer parentId = userDao.getUserIdByArticleId(articleId);
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		User user = (User) session.getAttribute("user");
+		Jedis jedis = redisDateSourse.getRedis();
+		byte[] bytes = jedis.get(("follow_"+parentId).getBytes());
+		@SuppressWarnings("unchecked")
+		List<Integer> childIds = (List<Integer>) SerializeUtil.unserialize(bytes);//取出关注用户的子集
+		if(user == null) {
+			redisDateSourse.closeRedis(jedis);
+			return "nouser";
+		}
+		if(childIds !=null && childIds.contains(user.getId())){//如果子集包含当前登录用户
+			System.out.println("此用户已经关注了");
+			redisDateSourse.closeRedis(jedis);
+			return "successed";
+		}else {
+			redisDateSourse.closeRedis(jedis);
+			return "show";
+		}
+	}
+
+	/**
+	 * 像redis中存储访问量
+	 * @param id
+	 */
+	@Override
+	public void setSee(String id) {
+		Jedis jedis = redisDateSourse.getRedis();
+		int see;
+		Article article = RedisUtil.hgetArticleSingle(id, jedis);
+		if(jedis.hget("article_" + id, "see")!=null) {
+			see = article.getSee();
+			see = see +1;
+		}else {
+			see = userDao.toSingle(id).getSee();
+			see = 1;
+		}
+		jedis.hset("article_" + article.getId()+"", "see", see+"");
+		redisDateSourse.closeRedis(jedis);
+	}
+
+	/**
+	 * 用户添加标签存储方法
+	 */
+	@Override
+	public String saveTags(String tag) {
+		Tag tagEntity = new Tag();
+		Subject subject=SecurityUtils.getSubject();
+		Session session=subject.getSession();
+		User user = (User) session.getAttribute("user");
+		tagEntity.setTag(tag);
+		if(user!=null) {
+			tagEntity.setUserId(user.getId());
+			tagEntity.setNickname(user.getNickname());
+		}
+		RocketMQUtil.producer(ipAddress, producterName, topicName, "tagSave", JSONObject.toJSONString(tagEntity));
+		return "success";
+	}
+
+	/**
+	 * 获取消息
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public List<String> getNotices(int id) {
+		Jedis jedis = redisDateSourse.getRedis();
+		byte[] noticeByte = jedis.hget("notice".getBytes(), (id+"").getBytes());
+		List<String> notices = (List<String>) SerializeUtil.unserialize(noticeByte);
+		redisDateSourse.closeRedis(jedis);
+		return notices;
+	}
+
+	/**
+	 * 查看后删除消息
+	 */
+	@Override
+	public String delNotice(int id) {
+		Jedis jedis = redisDateSourse.getRedis();
+		jedis.hdel("notice".getBytes(), (id+"").getBytes());
+		redisDateSourse.closeRedis(jedis);
+		return "success";
 	}
 
 }

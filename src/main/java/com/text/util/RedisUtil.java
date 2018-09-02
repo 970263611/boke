@@ -25,6 +25,7 @@ public class RedisUtil {
 				jedis.hset("article_" + ac.getId()+"", "type", ac.getType()+"");
 				jedis.hset("article_" + ac.getId()+"", "isdelete", ac.getIsdelete()+"");
 				jedis.hset("article_" + ac.getId()+"", "top", ac.getTop()+"");
+				jedis.hset("article_" + ac.getId()+"", "see", ac.getSee()+"");
 			}
 		}
 	}
@@ -45,6 +46,7 @@ public class RedisUtil {
 				jedis.hset("article_" + ac.getId()+"", "type", ac.getType()+"");
 				jedis.hset("article_" + ac.getId()+"", "isdelete", ac.getIsdelete()+"");
 				jedis.hset("article_" + ac.getId()+"", "top", ac.getTop()+"");
+				jedis.hset("article_" + ac.getId()+"", "see", ac.getSee()+"");
 			}
 		}
 	}
@@ -60,11 +62,16 @@ public class RedisUtil {
 			article.setTitle(jedis.hget("article_" + a.split("\\*")[1], "title"));
 			article.setContent(jedis.hget("article_" + a.split("\\*")[1], "content"));
 			article.setLead(jedis.hget("article_" + a.split("\\*")[1], "lead"));
-			article.setCreate_user(jedis.hget("article_" + a.split("\\*")[1], "create_user"));
+ 			article.setCreate_user(jedis.hget("article_" + a.split("\\*")[1], "create_user"));
 			article.setCreate_time(jedis.hget("article_" + a.split("\\*")[1], "create_time"));
 			article.setType(jedis.hget("article_" + a.split("\\*")[1], "type"));
 			article.setIsdelete(jedis.hget("article_" + a.split("\\*")[1], "isdelete"));
 			article.setTop(jedis.hget("article_" + a.split("\\*")[1], "top"));
+			if(jedis.hget("article_" + a.split("\\*")[1], "see")==null){
+				article.setSee(0);
+			}else {
+				article.setSee(Integer.parseInt(jedis.hget("article_" + a.split("\\*")[1], "see")));
+			}
 			articles.add(article);
 		}
 		return articles;
@@ -84,6 +91,11 @@ public class RedisUtil {
 		article.setType(jedis.hget("article_" + a, "type"));
 		article.setIsdelete(jedis.hget("article_" + a, "isdelete"));
 		article.setTop(jedis.hget("article_" + a, "top"));
+		if(jedis.hget("article_" + a, "see")==null){
+			article.setSee(0);
+		}else {
+			article.setSee(Integer.parseInt(jedis.hget("article_" + a, "see")));
+		}
 		return article;
 	}
 	
@@ -102,6 +114,7 @@ public class RedisUtil {
 			jedis.hset("article_" + ac.getId()+"", "type", ac.getType()+"");
 			jedis.hset("article_" + ac.getId()+"", "isdelete", ac.getIsdelete()+"");
 			jedis.hset("article_" + ac.getId()+"", "top", ac.getTop()+"");
+			jedis.hset("article_" + ac.getId() + "","see",ac.getSee() + "");
 		}
 	}
 	

@@ -34,7 +34,7 @@ public class RocketMQProducerTest {
         	f.setChildId(2);
         	f.setCreateTime(new Date());
             try {
-                Message msg = new Message("boke",// topic
+                Message msg = new Message("new",// topic
                         "follow",// tag
                         JSONObject.toJSONString(f).getBytes()// body
                 );
