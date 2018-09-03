@@ -31,7 +31,7 @@
 			    <label for="exampleInputPassword1">Password</label>
 			    <input type="password" class="form-control" placeholder="Password"  id="password1" name="password" onkeydown="key_login()">
 			  </div>
-			  <button type="submit" class="btn btn-default" style='margin-top: 25px;width: 30%;' id="login_btn" onclick="userlogin()">Login</button>
+			  <button class="btn btn-default" style='margin-top: 25px;width: 30%;' id="login_btn" onclick="userlogin();">Login</button>
 			  <div style='margin-top: 36px;display:inline-block;float:right;font-size: 20px;background-color: white;'>
 				  <a onclick='register()' style='margin-right:5px;'>注册账号</a>
 				  <a href='index'>返回首页</a>
@@ -80,8 +80,9 @@
 		<span></span>
 	</div>
 </div>
-<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script src="js/loginjs/scipt.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
 	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问file:///C:/Users/love-ding/Desktop/html/mine.html");
@@ -104,12 +105,18 @@
                 if(data == "error"){
                 	layer.msg('用户名或密码输入错误', function(){});
                 }else if(data == "success"){
-                	window.location.href = "index";
+                	window.location.href("index.html")
                 }
             }
 		});
 	}
 	
+	function key_login(){
+		if(event.keyCode==13){
+			userlogin();
+		}
+	}
+
 	function userAdd(){
 		if(nickname=="" || nickname==null || username=="" || username==null || password=="" || password==null || password_once=="" || password_once==null || realname=="" || realname==null){
 			layer.msg('请全部填写后提交', function(){});
@@ -151,12 +158,6 @@
             }
             }
 		});
-	}
-	
-	function key_login(){
-		if(event.keyCode==13){
-			userlogin();
-		}
 	}
 
 	var pc = 
@@ -212,13 +213,17 @@
          "</div> "+
         "</div>"+
 "</div>";
-
+window.onload=function(){
+    if('alLogin' == '[[${session.user_Login}]]'){
+    	window.location.href = "index.html";
+    }
+} 
 $(function(){
 	if(document.documentElement.clientWidth>768){
 		$(document.body).empty();
 		$(document.body).append(pc);
 	}
-})
+}) 
 </script>
 </body>
 </html>
