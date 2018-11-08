@@ -44,11 +44,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private SerializeUtil redisDateSourse;
 	//rocketmq地址
-	private static final String ipAddress = "101.132.136.190:9876";
+	private static final String ipAddress = "";
 	//产生者组
-	private static final String producterName = "dwq";
+	private static final String producterName = "";
 	//topic名称
-	private static final String topicName = "boke";
+	private static final String topicName = "";
 
 	/**
 	 * 向数据库新增用户信息service实现类

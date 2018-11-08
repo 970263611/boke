@@ -20,21 +20,21 @@ import org.dom4j.io.SAXReader;
 
 public final class WeChatMesUtil {
 
-	public static final String Token = "dwq_dhbk";// 微信token
+	public static final String Token = "";// 微信token
 
-	public static final String EncodingAESKey = "zAR6vNswpb7yLtIa2vN6cWepaIJUduy2a77LeG8NeqP";// 微信key
+	public static final String EncodingAESKey = "";// 微信key
 
-	public static final String AppID = "wx3652b18edba544ec";// 微信开发者id
+	public static final String AppID = "";// 微信开发者id
 
-	public static final String AppSecret = "52bb120d7252187c1771e48e4ac72497";// 微信开发者密码
+	public static final String AppSecret = "";// 微信开发者密码
 	
-	public static final String AppID_CS = "wxec7c849d109a54f3";// 微信开发者id
+	public static final String AppID_CS = "";// 微信开发者id
 	
-	public static final String AppSecret_CS = "7c8cecb7166cb3dcab9114cb61984b34";// 微信开发者密码
+	public static final String AppSecret_CS = "";// 微信开发者密码
 	
-	public static final String Account_Number_CS = "gh_9f88428b7945";//测试公众号
+	public static final String Account_Number_CS = "";//测试公众号
 	
-	public static final String LoginURL = "http://www.loveding.top/login";
+	public static final String LoginURL = "";
 	
 	public static final String WeChat_Write_1_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write1#wechat_redirect";
 	
