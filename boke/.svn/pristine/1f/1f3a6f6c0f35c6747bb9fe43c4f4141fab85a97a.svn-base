@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="images/logo.ico" />
+	<title>首页</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css">
+	<link rel="stylesheet" type="text/css" href="css/dwq.css">
+	<style>
+		#noticediv
+		{
+		    background-color: white;
+		    display: inline-block;
+		    position: absolute;
+		    top: 96px;
+		    right: 195px;
+		    width: 300px;
+		    border-radius: 1px;
+		    box-shadow: 0 0 0 1px #9e9e9e;
+        	outline: 3px solid #607d8b52;
+		}
+		@media screen and (max-width: 768px)
+		{
+			#noticediv
+			{
+			    top: 66px;
+			    right: 0px;
+			    width: auto;
+			    width:230px;
+		    }
+		}	
+	</style>
+</head>
+<body>
+<header>
+  <div class="tophead">
+    <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
+    <div id="mnav">
+      <h2><span class="navicon"></span></h2>
+      <ul>
+        <li><a href="index">首页</a></li>
+        <li><a href="images">照片墙</a></li>
+        <li><a href="#" onclick='shownotice()' id='notice'>消息</a></li>
+        <li><a href="write">提笔</a></li>
+        <li><a href="myworld">个人</a></li>
+        <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
+		<a th:case=* th:text='${session.user.nickname}'
+		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
+      </ul>
+    </div>
+    <nav class="topnav" id="topnav">
+      <ul>
+        <li th:switch="${session.user}">
+			<a th:case=null></a>
+			<a th:case=* th:if="${session.user.rowId} == 1" href="admin">进入后台管理页面</a>
+		</li>
+        <li><a href="index">首页</a></li>
+        <li><a href="images">照片墙</a></li>
+        <li><a href="#" onclick='shownotice()' id='notice_phone'>消息</a></li>
+        <li><a href="write">提笔</a></li>
+        <li><a href="myworld">个人</a></li>
+        <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
+		<a th:case=* th:text='${session.user.nickname}'
+		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div>
+	<img src="images/top.jpg">
+</div>
+<div id='flag'></div>
+<div class='allplace'>
+	<div class="col-xs-12 col-md-8 leftplace">
+	<div id='textList'>
+	
+	</div>
+	<div style="background-color: white;height: 35px;margin-bottom: 10px;">
+		<div aria-label='...'>
+		    <ul class='pagination' id='go_any_page' style="margin:0px auto;">
+		    
+		  	</ul>
+		</div>
+	</div>
+	</div>
+	<div class="col-xs-12 col-md-4 rightplace" >
+		<div class="cloud" style="margin-top: 0px;">
+	      <h2 class="hometitle">添加标签</h2>
+	      <ul id='tags'>
+	        <a>大花真帅</a> <a>网站好美</a> <a>我好喜欢</a> <a>大花无敌</a> <a>茉莉花帅</a> <a>想嫁</a> <a>折服</a> <a>666</a><a>厉害</a> <a>无敌寂寞</a> <a>不要脸</a> <a>嘿嘿</a>
+	      </ul>
+	    </div>
+	    <div class='aboutme'>
+			<h2 class="ab_title">关于我</h2>
+			<div class='mine_img'>
+				<img src="images/mine.jpg" style='border-radius: 50%;width: 100px;height: 100px;' alt="">
+			</div>
+			<div class="ab_con" style='margin-left: 63px;'>
+		        <p>姓名：茉莉花。。。。。。</p>
+		        <p>职业：啥也不会的小程序猿</p>
+		        <p>公众号：大花博客（dahuaboke）</p>
+		        <p>邮箱：love_dingwq@163.com</p>
+		      </div>
+		</div>
+		<div style="margin-top: 20px;">
+			<textarea class="form-control message" name="message" id="message" rows="1" placeholder="给我留言" style='height: 120px;'></textarea>
+			<button type="submit" onclick='submmit_words()' id='send_word' class="btn submit_btn2 form-control">提交</button>
+		</div>
+	    <div class="cloud" style="margin-top: 20px;">
+	   	  <h2 class="hometitle">致谢分享</h2>
+	      <p style='margin-top:10px;margin-left: 10px;'>特别致谢：武小默 李伟涛 江东升</p>
+	      <p style='margin-left: 10px;'>请联系我</p>
+	      <div class="col-xs-6 col-md-6" >
+	      	<img src="images/myweixin.jpg">
+	      </div>
+      	  <div class="col-xs-6 col-md-6" >
+      	  	<img src="http://www.loveding.top:8089/dahuablog_image/gzh.jpg">
+      	  </div>
+	    </div>
+	</div>
+</div>
+<div>
+	<footer style="height: 60px;">
+	  <p>Design by 大花博客 黑ICP备18000243号</p>
+	</footer>
+</div>
+<div style='display:none;' id='noticediv'>
+    <a>提醒</a><a style='float:right' onclick='shownotice()'>关闭</a>
+        <ul id='noticeText'>
+        </ul>
+ </div>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+<script>
+console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+window.onload = function ()
+{
+	var oh2 = document.getElementsByTagName("h2")[0];
+	var oUl = document.getElementsByTagName("ul")[0];
+	oh2.onclick = function ()
+	{
+		var style = oUl.style;
+		style.display = style.display == "block" ? "none" : "block";
+		oh2.className = style.display == "block" ? "open" : ""
+	}
+}
+var obj=null;
+var As=document.getElementById('topnav').getElementsByTagName('a');
+obj = As[0];
+for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
+obj=As[i];}
+obj.id='topnav_current';
+
+$("#tags a").click(function(event){
+	var tag = event.target.innerText;
+	$.ajax({
+		type : "post",
+		url : "/saveTags",
+		data : {"tag":tag},
+		cache: false,
+		async: false,
+        success: function(data) {
+            if(data == "success"){
+            	layer.msg('添加标签成功');
+            }
+        }
+	});
+})
+
+//提交留言
+function submmit_words(){
+	var words_mess = $("#message").val();
+	$("#send_word").attr("disabled", true);
+	if(words_mess==null || words_mess==""){
+		$("#send_word").attr("disabled", false);
+		layer.msg('请填写留言后在提交', function(){});
+		return false;
+	}
+	$.ajax({
+		type : "post",
+		url : "/words_mess",
+		data : {"words_mess":words_mess},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('留言失败', function(){});
+			$("#send_word").attr("disabled", false);
+        },
+        success: function(data) {
+            if(data == "success"){
+            	layer.msg('留言成功');
+            	$("#send_word").attr("disabled", false);
+            	$("#message").val("");
+            }
+        }
+	});
+}
+
+function loginOut(){
+	layer.msg('确定要退出么？', {
+		  time: 0 //不自动关闭
+		  ,btn: ['咋的，有意见？', '你说退就退啊！']
+		  ,yes: function(index){
+		    layer.close(index);
+		    window.location.href = "loginOut";
+		  }
+		});
+}
+
+//进入其他人主页的方法
+function go_people(id) {
+	window.location.href = "/myworld?modify=no&articleId=" + id;
+}
+
+//默认加载初始的第一页的文章
+$(function() {
+	$.ajax({
+		type : "post",
+		url : "/go_page",
+		data : {"page":'1'},
+		dataType : "json",
+        success: function(data) {
+        	var html = "";
+       		 for(var a = 0;a<data.length;a++){
+	  			var btn = "";
+	   			var topImage = "";
+				var head = "<div style='position: absolute; right: 36px; top: 10%;'>";
+				var foot = "</div>";
+       			var role = '[[${rowId}]]';
+       			if(role=='1'){
+       				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				if(data[a].top == '0'){
+       					btn = head + top + del + topImage;
+       				}else{
+       					btn = head + untop + del + topImage;
+       				}
+       			}else{
+       				btn = head;
+       			}
+       			if(data[a].top == '1'){
+       				topImage = "<span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true' title='置顶'></span>";
+   				}
+       			btn = btn + topImage + foot;
+       			if(data[a].type=='1'){
+       				type='技术交流';
+       			}else if(data[a].type=='1'){
+       				type='我的困惑';
+       			}else{
+       				type='谈谈生活';
+       			}
+       			html += 
+           			"<div class='article'>"+
+						"<div class='article_inside'>"+
+							"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>"+
+								"<a>"+data[a].title+"</a>"+
+							"</h3>"+
+							"<div class='content'>"+
+								"<span>"+
+									data[a].lead+
+								"</span>"+
+							"</div>"+
+							"<div class='article_img_div'>"+
+								"<span class='type'>"+type+"</span>"+
+								"<span class='time'>"+data[a].create_time+"</span>"+
+								"<span class='view'>"+data[a].see+"</span>"+
+								"<span class='glyphicon glyphicon-user pointer' aria-hidden='true' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
+							"</div>"+
+							btn +
+							"<div class='readall'>"+
+								"<span onclick='gpSingle("+data[a].id+")'><a style='color: green;'>阅读全文</a></span>"+
+							"</div>"+
+						"</div>"+
+					"</div>";
+       		}
+            	$('#textList').append(html);
+        }
+	});
+})
+
+//默认加载初始的第一页的页码
+$(function() {
+	$.ajax({
+		type : "post",
+		url : "/pageNum",
+		dataType : "json",
+		success : function(data) {
+			var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
+						"<li class='disabled' id='previous'>" +
+					    	"<a id='previousChild'>" +
+					    		"<span>&lt;</span>" +
+					    	"</a>" +
+				    	"</li>";
+			for (var a = 0; a < Math.ceil(data / 6); a++) {
+				if(a==0){
+					html += "<li class='active'>" +
+				    			"<a id='page_" + (a + 1) +
+				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+				    				"<span class='sr-only'>(current)</span>" +
+			    				"</a>" +
+		    				"</li>";
+				}else{
+					html += "<li>" +
+				    			"<a id='page_" + (a + 1) +
+				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+				    				"<span class='sr-only'>(current)</span>" +
+			    				"</a>" +
+							"</li>";
+				}
+			}
+					html+=	"<li id='lastPage'>" +
+						    	"<a id='go_next_page' onclick='go_page(2,this,"+data+")'>" +
+						    		"<span>&gt;</span>" +
+						    	"</a>" +
+					    	"</li>" +
+						    "<li id='lastPageParent'><a onclick='go_page("+Math.ceil(data/6)+",this,"+data+")'>尾页</a></li>";
+        	$("#go_any_page").append(html);
+        	$("#previous").addClass("disabled");
+    		$("#previousParent").addClass("disabled");
+		}
+	})
+})
+
+//分页方法
+function go_page(page,obj,lastPage){
+	 var flag = $('#flag').offset().top;
+     $('html,body').animate({scrollTop:flag},500);
+	//分页页码控制开始
+	$("#go_any_page li").each(function() {
+		$(this).removeClass("active");
+	});
+	$(obj).parent().addClass("active");
+	if(page!=1){
+		$("#previous").removeClass("disabled"); 
+		$("#previousParent").removeClass("disabled");
+	}else{
+		$("#previous").addClass("disabled");
+		$("#previousParent").addClass("disabled");
+	}
+	if(Math.ceil(lastPage/6) == page){
+		$("#lastPage").addClass("disabled");
+		$("#lastPageParent").addClass("disabled");
+	}else{
+		$("#lastPage").removeClass("disabled");
+		$("#lastPageParent").removeClass("disabled");
+	}
+	$("#previous").removeClass("active");
+	$("#lastPage").removeClass("active");
+	$("#previousParent").removeClass("active");
+	$("#lastPageParent").removeClass("active");
+	$("#page_"+page).parent().addClass('active');
+	//分页页码控制结束
+	$.ajax({
+		type : "post",
+		url : "/go_page",
+		data : {"page":page},
+		dataType : "json",
+		cache: true,
+        success: function(data) {
+        	$("#textList").empty();
+        	var html = "";
+       		for(var a = 0;a<data.length;a++){
+       			var btn = "";
+       			var role = '[[${rowId}]]';
+       			var topImage = "";
+   				var head = "<div>";
+				var foot = "</div>";
+       			if(role=='1'){
+       				var del = "<input type='button' style='float: right;margin-right:10px;' value='删除' onclick='del("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
+       				if(data[a].top == '0'){
+       					btn = head + top + del + topImage;
+       				}else{
+       					btn = head + untop + del + topImage;
+       				}
+       			}else{
+       				btn = head;
+       			}
+       			if(data[a].top == '1'){
+       				topImage = "<span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true' title='置顶'></span>";
+   				}
+       			btn = btn + topImage + foot;
+       			if(data[a].type=='1'){
+       				type='技术交流';
+       			}else if(data[a].type=='1'){
+       				type='我的困惑';
+       			}else{
+       				type='谈谈生活';
+       			}
+       			html += "<div class='article'>"+
+							"<div class='article_inside'>"+
+								"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>"+
+									"<a>"+data[a].title+"</a>"+
+								"</h3>"+
+								"<div class='content'>"+
+									"<span>"+
+									   data[a].lead+
+									"</span>"+
+								"</div>"+
+								"<div class='article_img_div'>"+
+									"<span class='type'>"+type+"</span>"+
+									"<span class='time'>"+data[a].create_time+"</span>"+
+									"<span class='view'>"+data[a].see+"</span>"+
+									"<span class='glyphicon glyphicon-user pointer' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
+								"</div>"+
+								btn + 
+								"<div class='readall'>"+
+									"<span onclick='gpSingle("+data[a].id+")'><a href='#' style='color: green;'>阅读全文</a></span>"+
+								"</div>"+
+							"</div>"+
+						"</div>";
+       		}
+       		if(page-1<=0){
+            	$("#previousChild").attr("onclick","")
+   			}else{
+            	$("#previousChild").attr("onclick","go_page("+(page-1)+",this,"+lastPage+")")
+   			}
+   			if(page<Math.ceil(lastPage/6)){
+            	$("#go_next_page").attr("onclick","go_page("+(page+1)+",this,"+lastPage+")")
+   			}else{
+   				$("#go_next_page").attr("onclick","")
+   			}
+        	$('#textList').append(html);
+        }
+	});
+}
+
+//置顶
+function totop(articleId,time){
+	$.ajax({
+		type : "post",
+		url : "/top",
+		data : {"articleId":articleId,"time":time},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('置顶失败', function(){});
+        },
+        success: function(data) {
+            if(data == "success"){
+            	window.location.reload();
+            }
+        }
+	});
+}
+//取消置顶
+function untop(articleId,time){
+	$.ajax({
+		type : "post",
+		url : "/untop",
+		data : {"articleId":articleId,"time":time},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('取消置顶失败', function(){});
+        },
+        success: function(data) {
+            if(data == "success"){
+            	window.location.reload();
+            }
+        }
+	});
+}
+//删除
+function del(articleId,time){
+	$.ajax({
+		type : "post",
+		url : "/isdel",
+		data : {"articleId":articleId,"time":time},
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('删除失败', function(){});
+        },
+        success: function(data) {
+            if(data == "success"){
+            	layer.msg('删除成功');
+            }
+        }
+	});
+}
+
+$(function(){
+	$.ajax({
+		type : "post",
+		url : "/getNotice",
+		cache: false,
+		async: false,
+		error: function(request) {
+			layer.msg('获取消息失败', function(){});
+        },
+        success: function(data) {
+            if(data != ""){
+            	var html ="";
+            	for(var a=0;a<data.length;a++){
+            		html += "<li>" + data[a] + "</li>";
+            	}
+            	$("#noticeText").append(html);
+            	$("#notice").text("消息("+data.length+")");
+            	$("#notice_phone").text("消息("+data.length+")");
+            }
+        }
+	});
+})
+
+function gpSingle(id){
+	window.location.href='single?id='+id;
+}
+
+function shownotice(){
+	if('' == '[[${session.user}]]'){
+		layer.msg('请登录后查看消息', function(){});
+		return false;
+	}
+	if($('#noticediv').is(':hidden')){
+		$("#noticediv").show();
+		$.ajax({
+			type : "post",
+			url : "/delNotice",
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('获取消息失败', function(){});
+	        },
+	        success: function(data) {
+	        	if(data=='success'){
+		        	$("#notice").text("消息");
+	            	$("#notice_phone").text("消息");
+	        	}
+	        }
+		});
+	}else{
+		$("#noticediv").hide();
+	}
+}
+</script>
+</body>
+</html>

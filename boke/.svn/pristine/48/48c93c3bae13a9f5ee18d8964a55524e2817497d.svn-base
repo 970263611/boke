@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+	<title>登陆</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<link rel="stylesheet" type="text/css" href="css/dwq.css">
+<link rel="stylesheet" type="text/css" href="css/login_phone.css">
+<link rel="stylesheet" type="text/css" href="css/login_pc.css">
+</head>
+<body>
+<div class="iphone" style='margin:0px auto;'>
+	<div class="iphone-top">
+		<span class="camera"></span>
+		<span class="sensor"></span>
+		<span class="speaker"></span>
+	</div>
+	<div class="top-bar"></div>
+	<div class="iphone-screen" style='background: url(images/shuidi.jpg)'>
+
+	<div style='height: 300px;width: 300px;margin: 142px auto;' id='logindiv'> 
+         	<form id="form_user1">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Username</label>
+			    <input type="text" class="form-control" placeholder="Username" id="username1" name="username" onkeydown="key_login()">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">Password</label>
+			    <input type="password" class="form-control" placeholder="Password"  id="password1" name="password" onkeydown="key_login()">
+			  </div>
+			  <button class="btn btn-default" style='margin-top: 25px;width: 30%;' id="login_btn" onclick="userlogin();">Login</button>
+			  <div style='margin-top: 36px;display:inline-block;float:right;font-size: 20px;background-color: white;'>
+				  <a onclick='register()' style='margin-right:5px;'>注册账号</a>
+				  <a href='index'>返回首页</a>
+			  </div>
+			</form>
+         </div>
+
+         <div style='height: 300px;width: 300px;margin: 55px auto;display:none;' id='registerdiv'> 
+         	<form id="form_user">
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Nickname</label>
+			    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="注册昵称">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Username</label>
+			    <input type="text" class="form-control" id="username" name="username" placeholder="注册帐号">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Password</label>
+			    <input type="password" class="form-control" id="password" name="password" placeholder="注册密碼">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputEmail1">Password</label>
+			    <input type="password" class="form-control" id="password_once" placeholder="重复密碼">
+			  </div>
+			  <div class="form-group">
+			    <label for="exampleInputPassword1">Realname</label>
+			    <input type="text" class="form-control" id="realname" name="realname" placeholder="真实姓名">
+			  </div>
+			  <button type="submit" class="btn btn-default" style='margin-top: 18px;width: 30%;' onclick="userAdd()">Register</button>
+			  <div style='margin-top: 28px;display:inline-block;float:right;font-size: 20px;background-color: white;'>
+				  <a href='index'>返回首页</a>
+			  </div>
+			</form>
+         </div> 
+	
+	</div>
+	<div class="buttons">
+		<span class="on-off"></span>
+		<span class="sleep"></span>
+		<span class="up"></span>
+		<span class="down"></span>
+	</div>
+	<div class="bottom-bar"></div>
+	<div class="iphone-bottom">
+		<span></span>
+	</div>
+</div>
+<script src="js/loginjs/scipt.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+<script>
+	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+	function register(){
+		$('#logindiv').hide();
+		$('#registerdiv').show();
+	}
+
+	function userlogin(){
+		$.ajax({
+			type : "post",
+			url : "/login",
+			data : $("#form_user1").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('登陆失败', function(){});
+            },
+            success: function(data) {
+                if(data == "error"){
+                	layer.msg('用户名或密码输入错误', function(){});
+                }else if(data == "success"){
+                	window.location.href("index.html")
+                }
+            }
+		});
+	}
+	
+	function key_login(){
+		if(event.keyCode==13){
+			userlogin();
+		}
+	}
+
+	function userAdd(){
+		if(nickname=="" || nickname==null || username=="" || username==null || password=="" || password==null || password_once=="" || password_once==null || realname=="" || realname==null){
+			layer.msg('请全部填写后提交', function(){});
+				return false;
+		}
+		 if($("#password_once").val() != $("#password").val()){
+			 layer.msg('两次密码输入不一致', function(){});
+					return false;
+		 }
+		 if($("#username").val().length<6){
+			 layer.msg('用户名输入过短，请重新填写密码', function(){});
+					return false;
+		 }
+		 if($("#password").val().length<6){
+			 layer.msg('密码输入过短，请重新填写密码', function(){});
+					return false;
+		 }
+		$.ajax({
+			type : "post",
+			url : "/userAdd",
+			data : $("#form_user").serialize(),
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('注册失败');
+            },
+            success: function(data) {
+                if(data == "error"){
+                	layer.msg('注册失败', function(){});
+                }else if(data == "success"){
+                	layer.msg('注册成功,正在为您跳转')
+               		window.location.href = "/index";
+                }else if(data == "NickNamealReguster"){
+                	layer.msg('昵称注册重复', function(){});
+                		return false;
+                }else if(data == "alReguster"){
+                	layer.msg('用户名注册重复', function(){});
+            		return false;
+            }
+            }
+		});
+	}
+
+	var pc = 
+"<div id='ipad'>"+
+	"<div id='homeBtn'></div>"+
+ "       <div id='screen' class='zoomOut zoomIn'> "+
+           
+   "      <div style='height: 300px;width: 500px;margin-top: 142px;margin-left: 107px;' id='logindiv'> "+
+  "       	<form id='form_user1'>"+
+	"		  <div class='form-group'>"+
+	"		    <label for='exampleInputEmail1'>Username</label>"+
+	"		    <input type='text' class='form-control' placeholder='Username' id='username1' name='username' onkeydown='key_login()'>"+
+	"		  </div>"+
+	"		  <div class='form-group'>"+
+	"		    <label for='exampleInputPassword1'>Password</label>"+
+	"		    <input type='password' class='form-control' placeholder='Password'  id='password1' name='password' onkeydown='key_login()'>"+
+	"		  </div>"+
+	"		  <button type='submit' class='btn btn-default' style='margin-top: 25px;width: 30%;' id='login_btn' onclick='userlogin()'>Login</button>"+
+	"		  <div style='margin-top: 36px;display:inline-block;float:right;font-size: 20px;background-color: white;'>"+
+	"			  <a onclick='register()' style='margin-right:5px;'>注册账号</a>"+
+	"			  <a href='index'>返回首页</a>"+
+	"		  </div>"+
+	"		</form>"+
+     "    </div>"+
+
+      "   <div style='height: 300px;width: 500px;margin-top: 55px;margin-left: 107px;display:none;' id='registerdiv'> "+
+       "  	<form id='form_user'>"+
+		"	  <div class='form-group'>"+
+		"	    <label for='exampleInputEmail1'>Nickname</label>"+
+		"	    <input type='text' class='form-control' id='nickname' name='nickname' placeholder='注册昵称'>"+
+		"	  </div>"+
+		"	  <div class='form-group'>"+
+		"	    <label for='exampleInputEmail1'>Username</label>"+
+		"	    <input type='text' class='form-control' id='username' name='username' placeholder='注册帐号'>"+
+		"	  </div>"+
+		"	  <div class='form-group'>"+
+		"	    <label for='exampleInputEmail1'>Password</label>"+
+		"	    <input type='password' class='form-control' id='password' name='password' placeholder='注册密碼'>"+
+		"	  </div>"+
+		"	  <div class='form-group'>"+
+		"	    <label for='exampleInputEmail1'>Password</label>"+
+		"	    <input type='password' class='form-control' id='password_once' placeholder='重复密碼'>"+
+		"	  </div>"+
+		"	  <div class='form-group'>"+
+		"	    <label for='exampleInputPassword1'>Realname</label>"+
+		"	    <input type='text' class='form-control' id='realname' name='realname' placeholder='真实姓名'>"+
+		"	  </div>"+
+		"	  <button type='submit' class='btn btn-default' style='margin-top: 18px;width: 30%;' onclick='userAdd()'>Register</button>"+
+		"	  <div style='margin-top: 28px;display:inline-block;float:right;font-size: 20px;background-color: white;'>"+
+		"		  <a href='index'>返回首页</a>"+
+		"	  </div>"+
+		"	</form>"+
+         "</div> "+
+        "</div>"+
+"</div>";
+window.onload=function(){
+    if('alLogin' == '[[${session.user_Login}]]'){
+    	window.location.href = "index.html";
+    }
+} 
+$(function(){
+	if(document.documentElement.clientWidth>768){
+		$(document.body).empty();
+		$(document.body).append(pc);
+	}
+}) 
+</script>
+</body>
+</html>
