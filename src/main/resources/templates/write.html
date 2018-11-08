@@ -77,7 +77,7 @@
 </style>
 </head>
 <body>
-<header>
+<header id='head'>
   <div class="tophead">
     <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
     <div id="mnav">
@@ -199,18 +199,14 @@
 <script type="text/javascript" src="layer/layer.js"></script>
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
-	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问file:///C:/Users/love-ding/Desktop/html/mine.html");
-	window.onload = function ()
-	{
+	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+	$("#head").click(function(){
 		var oh2 = document.getElementsByTagName("h2")[0];
 		var oUl = document.getElementsByTagName("ul")[0];
-		oh2.onclick = function ()
-		{
-			var style = oUl.style;
-			style.display = style.display == "block" ? "none" : "block";
-			oh2.className = style.display == "block" ? "open" : ""
-		}
-	}
+		var style = oUl.style;
+		style.display = style.display == "block" ? "none" : "block";
+		oh2.className = style.display == "block" ? "open" : ""
+	});
 	var obj=null;
 	var As=document.getElementById('topnav').getElementsByTagName('a');
 	obj = As[0];

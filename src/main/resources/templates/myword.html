@@ -152,7 +152,7 @@
 </style>
 </head>
 <body>
-<header>
+<header id='head'>
   <div class="tophead">
     <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
     <div id="mnav">
@@ -189,7 +189,7 @@
 <div id='backimg'> 
 	<img src="images/myword.jpg">
 </div>
-<div> 
+<div id='ttext'> 
 	<div class="col-xs-12 col-md-8 leftplace" id='firstmy'>
 		<div id='mingyan'> 
 			<div id='mydiv'>
@@ -214,7 +214,7 @@
 			<span style="font-size:14px;"><div id="uploader-demo">  
 			    <!--用来存放item-->  
 			    <div id="thelist" class="uploader-list"></div>  
-			    <div>  
+			    <div style="margin-bottom: 20px;">  
 				    <button id="filePicker" class="btn btn-default">选择照片</button>
 				    <input type="text" id = "test_photo" class='form-control' style="width: 53%;display:inline-block;" placeholder="给照片加点什么吧"> 
 				    <button id="ctlBtn" class="btn btn-default">上传照片</button>
@@ -275,18 +275,14 @@
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="js/jquery.magnify.js"></script>
 <script>
-	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问file:///C:/Users/love-ding/Desktop/html/mine.html");
-	window.onload = function ()
-	{
+	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+	$("#head").click(function(){
 		var oh2 = document.getElementsByTagName("h2")[0];
 		var oUl = document.getElementsByTagName("ul")[0];
-		oh2.onclick = function ()
-		{
-			var style = oUl.style;
-			style.display = style.display == "block" ? "none" : "block";
-			oh2.className = style.display == "block" ? "open" : ""
-		}
-	}
+		var style = oUl.style;
+		style.display = style.display == "block" ? "none" : "block";
+		oh2.className = style.display == "block" ? "open" : ""
+	});
 	var obj=null;
 	var As=document.getElementById('topnav').getElementsByTagName('a');
 	obj = As[0];
@@ -300,9 +296,9 @@
 		if(tsxth==undefined){
 			tsxth = 0;
 		}
-		if($("#backimg").height()+$("#firstmy").height()+$("#firstly").height()+tsxth<winHeight-126){
-			$("#myarticle").css("height", winHeight-126-($("#backimg").height()+$("#firstmy").height()+$("#firstly").height()));
-		}
+	    if($("#backimg").height()+$("#firstmy").height()+$("#firstly").height()+tsxth<winHeight-126){
+			$("footer").css("margin-top", winHeight-$("#head").height()-($("#backimg").height()+$("#ttext").height())-tsxth);
+		} 
 	}
 	
 	$(function() {

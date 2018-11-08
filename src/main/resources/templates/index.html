@@ -72,6 +72,7 @@
 <div>
 	<img src="images/top.jpg">
 </div>
+<div id='flag'></div>
 <div class='allplace'>
 	<div class="col-xs-12 col-md-8 leftplace">
 	<div id='textList'>
@@ -135,7 +136,7 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script>
-console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问file:///C:/Users/love-ding/Desktop/html/mine.html");
+console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
 window.onload = function ()
 {
 	var oh2 = document.getElementsByTagName("h2")[0];
@@ -268,7 +269,7 @@ $(function() {
 								"<span class='type'>"+type+"</span>"+
 								"<span class='time'>"+data[a].create_time+"</span>"+
 								"<span class='view'>"+data[a].see+"</span>"+
-								"<span class='glyphicon glyphicon-user' aria-hidden='true' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
+								"<span class='glyphicon glyphicon-user pointer' aria-hidden='true' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
 							"</div>"+
 							btn +
 							"<div class='readall'>"+
@@ -327,6 +328,8 @@ $(function() {
 
 //分页方法
 function go_page(page,obj,lastPage){
+	 var flag = $('#flag').offset().top;
+     $('html,body').animate({scrollTop:flag},500);
 	//分页页码控制开始
 	$("#go_any_page li").each(function() {
 		$(this).removeClass("active");
@@ -404,7 +407,7 @@ function go_page(page,obj,lastPage){
 									"<span class='type'>"+type+"</span>"+
 									"<span class='time'>"+data[a].create_time+"</span>"+
 									"<span class='view'>"+data[a].see+"</span>"+
-									"<span class='glyphicon glyphicon-user' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
+									"<span class='glyphicon glyphicon-user pointer' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
 								"</div>"+
 								btn + 
 								"<div class='readall'>"+

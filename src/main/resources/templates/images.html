@@ -86,11 +86,6 @@
 	      {
 	      	  display: none;
 	      }  
-	      footer
-	      {
-	      	  position: absolute;
-	      	  bottom: 0;
-	      }
 	      .img
 	      {
 	      	  height:95px!important;
@@ -122,7 +117,7 @@
    </style>
 </head>
 <body style='background: #ffeb3b36;'>
-<header style='padding-bottom:10px;'>
+<header style='padding-bottom:10px;' id='head'>
   <div class="tophead">
     <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
     <div id="mnav">
@@ -156,14 +151,14 @@
     </nav>
   </div>
 </header>
-<div>
+<div id='imgs'>
 	<div class="container" style='background-image:url()'>
 		<ul class="row" id='allImages'>
 	        
 	    </ul>             
 	</div>
 </div>
-<div>
+<div id='fot'>
 	<footer style="height: 60px;">
 	  <p>Design by 大花博客 黑ICP备18000243号</p>
 	</footer>
@@ -178,17 +173,31 @@
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="js/jquery.magnify.js"></script>
 <script>
-	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问file:///C:/Users/love-ding/Desktop/html/mine.html");
+	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
 	//头部显示响应式
-	window.onload = function ()
-	{
+	$("#head").click(function(){
 		var oh2 = document.getElementsByTagName("h2")[0];
 		var oUl = document.getElementsByTagName("ul")[0];
-		oh2.onclick = function ()
-		{
-			var style = oUl.style;
-			style.display = style.display == "block" ? "none" : "block";
-			oh2.className = style.display == "block" ? "open" : ""
+		var style = oUl.style;
+		style.display = style.display == "block" ? "none" : "block";
+		oh2.className = style.display == "block" ? "open" : ""
+	});
+	window.onload = function() {
+		var winHeight = document.documentElement.clientHeight;
+		var winWidth = document.documentElement.clientWidth;
+		var tsxth = $("#head").height();
+		if(tsxth==undefined){
+			tsxth = 0;
+		}
+		var h = $(".container").height();
+		var f = $("footer").height();
+		if(winHeight<1350){
+			$("footer").css("margin-top", 60);
+		}else if(winWidth<768){
+			if(tsxth+h+f<winHeight){
+				$("footer").css("position", "absolute");
+				$("footer").css("bottom", 0);
+			}
 		}
 	}
 	//菜单加横线

@@ -17,6 +17,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -168,10 +169,16 @@ public class WeChatServiceImpl implements WeChatService {
 							}
 						} else {
 							throw new ClientProtocolException("Unexpected response status: " + status);
+							
 						}
 					}
 
 				};
+				//设置超时时间
+				RequestConfig requestConfig = RequestConfig.custom()  
+				        .setConnectTimeout(5000).setConnectionRequestTimeout(5000)  
+				        .setSocketTimeout(5000).build();  
+				httpget.setConfig(requestConfig); 
 				System.out.println("请求基本信息成功");
 				logger.info("请求基本信息成功");
 				// 返回的json对象
@@ -283,6 +290,11 @@ public class WeChatServiceImpl implements WeChatService {
 				stringEntity.setContentType("text/json");
 				stringEntity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8"));
 				httpPost.setEntity(stringEntity);
+				//设置超时时间
+				RequestConfig requestConfig = RequestConfig.custom()  
+				        .setConnectTimeout(5000).setConnectionRequestTimeout(5000)  
+				        .setSocketTimeout(5000).build();  
+				httpPost.setConfig(requestConfig); 
 				result = httpclient.execute(httpPost);
 				String resultStr = EntityUtils.toString(result.getEntity());
 				json = JSONObject.fromObject(resultStr);
@@ -351,6 +363,11 @@ public class WeChatServiceImpl implements WeChatService {
 			}
 
 		};
+		//设置超时时间
+		RequestConfig requestConfig = RequestConfig.custom()  
+		        .setConnectTimeout(5000).setConnectionRequestTimeout(5000)  
+		        .setSocketTimeout(5000).build();  
+		httpget.setConfig(requestConfig); 
 		System.out.println("请求信息成功-微信自动登录");
 		logger.info("请求信息成功-微信自动登录");
 		// 返回的json对象
@@ -364,16 +381,36 @@ public class WeChatServiceImpl implements WeChatService {
 			 * refresh_token = (String) responseBody.get("refresh_token");
 			 */
 			String openid = (String) responseBody.get("openid");
-			User u = weChatDao.getUserId(openid);
-			// 通过shiro获取session
-			Subject subject = SecurityUtils.getSubject();
-			Session session = subject.getSession();
-			SecurityUtils.getSubject().getSession().setTimeout(600000);
-			// 令牌验证登陆
-			subject.login(new UsernamePasswordToken(u.getName(), u.getPassword()));
-			session.setAttribute("user", u);
+			if(openid!=null) {
+				System.out.println("用户开始登录--------------------------------------");
+				logger.info("用户开始登录----------------------------------------");
+				User u = weChatDao.getUserId(openid);
+				if(u!=null) {
+					// 通过shiro获取session
+					Subject subject = SecurityUtils.getSubject();
+					Session session = subject.getSession();
+					SecurityUtils.getSubject().getSession().setTimeout(600000);
+					// 令牌验证登陆
+					subject.login(new UsernamePasswordToken(u.getName(), u.getPassword()));
+					session.setAttribute("user", u);
+				}else {
+					System.out.println("用户不存在出现异常--------------------------------------");
+					logger.info("用户不存在出现异常----------------------------------------");
+				}
+			}else {
+				System.out.println("用户已经登录--------------------------------------");
+				logger.info("用户已经登录----------------------------------------");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 	}
 

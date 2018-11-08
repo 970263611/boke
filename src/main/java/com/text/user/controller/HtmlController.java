@@ -97,7 +97,14 @@ public class HtmlController {
     } 
 	
 	@RequestMapping("images")
-	public String images() {
+	public String images(HttpServletRequest request) {
+		String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"user_article")){
+			return "loginToMuch";
+		}
 		return "images";
 	}
 	
@@ -246,7 +253,9 @@ public class HtmlController {
     @RequestMapping(value="/login", method = RequestMethod.GET)
 	    public String ToLogin(Model model,HttpServletRequest request) {
     	String code = request.getParameter("code");
-		String state = request.getParameter("state");
+    	String state = request.getParameter("state");
+    	System.out.println("state-------------------------------------------------------"+state);
+    	System.out.println("code-------------------------------------------------------"+code);
 		if(code!=null){
 			weChatService.weChatLogin(code);
 			if("write1".equals(state)){
@@ -257,8 +266,10 @@ public class HtmlController {
 				return ToWrite(model,"3",request);
 			}else if("index".equals(state)){
 				return ToIndex(model,request);
-			}else if("myword".equals(state)){
+			}else if("myworld".equals(state)){
 				return myWorld(model,request);
+			}else if("images".equals(state)){
+				return images(request);
 			}
 		}else{
 			String ipAddress = BokeUtil.getIP(request);
@@ -314,5 +325,17 @@ public class HtmlController {
     	}
     	model.addAttribute("photos", photos);
     	return "user_photo";
+    }
+    
+    @RequestMapping("/mine")
+    public String mine(HttpServletRequest request){
+    	String ipAddress = BokeUtil.getIP(request);
+		/**
+		 * 限制当前ip1分钟内最多访问20次本页面（防爬虫增大服务器压力）
+		 */
+		if(!userService.visit(ipAddress,"user_article")){
+			return "loginToMuch";
+		}
+    	return "mine";
     }
 }
