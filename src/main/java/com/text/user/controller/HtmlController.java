@@ -1,29 +1,32 @@
 package com.text.user.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.alibaba.fastjson.JSON;
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
 import com.text.entity.User;
-import com.text.user.dao.UserDao;
 import com.text.user.service.UserService;
 import com.text.user.service.WeChatService;
 import com.text.util.BokeUtil;
+import com.text.util.WeChatMesUtil;
 
 /**
  * 跳转到index主页
@@ -35,11 +38,9 @@ public class HtmlController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserDao userDao;
 	@Autowired 
 	private WeChatService weChatService;
-	
+	private static Logger logger = LoggerFactory.getLogger(HtmlController.class);
 	/**
 	 * 默认首页
 	 * @param model
@@ -59,9 +60,9 @@ public class HtmlController {
 	    String time = BokeUtil.getStringTime();
 		User newUser = (User) session.getAttribute("user");
 		if(newUser == null) {
-			userDao.saveIP(ipAddress,time,0,null);
+			userService.saveIP(ipAddress,time,0,null);
 		}else {
-			userDao.saveIP(ipAddress,time,newUser.getId(),newUser.getName());
+			userService.saveIP(ipAddress,time,newUser.getId(),newUser.getName());
 		}
 		return "newindex";
 	}
@@ -86,7 +87,7 @@ public class HtmlController {
 		//获取全部页给前端，便于点击下一页时候判断是否到了最后一页
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();
-		session.setAttribute("allPage",userDao.pageNum());
+		session.setAttribute("allPage",userService.pageNum());
 		User user = (User) session.getAttribute("user");
 		if(user!=null){
 			model.addAttribute("rowId",user.getRowId()+"");
@@ -170,7 +171,7 @@ public class HtmlController {
 		int Identification = 0;
 		
 		if(articleId != null) {
-			nickname = userDao.toSingle(articleId).getCreate_user();
+			nickname = userService.toSingle(articleId).getCreate_user();
 			model.addAttribute("articleId",articleId);
 		}else {
 			model.addAttribute("articleId","no");
@@ -187,7 +188,7 @@ public class HtmlController {
 		if(((modify != null && modify.equals("no") && user == null) || modify != null && !"".equals(modify) && nickname != null && !"".equals(nickname) && !nickname.equals(user.getNickname()))) {
 			User nickname_user = new User();
 			nickname_user.setNickname(nickname);
-			userId = Integer.parseInt(userDao.user_seNickname(nickname_user));
+			userId = Integer.parseInt(userService.user_seNickname(nickname_user));
 			Identification = 1;
 		}else {
 			//从session中获取当前登陆人昵称
@@ -198,7 +199,7 @@ public class HtmlController {
 		List<Article> mylist = userService.select_article_user_all(nickname);
 		model.addAttribute("userId",userId);
 		model.addAttribute("list",mylist);
-		List<MyPhoto> myPhotoList = userDao.select_all(userId);
+		List<MyPhoto> myPhotoList = userService.select_all(userId);
 		List<HashMap<String,String>> image_list = new ArrayList<>();
 		if(myPhotoList.size() > 0) {
 			for(MyPhoto myPhoto:myPhotoList) {
@@ -213,7 +214,7 @@ public class HtmlController {
 		List<String> html = new ArrayList<>();
 		if(Identification == 1) {
 			model.addAttribute("modify",modify);
-			String newnickname = userDao.select_user(userId).getNickname();
+			String newnickname = userService.select_user(userId).getNickname();
 			for(int i=0;i<newnickname.length();i++) {
 				html.add(String.valueOf(newnickname.charAt(i)));
 			}
@@ -252,8 +253,8 @@ public class HtmlController {
 	 */
     @RequestMapping(value="/login", method = RequestMethod.GET)
 	    public String ToLogin(Model model,HttpServletRequest request) {
-    	String code = request.getParameter("code");
-    	String state = request.getParameter("state");
+    	String code = request.getParameter("code");//这里的code是微信跳转后自动跳转的页面带的参数，不是自己附上去的
+    	String state = request.getParameter("state");//这里的state是自己附上去跳转的链接
     	System.out.println("state-------------------------------------------------------"+state);
     	System.out.println("code-------------------------------------------------------"+code);
 		if(code!=null){
@@ -288,6 +289,33 @@ public class HtmlController {
     	Subject subject=SecurityUtils.getSubject();
     	subject.logout();
     	return ToLogin(model,request);
+    }
+    
+    /**
+ 	    * 用户扫码登录后跳转页面
+     */
+    @RequestMapping("/Sweep")
+    public String sweep(Model model,HttpServletRequest request,HttpServletResponse response){
+    	String loginUUID = request.getParameter("loginUUID");
+    	String state = request.getParameter("state");
+    	String code = request.getParameter("code");//这里的code是微信跳转后自动跳转的页面带的参数，不是自己附上去的
+    	String loginUrl = WeChatMesUtil.WeChat_Saoma_URL;
+    	logger.debug(loginUUID+"Sweep++++++++++++++++++"+state+"++++++++++++++++++++First"+code);
+    	if(loginUUID ==null && !"".equals(loginUUID) && code!=null && !"".equals(code) && state !=null && !"".equals(state)) {
+    		logger.debug("Sweep++++++++++++++++++++++++++++++++++++++success");
+    		userService.sweep(model,state,code);
+    	}else if(loginUUID!=null && !"".equals(loginUUID) && (code==null || "".equals(code))){
+    		logger.debug("Sweep++++++++++++++++++++++++++++++++++++++second");
+    		try {
+				response.sendRedirect(loginUrl.split("#")[0]+loginUUID+"#"+loginUrl.split("#")[1]);
+			} catch (IOException e) {
+				logger.debug("Sweep++++++++++++++++++++++++++++++++++++++seconderror");
+			}
+    	}else {
+    		logger.debug("Sweep++++++++++++++++++++++++++++++++++++++error");
+    		model.addAttribute("mes", "扫码登录失败");
+    	}
+    	return "saoma";
     }
     
     /**
@@ -338,4 +366,5 @@ public class HtmlController {
 		}
     	return "mine";
     }
+    
 }

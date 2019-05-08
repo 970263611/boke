@@ -3,7 +3,6 @@ package com.text.user.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,27 +13,27 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.user.service.UserService;
+import com.text.util.BokeUtil;
+import com.text.util.SerializeUtil;
 
 @RestController
 public class UserController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private HttpServletRequest request;
 	
 	/**
 	 * 获取当前时间的公用方法
@@ -56,10 +55,16 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(HttpServletRequest request,Model model){
     	String username=request.getParameter("username");
-		String password=request.getParameter("password");
+ 		String password=request.getParameter("password");
+ 		String userString=request.getParameter("user");
+ 		if(userString!=null&&username==null&&password==null) {
+ 			byte[] user_bytes = Base64.decodeBase64(userString);
+ 			username =((User) SerializeUtil.unserialize(user_bytes)).getName();
+ 			password =((User) SerializeUtil.unserialize(user_bytes)).getPassword();
+ 		}
 		//通过shiro获取session
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+ 		Subject subject= SecurityUtils.getSubject();
+		Session session=BokeUtil.getSession();
 		//令牌验证登陆
 		UsernamePasswordToken token=new UsernamePasswordToken(username, password);
 		try{
@@ -79,9 +84,8 @@ public class UserController {
 	 * 保存文章方法
 	 */
 	@RequestMapping("save_article")
-	public String save_article(){
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+	public String save_article(HttpServletRequest request){
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
@@ -105,9 +109,8 @@ public class UserController {
 	 * 提交评价
 	 */
 	@RequestMapping("comment_insert")
-	public String comment_insert(){
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+	public String comment_insert(HttpServletRequest request){
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		int a_id = Integer.parseInt(request.getParameter("a_id"));
 		String message = request.getParameter("message");
@@ -127,9 +130,8 @@ public class UserController {
 	 * 添加留言
 	 */
 	@RequestMapping("words_mess")
-	public String words_mess(){
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+	public String words_mess(HttpServletRequest request){
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		String message = request.getParameter("words_mess");
 		WordMessage wordMessage = new WordMessage();
@@ -147,12 +149,15 @@ public class UserController {
 	 * 用户注册
 	 */
 	@RequestMapping("userAdd")
-	public String userAdd(){
+	public String userAdd(HttpServletRequest request){
 		User user = new User();
 		String nickname = request.getParameter("nickname");
 		String name = request.getParameter("username");
 		String password = request.getParameter("password");
 		String realname = request.getParameter("realname");
+		if(BokeUtil.checkNull(nickname) || BokeUtil.checkNull(name) || BokeUtil.checkNull(password)){
+			return "注册失败";
+		}
 		user.setNickname(nickname);
 		user.setName(name);
 		user.setPassword(password);
@@ -160,15 +165,14 @@ public class UserController {
 		user.setCreateTime(new Date());
 		return userService.userAdd(user);
 	}
-	
+
 	/**
 	 * 保存用户的铭言和格言
 	 */
 	@RequestMapping("save_mytest")
-	public String save_mytest(){
+	public String save_mytest(HttpServletRequest request){
 		//开启session
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		
 		int id = user.getId();
@@ -182,7 +186,7 @@ public class UserController {
 	 * 分页跳转，传过来页数
 	 */
 	@RequestMapping("go_page")
-	public List<Article> Go_page(){
+	public List<Article> Go_page(HttpServletRequest request){
 		String page = request.getParameter("page");
 		return userService.Go_page(Integer.parseInt(page));
 	}
@@ -228,7 +232,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("getMYandLY")
-	public HashMap getmyandly(String uId) {
+	public HashMap<?, ?> getmyandly(String uId) {
 		return userService.getmyandly(uId);
 	}
 	
@@ -272,8 +276,8 @@ public class UserController {
 	 */
 	@RequestMapping("getNotice")
 	public List<String> getNotice(){
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		if(user!=null) {
 			List<String> notices = userService.getNotices(user.getId());
@@ -287,12 +291,28 @@ public class UserController {
 	 */
 	@RequestMapping("delNotice")
 	public String delNotice(){
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		if(user!=null) {
 			return userService.delNotice(user.getId());
 		}
 		return null;
 	}
+	
+	/**
+	 * 分享文章
+	 */
+	@RequestMapping("shareArticle")
+	public String shareArticle(HttpServletRequest request){
+		String id = request.getParameter("id");
+		Session session=BokeUtil.getSession();
+		User user = (User) session.getAttribute("user");
+		String nickname = "游客";
+		if(user!=null) {
+			nickname = user.getNickname();
+		}
+		return userService.shareArticle(id,nickname);
+	}
+	
 }

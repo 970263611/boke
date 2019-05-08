@@ -1,5 +1,9 @@
 package com.text.util;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
+
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,5 +56,17 @@ public class BokeUtil {
         }
         return ipAddress;
 	}
-	
+
+	public static boolean checkNull(String str){
+	    if(str==null || "".equals(str)){
+	        return false;
+        }
+	    return true;
+    }
+
+    public static Session getSession(){
+        Subject subject= SecurityUtils.getSubject();
+        Session session=subject.getSession();
+        return session;
+    }
 }

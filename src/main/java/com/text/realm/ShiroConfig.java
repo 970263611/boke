@@ -3,21 +3,38 @@ package com.text.realm;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 /**
- * @author 作者 z77z
+ * @author 作者 dwq
  * @date 创建时间：2017年2月10日 下午1:16:38
  * 
  */
+@SpringBootConfiguration
+@ComponentScan
 @Configuration
 public class ShiroConfig {
+	
+	@Bean
+	public FilterRegistrationBean delegatingFilterProxy(){
+	    FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+	    DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+	    proxy.setTargetFilterLifecycle(true);
+	    proxy.setTargetBeanName("shiroFilter");
+	    filterRegistrationBean.setFilter(proxy);
+	    return filterRegistrationBean;
+	}
+	
     /**
      * ShiroFilterFactoryBean 处理拦截资源文件问题。
      * 注意：单独一个ShiroFilterFactoryBean配置是或报错的，以为在
@@ -27,11 +44,11 @@ public class ShiroConfig {
      * 3、部分过滤器可指定参数，如perms，roles
      *
      */
-    @Bean
-    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
+    @Bean("shiroFilter")
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
     	
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        Logger logger = LoggerFactory.getLogger(RedisCacheConfiguration.class);
+        Logger logger = LoggerFactory.getLogger(ShiroFilterFactoryBean.class);
 
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -60,6 +77,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/admin", "roles[admin],perms[admin]");
         filterChainDefinitionMap.put("/admin_redis", "roles[admin],perms[admin]");
         filterChainDefinitionMap.put("/admin_clear", "roles[admin],perms[admin]");
+        filterChainDefinitionMap.put("/wechat/createMenu", "roles[admin],perms[admin]");
         // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
 //        filterChainDefinitionMap.put("/**", "authc");
@@ -67,6 +85,7 @@ public class ShiroConfig {
         /*filterChainDefinitionMap.put("/myworld", "authc");*/
         filterChainDefinitionMap.put("/write", "authc");
         filterChainDefinitionMap.put("/notice", "authc");
+        filterChainDefinitionMap.put("/websocket/socketServer", "anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         logger.info("Shiro拦截器工厂类注入成功");
@@ -75,7 +94,7 @@ public class ShiroConfig {
     
 
     
-    @Bean
+    @Bean("securityManager")
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 设置realm.
@@ -88,10 +107,11 @@ public class ShiroConfig {
      * 
      * @return
      */
-    @Bean
+    @Bean("shiroReam")
     public MyRealm myShiroRealm() {
         MyRealm myRealm = new MyRealm();
         return myRealm;
     }
+    
 }
 

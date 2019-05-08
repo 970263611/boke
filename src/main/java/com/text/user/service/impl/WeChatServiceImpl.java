@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 import com.text.entity.User;
 import com.text.entity.WeChat;
 import com.text.realm.RunFunction;
-import com.text.realm.SerializeUtil;
+import com.text.util.SerializeUtil;
 import com.text.user.dao.WeChatDao;
 import com.text.user.service.WeChatService;
 import com.text.util.SHA1;
@@ -100,18 +100,19 @@ public class WeChatServiceImpl implements WeChatService {
 	 * @throws DocumentException
 	 * @throws IOException
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void processRequest(HttpServletRequest request, HttpServletResponse response) {
 		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问www.loveding.top\n由于个人公众号微信给的权限较少，请关注我的测试公众号："
 				+ WeChatMesUtil.Account_Number_CS + "\n";
 		Map requestMap = WeChatMesUtil.parseMsgXml(request);
+		logger.debug(requestMap.toString()+"**************************************");
 		// 发送方帐号（open_id）
 		String fromUserName = (String) requestMap.get("FromUserName");
 		// 公众帐号
 		String toUserName = (String) requestMap.get("ToUserName");
 		// 消息类型
 		String msgType = (String) requestMap.get("MsgType");
-
 		// 文本消息
 		if (msgType.equals(WeChatMesUtil.REQ_MESSAGE_TYPE_TEXT)) {
 			String content = (String) requestMap.get("Content");
@@ -174,6 +175,9 @@ public class WeChatServiceImpl implements WeChatService {
 					}
 
 				};
+				/**
+				 * 注意，这里关注公众号后自动创建帐号，以后每次在公众号的操作只需要登录即可，不需要注册
+				 */
 				//设置超时时间
 				RequestConfig requestConfig = RequestConfig.custom()  
 				        .setConnectTimeout(5000).setConnectionRequestTimeout(5000)  
@@ -246,10 +250,20 @@ public class WeChatServiceImpl implements WeChatService {
 			else if (eventType.equals(WeChatMesUtil.EVENT_TYPE_CLICK)) {
 				// 事件KEY值，与创建自定义菜单时指定的KEY值对应
 				String eventKey = (String) requestMap.get("EventKey");// 这个 EventKey 就是自定义菜单的key
-				if (eventKey.equals("weChatRegister")) {
-					
+				if (eventKey.equals("rselfmenu_0_1")) {
 				}
 			}
+			/*else if (eventType.equals("scancode_push")) {
+				// 事件KEY值，与创建自定义菜单时指定的KEY值对应
+				String eventKey = (String) requestMap.get("EventKey");// 这个 EventKey 就是自定义菜单的key
+				if (eventKey.equals("rselfmenu_0_1")) {
+					try {
+						response.sendRedirect(WeChatMesUtil.WeChat_Erweima_URL);
+					} catch (IOException e) {
+						logger.debug("跳转失败");
+					}
+				}
+			}*/
 		}
 		System.out.println("返回消息-" + respMessage);
 		WeChatMesUtil.XMLprint(response, respMessage, toUserName, fromUserName, msgType/* 这里暂时都定义为文本回复形式 */);
@@ -275,8 +289,13 @@ public class WeChatServiceImpl implements WeChatService {
 					+ WeChatMesUtil.WeChat_Write_3_URL + "\"" + "}]" + "}," */
 					"{" + "\"type\": \"view\","
 					+ "\"name\": \"图片\"," + "\"url\": \"" + WeChatMesUtil.WeChat_Image_URL + "\"" + "},"
-					+ "{" + "\"type\": \"view\","
-					+ "\"name\": \"个人\"," + "\"url\": \"" + WeChatMesUtil.WeChat_MyWorld_URL + "\"" + "}" + "]" + "}";
+					/*
+					 * + "{" + "\"type\": \"view\"," + "\"name\": \"个人\"," + "\"url\": \"" +
+					 * WeChatMesUtil.WeChat_MyWorld_URL + "\"" + "}" +"{" +
+					 * "\"type\": \"scancode_push\","
+					 */
+					+ "\"name\": \"扫一扫\"," + "\"key\": \"rselfmenu_0_1\"},"
+					+"]" + "}";
 			CloseableHttpResponse result = null;
 			JSONObject json = null;
 			try {
@@ -398,8 +417,8 @@ public class WeChatServiceImpl implements WeChatService {
 					logger.info("用户不存在出现异常----------------------------------------");
 				}
 			}else {
-				System.out.println("用户已经登录--------------------------------------");
-				logger.info("用户已经登录----------------------------------------");
+				System.out.println("用户获取信息失败--------------------------------------");
+				logger.info("用户获取信息失败----------------------------------------");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

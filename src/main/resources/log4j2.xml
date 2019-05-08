@@ -6,7 +6,7 @@
         <!--这个输出控制台的配置-->
         <Console name="Console" target="SYSTEM_OUT">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
-            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
             <!--这个都知道是输出日志的格式-->
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
         </Console>
@@ -30,6 +30,13 @@
             <appender-ref ref="log"/>
             <appender-ref ref="Console"/>
         </root>
-		
+
+        <!--记录druid-sql的记录-->
+        <logger name="druid.sql.Statement" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>
+        <!--log4j2 自带过滤日志-->
+        <logger name="org.thymeleaf" level="error"/>
+
     </loggers>
 </configuration>

@@ -9,7 +9,6 @@ a { text-decoration: none; color: #555 }
 header { width: 100%; background: rgba(255,255,255,1); }
 .tophead { width: 1200px; margin: 0 auto 0px; overflow: hidden; padding-bottom:10px;}
 /* nav */
-.logo { float: left; overflow: hidden; font-size: 30px; margin-top: 10px; margin-left: 10px }
 .logo a { color: #333 }
 .logo img { float: left }
 .topnav { overflow: hidden; margin: 10px 0; }

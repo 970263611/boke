@@ -1,5 +1,6 @@
 package com.text.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,8 @@ import java.util.Date;
  * @author 丁伟强
  *
  */
-public class User {
+@SuppressWarnings("serial")
+public class User implements Serializable {
 
 	private int id;			//	ID
 	private String nickname;//	昵称	

@@ -1,21 +1,40 @@
 package com.text.user.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.rocketmq.common.message.MessageExt;
@@ -27,11 +46,15 @@ import com.text.entity.Tag;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
 import com.text.realm.RedisCacheConfiguration;
-import com.text.realm.SerializeUtil;
 import com.text.user.dao.UserDao;
+import com.text.user.dao.WeChatDao;
 import com.text.user.service.UserService;
+import com.text.util.BokeUtil;
+import com.text.util.QrCodeCreateUtil;
 import com.text.util.RedisUtil;
 import com.text.util.RocketMQUtil;
+import com.text.util.SerializeUtil;
+import com.text.util.WeChatMesUtil;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.SortingParams;
@@ -43,12 +66,16 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	@Autowired
 	private SerializeUtil redisDateSourse;
+	@Autowired
+	private WeChatDao weChatDao;
 	//rocketmq地址
 	private static final String ipAddress = "";
 	//产生者组
 	private static final String producterName = "";
 	//topic名称
 	private static final String topicName = "";
+	
+	private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	/**
 	 * 向数据库新增用户信息service实现类
@@ -228,9 +255,10 @@ public class UserServiceImpl implements UserService {
 	 * 保存文章方法事物层实现
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public String save_article(Article ac) {
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		Jedis jedis = redisDateSourse.getRedis();
 		int size = userDao.saveArticle(ac);
@@ -331,10 +359,11 @@ public class UserServiceImpl implements UserService {
 		int size = userDao.userAdd(user);
 		if (size == 1) {
 			//通过shiro获取session
-			Subject subject=SecurityUtils.getSubject();
-			Session session=subject.getSession();
+			
+			Subject subject= SecurityUtils.getSubject();
+	        Session session=subject.getSession();
 			//令牌验证登陆
-			subject.login(new UsernamePasswordToken(user.getName(), user.getPassword()));
+	        subject.login(new UsernamePasswordToken(user.getName(), user.getPassword()));
 			session.setAttribute("user", user);
 			return "success";
 		}
@@ -449,7 +478,6 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * 查询最新照片信息
-	 * @param originalFilename
 	 * @return
 	 */
 	@Override
@@ -503,15 +531,15 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 关注方法
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String follow(String articleId) {
 		Integer parentId = userDao.getUserIdByArticleId(articleId);
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		Jedis jedis = redisDateSourse.getRedis();
 		byte[] bytes = jedis.get(("follow_"+parentId).getBytes());
-		@SuppressWarnings("unchecked")
 		List<Integer> childIds = (List<Integer>) SerializeUtil.unserialize(bytes);//取出关注用户的子集
 		if(user == null) {
 			redisDateSourse.closeRedis(jedis);
@@ -599,6 +627,7 @@ public class UserServiceImpl implements UserService {
 	 * 获取用户的名言和留言
 	 */
 	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public HashMap getmyandly(String uId) {
 		int userId = Integer.parseInt(uId);
 		String test1 = userDao.select_myworld_test1(userId);
@@ -615,8 +644,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String checkFolllw(String articleId) {
 		Integer parentId = userDao.getUserIdByArticleId(articleId);
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		Jedis jedis = redisDateSourse.getRedis();
 		byte[] bytes = jedis.get(("follow_"+parentId).getBytes());
@@ -662,8 +691,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String saveTags(String tag) {
 		Tag tagEntity = new Tag();
-		Subject subject=SecurityUtils.getSubject();
-		Session session=subject.getSession();
+		
+		Session session=BokeUtil.getSession();
 		User user = (User) session.getAttribute("user");
 		tagEntity.setTag(tag);
 		if(user!=null) {
@@ -683,6 +712,7 @@ public class UserServiceImpl implements UserService {
 	public List<String> getNotices(int id) {
 		Jedis jedis = redisDateSourse.getRedis();
 		byte[] noticeByte = jedis.hget("notice".getBytes(), (id+"").getBytes());
+		@SuppressWarnings("unchecked")
 		List<String> notices = (List<String>) SerializeUtil.unserialize(noticeByte);
 		redisDateSourse.closeRedis(jedis);
 		return notices;
@@ -699,4 +729,286 @@ public class UserServiceImpl implements UserService {
 		return "success";
 	}
 
+	@Override
+	public String shareArticle(String id, String nickname) {
+		String imgName = getPass();
+		String urlTop = "http://www.loveding.top/";
+		String loginUUID = "";
+		HashMap<String,Object> map = new HashMap<String, Object>();
+		if(isNumeric(id)) {
+			urlTop =  urlTop + "single?id=" + id;
+		}else if(id.contains("modify")){
+			urlTop = urlTop + "myworld?" +id;
+		}else if(id.contains("*erweimadenglu*")) {
+			loginUUID = id;
+			Jedis jedis = redisDateSourse.getRedis();
+			jedis.set(loginUUID, loginUUID);
+			jedis.expire(loginUUID, 60*3);
+			redisDateSourse.closeRedis(jedis);
+			urlTop = urlTop + "Sweep?loginUUID=" + loginUUID.split("\\*erweimadenglu\\*")[0];
+		}else {
+			urlTop = urlTop + id;
+		}
+		logger.debug("urlTop--------+++++++++++++++++-------------"+urlTop);
+		map.put("url", urlTop);
+		map.put("sharePeople",nickname);
+		map.put("imgName",imgName);
+		map.put("id",UUID.randomUUID().toString().replaceAll("-", ""));
+		map.put("createTime", new Date());
+		String jsonString = JSONObject.toJSONString(map);
+		QrCodeCreateUtil.CreateQrCodeByHua(urlTop,imgName);
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+		// 可以执行Runnable对象或者Callable对象代表的线程
+		//pool.submit(new MyTask(urlTop,imgName));
+		pool.execute(new RocketTask(jsonString));
+		//结束线程池
+		pool.shutdown();
+		return imgName;
+	}
+
+	/**
+	 * 扫描登录方法实现
+	 */
+	@Override
+	public void sweep(Model model,String loginUUID,String code) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(
+				"https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WeChatMesUtil.AppID_CS + "&secret="
+						+ WeChatMesUtil.AppSecret_CS + "&code=" + code + "&grant_type=authorization_code");
+		// Create a custom response handler
+		ResponseHandler<net.sf.json.JSONObject> responseHandler = new ResponseHandler<net.sf.json.JSONObject>() {
+
+			public net.sf.json.JSONObject handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
+				int status = response.getStatusLine().getStatusCode();
+				if (status >= 200 && status < 300) {
+					HttpEntity entity = response.getEntity();
+					if (null != entity) {
+						String result = EntityUtils.toString(entity);
+						// 根据字符串生成JSON对象
+						net.sf.json.JSONObject resultObj = net.sf.json.JSONObject.fromObject(result);
+						return resultObj;
+					} else {
+						return null;
+					}
+				} else {
+					throw new ClientProtocolException("Unexpected response status: " + status);
+				}
+			}
+
+		};
+		//设置超时时间
+		RequestConfig requestConfig = RequestConfig.custom()  
+		        .setConnectTimeout(5000).setConnectionRequestTimeout(5000)  
+		        .setSocketTimeout(5000).build();  
+		httpget.setConfig(requestConfig); 
+		System.out.println("请求信息成功-webocket自动登录");
+		logger.info("请求信息成功-webocket自动登录");
+		// 返回的json对象
+		net.sf.json.JSONObject responseBody;
+		String openid = "";
+		try {
+			responseBody = httpclient.execute(httpget, responseHandler);
+			System.out.println("responseBody=============" + responseBody.toString());
+			logger.info("基本信息=============" + responseBody.toString());
+			// 暂时只用到openid
+			/*
+			 * String access_token = (String) responseBody.get("access_token"); String
+			 * refresh_token = (String) responseBody.get("refresh_token");
+			 */
+			openid = (String) responseBody.get("openid");
+			logger.info("openid=============" + openid);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Jedis jedis = redisDateSourse.getRedis();
+		String uuid = jedis.get(loginUUID+"*erweimadenglu*");
+		if(uuid!=null && !"".equals(uuid)) {
+			jedis.set(loginUUID+"*erweimadenglu*",openid);
+			model.addAttribute("mes", "扫码登录成功");
+		}else {
+			model.addAttribute("mes", "二维码已过期");
+		}
+		redisDateSourse.closeRedis(jedis);
+	}
+
+	class MyTask implements Runnable {
+	    private String jsonString;
+	    private String imgName;
+	
+	    public MyTask(String jsonString,String imgName) {
+	        this.jsonString = jsonString;
+	        this.imgName = imgName;
+	    }
+	
+	    @Override
+	    public void run() {
+	    	QrCodeCreateUtil.CreateQrCodeByHua(jsonString,imgName);
+	    }
+	}
+	class RocketTask implements Runnable {
+	    private String jsonString;
+	
+	    public RocketTask(String jsonString) {
+	        this.jsonString = jsonString;
+	    }
+	
+	    @Override
+	    public void run() {
+	    	RocketMQUtil.producer(ipAddress, producterName, topicName, "share", jsonString);
+	    }
+	}
+	/**
+     * 利用正则表达式判断字符串是否是数字
+     * @param str
+     * @return
+     */
+    public boolean isNumeric(String str){
+           Pattern pattern = Pattern.compile("[0-9]*");
+           Matcher isNum = pattern.matcher(str);
+           if( !isNum.matches() ){
+               return false;
+           }
+           return true;
+    }
+
+	public String getPass() {
+		Random r = new Random();
+		String pass = Math.abs(r.nextInt()) + "";
+		if (pass.length() >= 8) {
+			pass = pass.substring(0, 7);
+		}
+		return pass;
+	}
+
+	//没写好，有时间优化
+	/*
+	 * public class TaskCallable implements Callable<String>{ private String
+	 * message; public TaskCallable(String message) { this.message = message; }
+	 * 
+	 * @Override public String call() throws Exception { synchronized (this) { try {
+	 * Thread.sleep(3000); } catch (InterruptedException e) {
+	 * 
+	 * } Jedis jedis = redisDateSourse.getRedis(); Long time =
+	 * jedis.ttl(message+"*erweimadenglu*"); String loginUUID =
+	 * jedis.get(message+"*erweimadenglu*"); redisDateSourse.closeRedis(jedis);
+	 * if(time == -1) {//当 key 存在但没有设置剩余生存时间时，返回 -1,一定有生命周期，否则异常 return state =
+	 * "error"; }else if(time == -2) {//当 key 不存在时，返回 -2，超过了生存周期，过期 return state =
+	 * "timeout"; }else if(time>0) {//有生命周期 if(loginUUID!=null &&
+	 * !"".equals(loginUUID)) { if(!(message+"*erweimadenglu*").equals(loginUUID))
+	 * {//用户扫描了，因为redis中值改变了 return state = "success"; }else { runSweep(message); }
+	 * }else { return state = "timeout";//获取不到，超时 } } } } }
+	 * 
+	 * String state = "state"; public String checkSweep(String message) {
+	 * List<Future> list = new ArrayList<Future>(); ExecutorService es =
+	 * Executors.newFixedThreadPool(10); ArrayList<Future<String>> results = new
+	 * ArrayList<Future<String>>();// results.add(es.submit(new
+	 * TaskCallable(message)));//submit返回一个Future，代表了即将要返回的结果 for (Future f : list)
+	 * { // 从Future对象上获取任务的返回值，并输出到控制台 try { System.out.println(">>>" +
+	 * f.get().toString()); logger.info(f.get().toString()); } catch
+	 * (InterruptedException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } catch (ExecutionException e) { // TODO Auto-generated
+	 * catch block e.printStackTrace(); } } }
+	 * 
+	 * class checkSweep implements Runnable{
+	 * 
+	 * private String message;
+	 * 
+	 * public checkSweep(String message) { super(); this.message = message; }
+	 * 
+	 * @Override public void run() { synchronized (this) { try { Thread.sleep(3000);
+	 * } catch (InterruptedException e) {
+	 * 
+	 * } Jedis jedis = redisDateSourse.getRedis(); Long time =
+	 * jedis.ttl(message+"*erweimadenglu*"); String loginUUID =
+	 * jedis.get(message+"*erweimadenglu*"); redisDateSourse.closeRedis(jedis);
+	 * if(time == -1) {//当 key 存在但没有设置剩余生存时间时，返回 -1,一定有生命周期，否则异常 state = "error";
+	 * }else if(time == -2) {//当 key 不存在时，返回 -2，超过了生存周期，过期 state = "timeout"; }else
+	 * if(time>0) {//有生命周期 if(loginUUID!=null && !"".equals(loginUUID)) {
+	 * if(!(message+"*erweimadenglu*").equals(loginUUID)) {//用户扫描了，因为redis中值改变了
+	 * state = "success"; }else { runSweep(message); } }else { state =
+	 * "timeout";//获取不到，超时 } } } }
+	 * 
+	 * }
+	 */
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public HashMap checkSweep(String message,WebSocketSession session) {
+		HashMap map = new HashMap();
+		int a = 0;
+		Jedis jedis = redisDateSourse.getRedis();
+		String state = runSweep(message,jedis,a);
+		if("success".equals(state)) {
+			String openid = jedis.get(message+"*erweimadenglu*");
+			logger.info("openid----------------------------------------"+openid);
+			User user = weChatDao.getUserId(openid);
+			byte[] bytes = SerializeUtil.serialize(user);
+			String str = Base64.encodeBase64String(bytes);
+			if(user!=null) {
+				map.put("user",str);
+			}else {
+				System.out.println("用户不存在出现异常--------------------------------------");
+				logger.info("用户不存在出现异常----------------------------------------");
+			}
+		}
+	    redisDateSourse.closeRedis(jedis);
+		map.put("state",state);
+	    return map;
+	}
+	
+	public String runSweep(String message,Jedis jedis,int a) {
+		Long time = jedis.ttl(message+"*erweimadenglu*");
+	    String loginUUID = jedis.get(message+"*erweimadenglu*");
+	    System.out.println(loginUUID+"-----------------------------------------"+time+"--------------------------------------------"+a);
+	    if(time == -1 && loginUUID!=null && !"".equals(loginUUID) && !(message+"*erweimadenglu*").equals(loginUUID)) {//(可能版本太低，有生存周期也返回-1---这面加了一步判断...)
+	       return "success";
+	    }else if(time == -1) {//当 key 存在但没有设置剩余生存时间时，返回 -1,一定有生命周期，否则异常
+		   return "error";
+	    }else if(time == -2) {//当 key 不存在时，返回 -2，超过了生存周期，过期
+		   return "timeout";
+	    }else if(time>0) {//有生命周期
+		   if(loginUUID!=null && !"".equals(loginUUID)) {
+			    if(!(message+"*erweimadenglu*").equals(loginUUID)) {//用户扫描了，因为redis中值改变了
+				    return "success";
+			    }else {
+				   try {
+					   Thread.sleep(2000);
+					   a++;
+					   return runSweep(message,jedis,a);
+				    } catch (InterruptedException e) {
+				    	e.printStackTrace();
+					} 
+			    }
+		    }else {
+			    return "timeout";//获取不到，超时
+		    }
+	    }
+	    return "error";
+	}
+
+	@Override
+	public void delLoginUUID(String loginUUID) {
+		Jedis jedis = redisDateSourse.getRedis();
+		jedis.del(loginUUID+"*erweimadenglu*");
+		redisDateSourse.closeRedis(jedis);
+	}
+
+	@Override
+	public void saveIP(String ipAddress, String time, int i, String object) {
+		userDao.saveIP(ipAddress,time,i,object);
+	}
+
+	@Override
+	public String user_seNickname(User nickname_user) {
+		return userDao.user_seNickname(nickname_user);
+	}
+
+	@Override
+	public List<MyPhoto> select_all(Integer userId) {
+		return userDao.select_all(userId);
+	}
 }
+

@@ -34,19 +34,23 @@ public final class WeChatMesUtil {
 	
 	public static final String Account_Number_CS = "";//测试公众号
 	
-	public static final String LoginURL = "";
+	public static final String LoginURL = "http://www.loveding.top/login";
 	
-	public static final String WeChat_Write_1_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write1#wechat_redirect";
+	public static final String SaomaURL = "http://www.loveding.top/Sweep";
 	
-	public static final String WeChat_Write_2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write2#wechat_redirect";
+	public static final String WeChat_Write_1_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write1#wechat_redirect";
 	
-	public static final String WeChat_Write_3_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=write3#wechat_redirect";
+	public static final String WeChat_Write_2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write2#wechat_redirect";
 	
-	public static final String WeChat_Index_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=index#wechat_redirect";
+	public static final String WeChat_Write_3_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write3#wechat_redirect";
 	
-	public static final String WeChat_MyWorld_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=myworld#wechat_redirect";
+	public static final String WeChat_Index_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=index#wechat_redirect";
 	
-	public static final String WeChat_Image_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_userinfo&state=images#wechat_redirect";
+	public static final String WeChat_MyWorld_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=myworld#wechat_redirect";
+	
+	public static final String WeChat_Image_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=images#wechat_redirect";
+	
+	public static final String WeChat_Saoma_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+SaomaURL+"&response_type=code&scope=snsapi_base&state=#wechat_redirect";
 	
 	/**   
      * 返回消息类型：文本   
@@ -116,6 +120,7 @@ public final class WeChatMesUtil {
 	 * @throws IOException 
 	 * @throws DocumentException 
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Map parseMsgXml(HttpServletRequest request){
 		// 将解析结果存储在HashMap中
         Map<String, String> map = new HashMap<String, String>();

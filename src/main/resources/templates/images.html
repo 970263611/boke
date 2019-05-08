@@ -12,6 +12,19 @@
 	<link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
 	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<style> 
+		@font-face 
+		{
+			/* 字体名称随意起 */
+			font-family: logoFont;
+			/*你下载字体所在的位置*/
+			src: url('../bb3127/Zentenar-Zierbuchstaben.ttf');
+		}
+		.logoWord
+		{
+			font-family:logoFont;
+			font-size: 43px;
+			margin-left: 10px;	
+		}
 	  ul 
 	  {         
           padding:0 0 0 0;
@@ -119,7 +132,7 @@
 <body style='background: #ffeb3b36;'>
 <header style='padding-bottom:10px;' id='head'>
   <div class="tophead">
-    <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
+    <div class="logo"><a href="/"><span class='logoWord'>dahua</span><span style="color: red;">.</span></a></div>
     <div id="mnav">
       <h2><span class="navicon"></span></h2>
       <ul>
@@ -191,9 +204,7 @@
 		}
 		var h = $(".container").height();
 		var f = $("footer").height();
-		if(winHeight<1350){
-			$("footer").css("margin-top", 60);
-		}else if(winWidth<768){
+		if(winWidth<768){
 			if(tsxth+h+f<winHeight){
 				$("footer").css("position", "absolute");
 				$("footer").css("bottom", 0);
@@ -342,6 +353,17 @@ function shownotice(){
 		}else{
 			$("#noticediv").hide();
 		}
+	}
+	
+	function loginOut(){
+		layer.msg('确定要退出么？', {
+			  time: 0 //不自动关闭
+			  ,btn: ['咋的，有意见？', '你说退就退啊！']
+			  ,yes: function(index){
+			    layer.close(index);
+			    window.location.href = "loginOut";
+			  }
+			});
 	}
 </script>
 </body>

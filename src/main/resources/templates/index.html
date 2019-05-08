@@ -9,6 +9,19 @@
 	<link rel="stylesheet" type="text/css" href="css/base.css">
 	<link rel="stylesheet" type="text/css" href="css/dwq.css">
 	<style>
+		@font-face 
+		{
+			/* 字体名称随意起 */
+			font-family: logoFont;
+			/*你下载字体所在的位置*/
+			src: url('../bb3127/Zentenar-Zierbuchstaben.ttf');
+		}
+		.logoWord
+		{
+			font-family:logoFont;
+			font-size: 43px;
+			margin-left: 10px;	
+		}
 		#noticediv
 		{
 		    background-color: white;
@@ -36,7 +49,7 @@
 <body>
 <header>
   <div class="tophead">
-    <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
+    <div class="logo"><a href="/"><span class='logoWord'>dahua</span><span style="color: red;">.</span></a></div>
     <div id="mnav">
       <h2><span class="navicon"></span></h2>
       <ul>
@@ -45,6 +58,7 @@
         <li><a href="#" onclick='shownotice()' id='notice'>消息</a></li>
         <li><a href="write">提笔</a></li>
         <li><a href="myworld">个人</a></li>
+        <li><a href="#" onclick="erweima('index')">分享</a></li>
         <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
 		<a th:case=* th:text='${session.user.nickname}'
 		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
@@ -61,6 +75,7 @@
         <li><a href="#" onclick='shownotice()' id='notice_phone'>消息</a></li>
         <li><a href="write">提笔</a></li>
         <li><a href="myworld">个人</a></li>
+        <li><a href="#" onclick="erweima('index')">分享</a></li>
         <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
 		<a th:case=* th:text='${session.user.nickname}'
 		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
@@ -131,7 +146,20 @@
     <a>提醒</a><a style='float:right' onclick='shownotice()'>关闭</a>
         <ul id='noticeText'>
         </ul>
- </div>
+</div>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="shareModal" style="margin-top:65px;">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">感谢分享(请保存图片后分享)</h4>
+      </div>
+      <div class="modal-body">
+        <img id='shareImg'>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
@@ -173,7 +201,7 @@ $("#tags a").click(function(event){
 
 //提交留言
 function submmit_words(){
-	var words_mess = $("#message").val();
+	var words_mess = $("#message").val().trim();
 	$("#send_word").attr("disabled", true);
 	if(words_mess==null || words_mess==""){
 		$("#send_word").attr("disabled", false);
@@ -530,6 +558,7 @@ function shownotice(){
 	        },
 	        success: function(data) {
 	        	if(data=='success'){
+	        		$(".open").click();
 		        	$("#notice").text("消息");
 	            	$("#notice_phone").text("消息");
 	        	}
@@ -538,6 +567,24 @@ function shownotice(){
 	}else{
 		$("#noticediv").hide();
 	}
+}
+
+function erweima(id){
+	$.ajax({
+		type : "post",
+		url : "/shareArticle",
+		cache: false,
+		async: false,
+		data: {"id":id},
+		error: function(request) {
+			layer.msg('获取二维码失败', function(){});
+        },
+        success: function(data) {
+        	$('#shareImg').attr("src","http://www.loveding.top:8089/erweima/"+data+".jpg");
+        	$(".open").click();
+        	$('#shareModal').modal();
+        }
+	});
 }
 </script>
 </body>

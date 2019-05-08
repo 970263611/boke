@@ -3,6 +3,9 @@ package com.text.user.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.ui.Model;
+import org.springframework.web.socket.WebSocketSession;
+
 import com.text.entity.Article;
 import com.text.entity.Comment;
 import com.text.entity.MyPhoto;
@@ -153,6 +156,7 @@ public interface UserService {
 	 */
 	String isdel(String articleId, String time);
 
+	@SuppressWarnings("rawtypes")
 	HashMap getmyandly(String uId);
 
 	/**
@@ -182,4 +186,33 @@ public interface UserService {
 	 * 查看后删除消息
 	 */
 	String delNotice(int id);
+
+	/**
+	 * 分享文章
+	 */
+	String shareArticle(String id, String nickname);
+	/**
+	 * 用户通过二维码二次跳转微信连接，间接登录系统
+	 * @param model
+	 * @param loginUUID
+	 * @param code
+	 */
+	void sweep(Model model,String loginUUID,String code);
+	/**
+	 * 用户是否扫描二维码方法
+	 * @param message
+	 * @param session 
+	 * @param httpSession 
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	HashMap checkSweep(String message, WebSocketSession session);
+
+	void delLoginUUID(String loginUUID);
+
+	void saveIP(String ipAddress, String time, int i, String object);
+
+	String user_seNickname(User nickname_user);
+
+	List<MyPhoto> select_all(Integer userId);
 }

@@ -12,6 +12,19 @@
 <link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
 <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <style type="text/css">
+	@font-face 
+		{
+			/* 字体名称随意起 */
+			font-family: logoFont;
+			/*你下载字体所在的位置*/
+			src: url('../bb3127/Zentenar-Zierbuchstaben.ttf');
+		}
+		.logoWord
+		{
+			font-family:logoFont;
+			font-size: 43px;
+			margin-left: 10px;	
+		}
   .row li 
   {     
       list-style:none;
@@ -154,7 +167,7 @@
 <body>
 <header id='head'>
   <div class="tophead">
-    <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
+    <div class="logo"><a href="/"><span class='logoWord'>dahua</span><span style="color: red;">.</span></a></div>
     <div id="mnav">
       <h2><span class="navicon"></span></h2>
       <ul>
@@ -297,7 +310,11 @@
 			tsxth = 0;
 		}
 	    if($("#backimg").height()+$("#firstmy").height()+$("#firstly").height()+tsxth<winHeight-126){
-			$("footer").css("margin-top", winHeight-$("#head").height()-($("#backimg").height()+$("#ttext").height())-tsxth);
+	    	var top = winHeight-$("#head").height()-($("#backimg").height()+$("#ttext").height())-tsxth;
+	    	if(top<0){
+	    		top = 0;
+	    	}
+			$("footer").css("margin-top", top);
 		} 
 	}
 	

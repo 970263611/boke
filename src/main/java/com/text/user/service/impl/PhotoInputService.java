@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.text.entity.User;
-import com.text.realm.SerializeUtil;
+import com.text.util.SerializeUtil;
 import com.text.user.dao.UserDao;
 
 import net.sf.json.JSONObject;
@@ -30,6 +30,7 @@ public class PhotoInputService {
 	@Autowired
 	private SerializeUtil redisDateSourse;
 
+	@SuppressWarnings("unchecked")
 	public JSONObject fileUp(String fileName,String userId,int id,String text,HttpServletResponse response) throws IOException {
 		Subject subject=SecurityUtils.getSubject();
 		Session session=subject.getSession();

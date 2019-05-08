@@ -1,6 +1,5 @@
 package com.text.user.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.text.entity.Article;
 import com.text.entity.Comment;
-import com.text.entity.MyPhoto;
 import com.text.entity.MyTest;
 import com.text.entity.Permission;
 import com.text.entity.Role;
 import com.text.entity.User;
 import com.text.entity.WordMessage;
-import com.text.user.dao.AdminDao;
+import com.text.user.service.AdminSerive;
 import com.text.user.service.UserService;
 
 import net.sf.json.JSONArray;
@@ -27,7 +25,7 @@ import net.sf.json.JSONArray;
 public class AdminController {
 
 	@Autowired
-	private AdminDao adminDao;
+	private AdminSerive adminSerive;
 	@Autowired
 	private HttpServletRequest request;
 	@Autowired
@@ -50,8 +48,8 @@ public class AdminController {
 	public String admin_select_user(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_user_totalSize();
-		return json(adminDao.admin_select_user((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_user_totalSize();
+		return json(adminSerive.admin_select_user((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -63,8 +61,8 @@ public class AdminController {
 	public String admin_select_article(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_article_totalSize();
-		return json(adminDao.admin_select_article((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_article_totalSize();
+		return json(adminSerive.admin_select_article((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -76,8 +74,8 @@ public class AdminController {
 	public String admin_select_wordMessage(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_wordMessage_totalSize();
-		return json(adminDao.admin_select_wordMessage((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_wordMessage_totalSize();
+		return json(adminSerive.admin_select_wordMessage((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -89,8 +87,8 @@ public class AdminController {
 	public String admin_select_role(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_role_totalSize();
-		return json(adminDao.admin_select_role((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_role_totalSize();
+		return json(adminSerive.admin_select_role((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -102,8 +100,8 @@ public class AdminController {
 	public String admin_select_permission(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_permission_totalSize();
-		return json(adminDao.admin_select_permission((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_permission_totalSize();
+		return json(adminSerive.admin_select_permission((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -115,8 +113,8 @@ public class AdminController {
 	public String admin_select_mytest(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_mytest_totalSize();
-		return json(adminDao.admin_select_mytest((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_mytest_totalSize();
+		return json(adminSerive.admin_select_mytest((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -128,8 +126,8 @@ public class AdminController {
 	public String admin_select_myphoto(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_myphoto_totalSize();
-		return json(adminDao.admin_select_myphoto((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_myphoto_totalSize();
+		return json(adminSerive.admin_select_myphoto((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -141,8 +139,8 @@ public class AdminController {
 	public String admin_select_ip(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_ip_totalSize();
-		return json(adminDao.admin_select_ip((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_ip_totalSize();
+		return json(adminSerive.admin_select_ip((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	/**
@@ -168,7 +166,7 @@ public class AdminController {
 		article.setCreate_user(create_user);
 		article.setCreate_time(create_time);
 		article.setType(type);
-		int a = adminDao.admin_update_article(article);
+		int a = adminSerive.admin_update_article(article);
 		if(a == 1) {
 			return "success";
 		}
@@ -194,7 +192,7 @@ public class AdminController {
 		comment.setCreate_time(create_time);
 		comment.setA_id(a_id);
 		comment.setMessage(message);
-		int a = adminDao.admin_update_comment(comment);
+		int a = adminSerive.admin_update_comment(comment);
 		if(a == 1) {
 			return "success";
 		}
@@ -207,16 +205,16 @@ public class AdminController {
 	@RequestMapping("/admin_update_myPhoto")
 	@ResponseBody
 	public String admin_update_myPhoto(){
-		List<MyPhoto> myPhoto = new ArrayList<>();
+		//List<MyPhoto> myPhoto = new ArrayList<>();
 		
-		int id = Integer.parseInt(request.getParameter("id"));
-		int user_id = Integer.parseInt(request.getParameter("user_id"));
-		String photo_1 = request.getParameter("photo_1");
-		String photo_1_test = request.getParameter("photo_1_test");
-		String photo_2 = request.getParameter("photo_2");
-		String photo_2_test = request.getParameter("photo_2_test");
-		String photo_3 = request.getParameter("photo_3");
-		String photo_3_test = request.getParameter("photo_3_test");
+		//int id = Integer.parseInt(request.getParameter("id"));
+		//int user_id = Integer.parseInt(request.getParameter("user_id"));
+		//String photo_1 = request.getParameter("photo_1");
+		//String photo_1_test = request.getParameter("photo_1_test");
+		//String photo_2 = request.getParameter("photo_2");
+		//String photo_2_test = request.getParameter("photo_2_test");
+		//String photo_3 = request.getParameter("photo_3");
+		//String photo_3_test = request.getParameter("photo_3_test");
 		
 		/*myPhoto.setId(id);
 		myPhoto.setUser_id(user_id);
@@ -227,7 +225,7 @@ public class AdminController {
 		myPhoto.setPhoto_3(photo_3);
 		myPhoto.setPhoto_3_test(photo_3_test);
 		
-		int a = adminDao.admin_update_myPhoto(myPhoto);*/
+		int a = adminSerive.admin_update_myPhoto(myPhoto);*/
 		/*if(a == 1) {
 			return "success";
 		}*/
@@ -252,7 +250,7 @@ public class AdminController {
 		myTest.setTest_2(test_2);
 		myTest.setUser_id(user_id);
 		
-		int a = adminDao.admin_update_myTest(myTest);
+		int a = adminSerive.admin_update_myTest(myTest);
 		if(a == 1) {
 			return "success";
 		}
@@ -275,7 +273,7 @@ public class AdminController {
 		permission.setPermissionName(permissionName);
 		permission.setRowId(rowId);
 		
-		int a = adminDao.admin_update_permission(permission);
+		int a = adminSerive.admin_update_permission(permission);
 		if(a == 1) {
 			return "success";
 		}
@@ -296,7 +294,7 @@ public class AdminController {
 		role.setId(id);
 		role.setRoleName(roleName);
 		
-		int a = adminDao.admin_update_role(role);
+		int a = adminSerive.admin_update_role(role);
 		if(a == 1) {
 			return "success";
 		}
@@ -325,7 +323,7 @@ public class AdminController {
 		user.setRowId(rowId);
 		user.setRealname(realname);
 		
-		int a = adminDao.admin_update_user(user);
+		int a = adminSerive.admin_update_user(user);
 		if(a == 1) {
 			return "success";
 		}
@@ -350,7 +348,7 @@ public class AdminController {
 		wordMessage.setCreate_time(create_time);
 		wordMessage.setMessage(message);
 		
-		int a = adminDao.admin_update_wordMessage(wordMessage);
+		int a = adminSerive.admin_update_wordMessage(wordMessage);
 		if(a == 1) {
 			return "success";
 		}
@@ -364,7 +362,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_article(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_article(id);
+		int a = adminSerive.admin_delete_article(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -378,7 +376,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_comment(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_comment(id);
+		int a = adminSerive.admin_delete_comment(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -392,7 +390,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_myPhoto(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_myPhoto(id);
+		int a = adminSerive.admin_delete_myPhoto(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -406,7 +404,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_myTest(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_myTest(id);
+		int a = adminSerive.admin_delete_myTest(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -420,7 +418,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_permission(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_permission(id);
+		int a = adminSerive.admin_delete_permission(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -434,7 +432,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_role(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_role(id);
+		int a = adminSerive.admin_delete_role(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -448,7 +446,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_user(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_user(id);
+		int a = adminSerive.admin_delete_user(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -462,7 +460,7 @@ public class AdminController {
 	@ResponseBody
 	public String admin_delete_wordMessage(){
 		String id = request.getParameter("id");
-		int a = adminDao.admin_delete_wordMessage(id);
+		int a = adminSerive.admin_delete_wordMessage(id);
 		if(a == 1) {
 			return "success";
 		}
@@ -478,8 +476,8 @@ public class AdminController {
 	public String admin_select_comment(HttpServletRequest request){
 		String current = request.getParameter("current");
 		String rowCount = request.getParameter("rowCount");
-		int total = adminDao.admin_select_comment_totalSize();
-		return json(adminDao.admin_select_comment((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
+		int total = adminSerive.admin_select_comment_totalSize();
+		return json(adminSerive.admin_select_comment((Integer.parseInt(current)-1)*Integer.parseInt(rowCount),Integer.parseInt(rowCount)),current,rowCount,total);
 	}
 	
 	public String json(List<?> list, String current, String rowCount, int total){

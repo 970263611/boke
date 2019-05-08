@@ -5,18 +5,48 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <head>
-<title>详情</title>
+<title th:text=${article.title}></title>
 <link rel="shortcut icon" href="images/logo.ico" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/base.css">
 <link rel="stylesheet" type="text/css" href="css/dwq.css">
 <style type="text/css">
+@font-face 
+		{
+			/* 字体名称随意起 */
+			font-family: logoFont;
+			/*你下载字体所在的位置*/
+			src: url('../bb3127/Zentenar-Zierbuchstaben.ttf');
+		}
+		.logoWord
+		{
+			font-family:logoFont;
+			font-size: 43px;
+			margin-left: 10px;	
+		}
 #content_page {
 	padding-top: 110px;
 }
 #logo_text
 {
 	font-size: 20px; 
+}
+.shareA
+{
+	position: fixed;
+    line-height: 24px;
+    height: 24px;
+    display: block;
+    background: #999;
+    right:0;
+    padding: 0px 11px;
+    margin: 10px 0px 0 0;
+    border-radius: 8px;
+    -moz-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    color: #FFF;
 }
 @media screen and (min-width: 768px) {
 	#img_background {
@@ -28,6 +58,9 @@
 	#bs-example-navbar-collapse-1 {
 		background: #000;
 		float: right;
+	}
+	#shareDiv{
+		height:30px;
 	}
 	#collapse 
 	{
@@ -68,7 +101,7 @@
 
 <header onclick='showphone()'>
   <div class="tophead">
-    <div class="logo"><a href="/"><img id="img_logo" src="http://www.loveding.top:8089/dahuablog_image/logo_black.jpg" style="height: 33px;width: 33px;margin-top: 4px;">大花博客<span style="color: red;">.</span></a></div>
+    <div class="logo"><a href="/"><span class='logoWord'>dahua</span><span style="color: red;">.</span></a></div>
     <div id="mnav">
       <h2><span class="navicon"></span></h2>
       <ul>
@@ -119,6 +152,9 @@
 	
 	<div id="gtco-maine">
 		<div class="container">
+			<div id='shareDiv' style='position: relative;Z-INDEX: 1;'>
+				<a class='shareA' type="submit" th:onclick="'javascript:erweima('+${article.id}+');'" id="send_word">分享</a>
+			</div>
 			<div class="row row-pb-md">
 				<div class="col-md-12">
 					<ul id="gtco-post-list">
@@ -179,6 +215,19 @@
         <ul id='noticeText'>
         </ul>
  </div>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="shareModal" style="margin-top:65px;">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title">感谢分享(请保存图片后分享)</h5>
+      </div>
+      <div class="modal-body">
+        <img id='shareImg'>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -337,5 +386,22 @@ console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@16
 		$("#noticediv").hide();
 	}
 }
+	
+	function erweima(id){
+		$.ajax({
+			type : "post",
+			url : "/shareArticle",
+			cache: false,
+			async: false,
+			data: {"id":id},
+			error: function(request) {
+				layer.msg('获取二维码失败', function(){});
+	        },
+	        success: function(data) {
+	        	$('#shareImg').attr("src","http://www.loveding.top:8089/erweima/"+data+".jpg");
+	        	$('#shareModal').modal();
+	        }
+		});
+	}
 </script>
 </html>

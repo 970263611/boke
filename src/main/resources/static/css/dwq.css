@@ -225,8 +225,23 @@
 		    -o-transition: all 400ms linear 0s;
 		    transition: all 400ms linear 0s;
 		}
+		/* @font-face 
+		{
+			字体名称随意起
+			font-family: logoFont;
+			你下载字体所在的位置
+			src: url('../bb3127/Zentenar-Zierbuchstaben.ttf');
+		}
+		.logoWord
+		{
+			font-family:logoFont;
+			font-size: 43px;
+			margin-left: 10px;	
+		} */
+		.logo { float: left; overflow: hidden; font-size: 30px; margin-top: 0px; margin-left: 10px }
 		@media screen and (max-width: 768px)
 		{
+		.logo { font-size: 25px;margin-top: -5px;}
 			.tophead
 			{
 				padding-top: 0px;

@@ -25,7 +25,8 @@ public class RocketMQUtil implements ApplicationContextAware{
      */
     private static ApplicationContext applicationContext;
 
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    @SuppressWarnings("static-access")
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
     
