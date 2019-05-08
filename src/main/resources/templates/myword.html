@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+	<title>个人空间</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/mywordcss/style.css">
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<link rel="stylesheet" type="text/css" href="css/dwq.css">
+<link rel="stylesheet" href="css/webuploader.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style type="text/css">
+	@font-face 
+		{
+			/* 字体名称随意起 */
+			font-family: logoFont;
+			/*你下载字体所在的位置*/
+			src: url('../bb3127/Zentenar-Zierbuchstaben.ttf');
+		}
+		.logoWord
+		{
+			font-family:logoFont;
+			font-size: 43px;
+			margin-left: 10px;	
+		}
+  .row li 
+  {     
+      list-style:none;
+      margin-bottom:25px;           
+  }
+  .article_inside 
+  {
+      min-height: 70px;
+  }
+  .blogtitle
+  {
+  	  padding-left: 20px;
+  }
+  #username
+  {
+  	  position: absolute;
+	  top: 45%;
+	  left: 30%;
+	  font-size: 58px;
+  }
+  .text
+  {
+  	  width: 450px;	
+	  margin: 0 auto;
+  }
+  .allplace 
+  {
+  	  padding-top:0px;
+  }
+  #mingyan
+  {
+  	  height:250px;
+  	  margin:30px auto;
+  	  background-color:white;
+  	  width:80%;
+  	  box-shadow: 0px 0px 10px 5px #9e9e9e8a;
+  	  position: relative;
+  }
+  #liuyandiv
+  {
+  	  margin-right: 55px;
+  	  margin-top: 20px;
+  	  position:relative;
+  	  margin-bottom: 20px;
+  }
+  #liuyantest
+  {
+  	  margin-top:24px;
+  }
+  .webuploader-pick
+  {
+      display: flex;
+      background: white;
+      padding:0px;
+      color: black;
+  }
+  #my
+  {
+  	 padding-top:98px;
+  	 text-align: center;
+  	 font-size: 35px;
+  }
+  #follow
+  {
+  	 height: 50px; 
+  	 width: 50px;
+     display: inline-block;
+     position: fixed;
+     top: 150px;
+     right: 100px;'
+  }
+  @media screen and (max-width: 768px){   
+	  .text
+	  {
+	  	  width: 150px;	
+		  margin: 0 auto;
+	  }  
+  	  #username
+	  {
+	  	 top: 4%;
+		 left: 27%;
+		 font-size: 25px;
+	  }
+	  .text::before 
+	  {
+		  width: 150px;
+		  height: 20px;
+	  }
+	  #mingyan
+	  {
+	  	  height:125px;
+	  }
+	  #liuyandiv
+	  {
+	  	  margin-right: 0px;
+	  	  margin-top: 20px;
+	  }
+	  #liuyantest
+	  {
+	  	  margin-left:20px;
+	  	  margin-top:0px;
+	  }
+	  #my
+	  {
+	  	 padding-top:47px;
+	  	 font-size: 20px;
+	  }
+	  #follow
+	  {
+	  	 height: 35px; 
+	  	 width: 35px;
+	  	 top: 90px;
+	     right: 35px;'
+	  }
+  }
+    #noticediv
+		{
+		    background-color: white;
+		    display: inline-block;
+		    position: absolute;
+		    top: 96px;
+		    right: 195px;
+		    width: 300px;
+		    border-radius: 1px;
+		    box-shadow: 0 0 0 1px #9e9e9e;
+        	outline: 3px solid #607d8b52;
+		}
+		@media screen and (max-width: 768px)
+		{
+			#noticediv
+			{
+			    top: 66px;
+			    right: 0px;
+			    width: auto;
+			    width:230px;
+		    }
+		}	
+</style>
+</head>
+<body>
+<header id='head'>
+  <div class="tophead">
+    <div class="logo"><a href="/"><span class='logoWord'>dahua</span><span style="color: red;">.</span></a></div>
+    <div id="mnav">
+      <h2><span class="navicon"></span></h2>
+      <ul>
+        <li><a href="index">首页</a></li>
+        <li><a href="images">照片墙</a></li>
+         <li><a href="#" onclick='shownotice()' id='notice'>消息</a></li>
+        <li><a href="write">提笔</a></li>
+        <li><a href="myworld">个人</a></li>
+        <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
+		<a th:case=* th:text='${session.user.nickname}'
+		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
+      </ul>
+    </div>
+    <nav class="topnav" id="topnav">
+      <ul>
+        <li th:switch="${session.user}">
+			<a th:case=null></a>
+			<a th:case=* th:if="${session.user.rowId} == 1" href="admin">进入后台管理页面</a>
+		</li>
+        <li><a href="index">首页</a></li>
+        <li><a href="images">照片墙</a></li>
+        <li><a href="#" onclick='shownotice()' id='notice_phone'>消息</a></li>
+        <li><a href="write">提笔</a></li>
+        <li><a href="myworld">个人</a></li>
+        <li th:switch="${session.user}"><a th:case=null href="login">登录</a>
+		<a th:case=* th:text='${session.user.nickname}'
+		href="javascript:void(0);" onclick="loginOut()">登录</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<div id='backimg'> 
+	<img src="images/myword.jpg">
+</div>
+<div id='ttext'> 
+	<div class="col-xs-12 col-md-8 leftplace" id='firstmy'>
+		<div id='mingyan'> 
+			<div id='mydiv'>
+				<p id='my'></p>
+			</div>
+			<textarea id='message-text1' class="form-control message" rows="1" placeholder="给我留言" style='height: 190px;border: none;display:none;'></textarea>
+			<div id='mingyanbtn' style='position: absolute;bottom: 6%;right: 2%;'>
+				<button class="btn btn-default" onclick="edit1()">编辑</button>
+				<button class="btn btn-default" onclick="save()">保存</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-4 leftplace" id='firstly'>
+		<h2 id='liuyantest'>留言板</h2>
+		<div id='liuyandiv'>
+			<textarea id='message-text2' class="form-control message" rows="1" placeholder="他很懒，什么都没留下。。。" style='height: 150px;'></textarea>
+			<div id='liuyanbtn' style='position: absolute;bottom: 6%;right: 3%;'>
+				<button class="btn btn-default" onclick="save()">保存</button>
+			</div>
+		</div>
+		<div id='phone_file_input'>
+			<span style="font-size:14px;"><div id="uploader-demo">  
+			    <!--用来存放item-->  
+			    <div id="thelist" class="uploader-list"></div>  
+			    <div style="margin-bottom: 20px;">  
+				    <button id="filePicker" class="btn btn-default">选择照片</button>
+				    <input type="text" id = "test_photo" class='form-control' style="width: 53%;display:inline-block;" placeholder="给照片加点什么吧"> 
+				    <button id="ctlBtn" class="btn btn-default">上传照片</button>
+			    </div>  
+			</span> 
+		</div>
+	</div>
+</div>
+<div class='allplace'>
+	<div class="col-xs-12 col-md-8 leftplace" id='myarticle'>
+		<div class='article' th:each="alist: ${list}">
+			<div class="article_inside">
+				<a href="single.html" th:href="@{/single(id=${alist.id})}">
+					<h4 class="blogtitle" th:text="${alist.title}"></h4>
+				</a>
+				<div class='article_img_div'>
+					<span th:switch="${alist.type}">
+						<span class='type' th:case=1 th:text="技术交流"></span>
+						<span class='type' th:case=2 th:text="我的困惑"></span>
+						<span class='type' th:case=3 th:text="谈谈生活"></span>
+					</span>
+					<span class='time' th:text="${alist.create_time}">2018-08-08</span>
+					<span class='view'>333</span>
+				</div>
+				<div class='readall'>
+					<span><a style="color: green;" href="single.html" th:href="@{/single(id=${alist.id})}">阅读全文</a></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-4 rightplace">
+		<ul class="row" id='myimage'>
+			<li class="col-md-4 col-xs-4" th:each="iter,iterStat:${image_list}">
+				<img th:src='${iter.image}' alt="DaHua's Blog，Welcome to see!" class="img-responsive" th:data-magnify='gallery' th:href='${iter.image}' th:data-caption='${iter.text}' onclick="seeBigImage()" style="width:125px!important;height:100px!important;">
+	        </li>
+	    </ul>
+	</div>
+</div>
+<div class="text" id='username' th:each="iter,iterStat:${newnickname}">
+  <span th:text="${iter}"></span>
+</div>
+<div>
+	<footer style="height: 60px;">
+	  <p>Design by 大花博客 黑ICP备18000243号</p>
+	</footer>
+</div>
+<div style='display:none;' id='noticediv'>
+    <a>提醒</a><a style='float:right' onclick='shownotice()'>关闭</a>
+        <ul id='noticeText'>
+        </ul>
+ </div>
+<img id='follow' src='images/gz.png' onclick='guanzhu()'>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script src='js/mywordjs/TweenMax.min.js'></script>
+<script src="js/mywordjs/index.js"></script>
+<script src="js/webuploader.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+<script type="text/javascript" src="js/jquery.magnify.js"></script>
+<script>
+	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+	$("#head").click(function(){
+		var oh2 = document.getElementsByTagName("h2")[0];
+		var oUl = document.getElementsByTagName("ul")[0];
+		var style = oUl.style;
+		style.display = style.display == "block" ? "none" : "block";
+		oh2.className = style.display == "block" ? "open" : ""
+	});
+	var obj=null;
+	var As=document.getElementById('topnav').getElementsByTagName('a');
+	obj = As[0];
+	for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
+	obj=As[i];}
+	obj.id='topnav_current';
+
+	window.onload = function() {
+		var winHeight = document.documentElement.clientHeight;
+		var tsxth = $("#allplace").height();
+		if(tsxth==undefined){
+			tsxth = 0;
+		}
+	    if($("#backimg").height()+$("#firstmy").height()+$("#firstly").height()+tsxth<winHeight-126){
+	    	var top = winHeight-$("#head").height()-($("#backimg").height()+$("#ttext").height())-tsxth;
+	    	if(top<0){
+	    		top = 0;
+	    	}
+			$("footer").css("margin-top", top);
+		} 
+	}
+	
+	$(function() {
+		$.ajax({
+			type : "post",
+			url : "/getMYandLY?uId="+'[[${userId}]]',
+			cache: false,
+			async: false,
+            success: function(data) {
+            	$("#my").html(data.test1);
+            	$("#message-text1").val(data.test1);
+            	$("#message-text2").val(data.test2);
+            }
+		});
+	})
+	
+	
+	//保存铭言和格言
+	function save(){
+		var test1 = $("#message-text1").val();
+		var test2 = $("#message-text2").val();
+		$.ajax({
+			type : "post",
+			url : "/save_mytest",
+			data : {"test1":test1,"test2":test2},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('保存失败', function(){});
+            },
+            success: function(data) {
+                if(data == "error"){
+                	layer.msg('保存失败', function(){});
+                }else if(data == "success"){
+                	$("#my").html(test1);
+                	$("#message-text1").hide();
+    				$("#my").show();
+                	layer.msg('保存成功');
+                }
+            }
+		});
+	}
+	
+	function edit1(){
+		$("#my").hide();
+		$("#message-text1").show();
+	}
+	
+	function loginOut(){
+		layer.msg('确定要退出么？', {
+			  time: 0 //不自动关闭
+			  ,btn: ['咋的，有意见？', '你说退就退啊！']
+			  ,yes: function(index){
+			    layer.close(index);
+			    window.location.href = "loginOut";
+			  }
+			});
+	}
+	
+	//判断是用户自己访问主页还是其他人访问
+	$(function(){
+		var not_see = '[[${not_see}]]';
+		var modify = '[[${modify}]]';
+		if('no' == modify){
+			$("#liuyanbtn").hide();
+			$("#mingyanbtn").hide();
+			$("#phone_file_input").hide();
+		}else{
+			$("#follow").hide();
+		}
+	})
+	
+    $(function(){  
+    	   /*init webuploader*/  
+    	   var $list=$("#thelist");   //这几个初始化全局的百度文档上没说明，好蛋疼。  
+    	   var $btn =$("#ctlBtn");   //开始上传  
+    	   var thumbnailWidth = 100;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算，具体可以看api文档  
+    	   var thumbnailHeight = 100;  
+    	  
+    	   var uploader = WebUploader.create({  
+    	       // 选完文件后，是否自动上传。  
+    	       auto: false,  
+    	  
+    	       // swf文件路径  
+    	       swf: 'js/Uploader.swf',  
+    	  
+    	       // 文件接收服务端。  
+    			server : '/photo_uplode',
+    
+   				sendAsBinary : true, 
+    	  
+    	       // 选择文件的按钮。可选。  
+    	       // 内部根据当前运行是创建，可能是input元素，也可能是flash.  
+    	       pick: '#filePicker',  
+    	  
+    	       // 只允许选择图片文件。  
+    	       accept: {  
+    	           title: 'Images',  
+    	           extensions: 'gif,jpg,jpeg,bmp,png',  
+    	           mimeTypes: 'image/*'  
+    	       }, 
+    	       method:'POST',  
+    	   });  
+    	   // 当有文件添加进来的时候  
+    	   uploader.on( 'fileQueued', function( file ) {  // webuploader事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploader.onFileueued = function(file){...} ，类似js的事件定义。  
+    	       var $li = $(  
+    	               '<div id="' + file.id + '" class="file-item thumbnail">' +  
+    	                   '<img>' +  
+    	                   '<div class="info">' + file.name + '</div>' +  
+    	               '</div>'  
+    	               ),  
+    	           $img = $li.find('img');  
+    	  
+    	  
+    	       // $list为容器jQuery实例  
+    	       $list.append( $li );  
+    	  
+    	       // 创建缩略图  
+    	       // 如果为非图片文件，可以不用调用此方法。  
+    	       // thumbnailWidth x thumbnailHeight 为 100 x 100  
+    	       uploader.makeThumb( file, function( error, src ) {   //webuploader方法  
+    	           if ( error ) {  
+    	               $img.replaceWith('<span>不能预览</span>');  
+    	               return;  
+    	           }  
+    	  
+    	           $img.attr( 'src', src );  
+    	       }, thumbnailWidth, thumbnailHeight );  
+    	   });  
+    	   
+    	   uploader.on( 'uploadBeforeSend', function( block, data ) {  
+    		    // block为分块数据。  
+    		    // file为分块对应的file对象。  
+    		    var file = block.file;  
+    		    // 修改data可以控制发送哪些携带数据。  
+    		    data.test_photo = $("#test_photo").val();  
+    		});  
+    	   
+    	   // 文件上传过程中创建进度条实时显示。  
+    	   uploader.on( 'uploadProgress', function( file, percentage ) {  
+    	       var $li = $( '#'+file.id ),  
+    	           $percent = $li.find('.progress span');  
+    	  
+    	       // 避免重复创建  
+    	       if ( !$percent.length ) {  
+    	           $percent = $('<p class="progress"><span></span></p>')  
+    	                   .appendTo( $li )  
+    	                   .find('span');  
+    	       }  
+    	  
+    	       $percent.css( 'width', percentage * 100 + '%' );  
+    	   });  
+    	  
+    	   // 文件上传成功，给item添加成功class, 用样式标记上传成功。  
+    	   uploader.on( 'uploadSuccess', function( file ) {  
+    	       $( '#'+file.id ).addClass('upload-state-done');  
+    	       window.location.reload();
+    	   });  
+    	   
+    	   // 文件上传失败，显示上传出错。  
+    	   uploader.on( 'uploadError', function( file ) {  
+    	       var $li = $( '#'+file.id ),  
+    	           $error = $li.find('div.error');  
+    	  
+    	       // 避免重复创建  
+    	       if ( !$error.length ) {  
+    	           $error = $('<div class="error"></div>').appendTo( $li );  
+    	       }  
+    	  
+    	       $error.text('上传失败');  
+    	   });  
+    	  
+    	   // 完成上传完了，成功或者失败，先删除进度条。  
+    	   uploader.on( 'uploadComplete', function( file ) {  
+    	       $( '#'+file.id ).find('.progress').remove();  
+    	   });  
+    	      $btn.on( 'click', function() {  
+    	        console.log("上传...");  
+    	        uploader.upload();  
+    	        console.log("上传成功"); 
+    	      });  
+    	  });  
+	
+	//点击图片的方法
+	function seeBigImage(){
+		 $('[data-magnify]').magnify({
+             draggable: true,
+             resizable: true,
+             movable: true,
+             keyboard: true,
+             title: true,
+             modalWidth: 320,
+             modalHeight: 320,
+             fixedContent: true,
+             fixedModalSize: false,
+             initMaximized: false,
+             gapThreshold: 0.02,
+             ratioThreshold: 0.1,
+             minRatio: 0.1,
+             maxRatio: 16,
+             headToolbar: ['maximize', 'close'],
+             footToolbar: ['zoomIn', 'zoomOut',  'fullscreen', , 'rotateRight'],
+             multiInstances: true,
+             initEvent: 'click',
+             initAnimation: true,
+             fixedModalPos: false,
+             zIndex: 1090,
+             dragHandle: '.magnify-modal'
+         });
+     }
+	
+	$(function(){
+		var articleId = '[[${articleId}]]';
+		if(articleId!='no'){
+			$.ajax({
+				type : "post",
+				url : "/checkFolllw",
+				data : {"articleId":articleId},
+				cache: false,
+				async: false,
+				error: function(request) {
+					layer.msg('无法获取关注信息', function(){});
+	            },
+	            success: function(data) {
+	                if(data == "successed"){
+	                	$("#follow").attr('src','images/ygz.png');
+	                	$("#follow").attr("onclick", "alFollow()"); 
+	                }
+	            }
+			});
+		}
+	})
+	
+	function guanzhu(){
+		var articleId = '[[${articleId}]]';
+		if(articleId=='no'){
+			window.localhost.href='login';
+		}
+		$.ajax({
+			type : "post",
+			url : "/follow",
+			data : {"articleId":articleId},
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('关注失败', function(){});
+            },
+            success: function(data) {
+                if(data == "success"){
+                	$("#follow").attr('src','images/ygz.png');
+                	$("#follow").attr("onclick", "alFollow()"); 
+                	layer.msg('关注成功');
+                }else if(data=='nouser'){
+                	window.location.href="login";
+                }
+            }
+		});
+	}
+	
+	$(function(){
+		$.ajax({
+			type : "post",
+			url : "/getNotice",
+			cache: false,
+			async: false,
+			error: function(request) {
+				layer.msg('获取消息失败', function(){});
+	        },
+	        success: function(data) {
+	            if(data != ""){
+	            	var html ="";
+	            	for(var a=0;a<data.length;a++){
+	            		html += "<li>" + data[a] + "</li>";
+	            	}
+	            	$("#noticeText").append(html);
+	            	$("#notice").text("消息("+data.length+")");
+	            	$("#notice_phone").text("消息("+data.length+")");
+	            }
+	        }
+		});
+	})
+	
+	function alFollow(){
+		layer.msg('您已经关注了');
+	}
+	
+	function shownotice(){
+		if('' == '[[${session.user}]]'){
+			layer.msg('请登录后查看消息', function(){});
+			return false;
+		}
+		if($('#noticediv').is(':hidden')){
+			$("#noticediv").show();
+			$.ajax({
+				type : "post",
+				url : "/delNotice",
+				cache: false,
+				async: false,
+				error: function(request) {
+					layer.msg('获取消息失败', function(){});
+		        },
+		        success: function(data) {
+		        	if(data=='success'){
+			        	$("#notice").text("消息");
+		            	$("#notice_phone").text("消息");
+		        	}
+		        }
+			});
+		}else{
+			$("#noticediv").hide();
+		}
+	}
+</script>
+</body>
+</html>
