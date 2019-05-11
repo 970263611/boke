@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>大花博客欢迎您</title>
+
+    <link rel="stylesheet" href="index/css/style.css" media="screen" type="text/css" />
+
+</head>
+
+<body>
+
+<canvas id="text" width="500" height="100"></canvas>
+<canvas id="stage" width="500" height="100"></canvas>
+<form id="form" style='display:none;'>
+    <input type="text" id="inputText" value=".welcome." />
+    <input id='btn' type="submit" value="TRY IT" />
+</form>
+<div style="text-align:center;clear:both">
+
+</div>
+<script type="text/javascript" src="index/js/jquery-3.3.1.js"></script>
+  <script src='index/js/EasePack.min.js'></script>
+  <script src='index/js/TweenLite.min.js'></script>
+  <script src='index/js/easeljs-0.7.1.min.js'></script>
+  <script src='index/js/requestAnimationFrame.js'></script>
+  <script src="index/js/index.js"></script>
+</body>
+<script>
+	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+    function dwq(){
+    	setTimeout("dd()",1000); 
+    	
+	}
+	function dd(){
+		document.getElementById('btn').click();	
+		setTimeout("ww()",2000); 
+	}
+	
+	function ww(){
+		window.location.href="index";
+	}
+</script>
+</html>
