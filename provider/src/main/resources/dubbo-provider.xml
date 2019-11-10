@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用名称，用于计算依赖关系 -->
+    <dubbo:application name="boke-provider" />
+    
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="zookeeper://182.61.133.77:2181"/>
+    
+    <!-- 使用dubbo协议，在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20890"/>
+    
+    <dubbo:provider delay="-1" timeout="10000" retries="0"/>
+    
+    <!-- service实现类作为本地的一个bean -->
+    <bean id="adminSerive" class="com.boke.user.service.impl.AdminSeriveImpl"/>
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.dahua.boke.service.AdminSerive" ref="adminSerive"/>
+    
+    <!-- service实现类作为本地的一个bean -->
+    <bean id="photoInputService" class="com.boke.user.service.impl.PhotoInputServiceImpl"/>
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.dahua.boke.service.PhotoInputService" ref="photoInputService"/>
+    
+    <!-- service实现类作为本地的一个bean -->
+    <bean id="userService" class="com.boke.user.service.impl.UserServiceImpl"/>
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.dahua.boke.service.UserService" ref="userService">
+    	<dubbo:method name="checkSweep" timeout="200000" />
+    </dubbo:service>
+    
+    <!-- service实现类作为本地的一个bean -->
+    <bean id="weChatService" class="com.boke.user.service.impl.WeChatServiceImpl"/>
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.dahua.boke.service.WeChatService" ref="weChatService"/>
+
+</beans>

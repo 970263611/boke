@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 消费方应用名称，用于计算依赖关系，不是匹配条件，不要与提供方名称一样  -->
+	<dubbo:application name="boke-consumer" />
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="zookeeper://182.61.133.77:2181"/>
+    <!-- <dubbo:registry address="zookeeper://localhost:2181"/> -->
+    <!-- 消费方用什么协议获取服务（用dubbo协议在20880端口暴露服务） -->
+    <dubbo:protocol name="dubbo" port="20889"/>
+
+    <!-- 生成远程服务代理，可以与本地bean一样使用  check属性，启动时候是否检查 一般设置成false 启动时候不检查 -->
+    <dubbo:reference id="adminSerive" check="false" interface="com.dahua.boke.service.AdminSerive"/>
+    
+    <!-- 生成远程服务代理，可以与本地bean一样使用  check属性，启动时候是否检查 一般设置成false 启动时候不检查 -->
+    <dubbo:reference id="photoInputService" check="false" interface="com.dahua.boke.service.PhotoInputService"/>
+    
+    <!-- 生成远程服务代理，可以与本地bean一样使用  check属性，启动时候是否检查 一般设置成false 启动时候不检查 -->
+    <dubbo:reference id="userService" check="false" interface="com.dahua.boke.service.UserService"/>
+    
+    <!-- 生成远程服务代理，可以与本地bean一样使用  check属性，启动时候是否检查 一般设置成false 启动时候不检查 -->
+    <dubbo:reference id="weChatService" check="false" interface="com.dahua.boke.service.WeChatService"/>
+
+</beans>
