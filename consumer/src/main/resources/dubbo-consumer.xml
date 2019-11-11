@@ -9,7 +9,7 @@
 	<dubbo:application name="boke-consumer" />
 
     <!-- 使用zookeeper注册中心暴露服务地址 -->
-    <dubbo:registry address="zookeeper://182.61.133.77:2181"/>
+    <dubbo:registry address="zookeeper://:2181"/>
     <!-- <dubbo:registry address="zookeeper://localhost:2181"/> -->
     <!-- 消费方用什么协议获取服务（用dubbo协议在20880端口暴露服务） -->
     <dubbo:protocol name="dubbo" port="20889"/>
