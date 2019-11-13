@@ -31,6 +31,7 @@ http://www.loveding.top
 | thymeleaf | 模版引擎                     | 已上线   |
 | UEditor   | 富文本编辑器（源码部分改动） | 已上线   |
 | nginx     | 反向代理，负载均衡           | 已上线   |
+| starter   | 编写springboot的starter组件  | 已上线   |
 
 ### 实现的功能点
 
