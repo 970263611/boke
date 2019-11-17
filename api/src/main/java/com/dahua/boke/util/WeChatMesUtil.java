@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,40 +18,28 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.beans.factory.annotation.Value;
 
 public final class WeChatMesUtil {
 
-	public static final String Token = "";// 微信token
-
-	public static final String EncodingAESKey = "";// 微信key
-
-	public static final String AppID = "";// 微信开发者id
-
-	public static final String AppSecret = "";// 微信开发者密码
-	
-	public static final String AppID_CS = "";// 微信开发者id
-	
-	public static final String AppSecret_CS = "";// 微信开发者密码
-	
-	public static final String Account_Number_CS = "gh_9f88428b7945";//测试公众号
 	
 	public static final String LoginURL = StaticAddressUtil.yuming + "/login";
 	
 	public static final String SaomaURL = StaticAddressUtil.yuming + "/Sweep";
 	
-	public static final String WeChat_Write_1_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write1#wechat_redirect";
+	public static final String WeChat_Write_1_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write1#wechat_redirect";
 	
-	public static final String WeChat_Write_2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write2#wechat_redirect";
+	public static final String WeChat_Write_2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write2#wechat_redirect";
 	
-	public static final String WeChat_Write_3_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write3#wechat_redirect";
+	public static final String WeChat_Write_3_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=write3#wechat_redirect";
 	
-	public static final String WeChat_Index_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=index#wechat_redirect";
+	public static final String WeChat_Index_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=index#wechat_redirect";
 	
-	public static final String WeChat_MyWorld_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=myworld#wechat_redirect";
+	public static final String WeChat_MyWorld_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=myworld#wechat_redirect";
 	
-	public static final String WeChat_Image_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=images#wechat_redirect";
+	public static final String WeChat_Image_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+LoginURL+"&response_type=code&scope=snsapi_base&state=images#wechat_redirect";
 	
-	public static final String WeChat_Saoma_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+AppID_CS+"&redirect_uri="+SaomaURL+"&response_type=code&scope=snsapi_base&state=#wechat_redirect";
+	public static final String WeChat_Saoma_URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+StaticAddressUtil.AppID_CS+"&redirect_uri="+SaomaURL+"&response_type=code&scope=snsapi_base&state=#wechat_redirect";
 	
 	/**   
      * 返回消息类型：文本   
@@ -152,7 +141,7 @@ public final class WeChatMesUtil {
 	 /**   
 	  * 文本消息对象转换成xml   
      *    
-     * @param textMessage 文本消息对象   
+     * @param
      * @return xml   
      */    
 	public static void XMLprint(HttpServletResponse response,String content,String toUserName,String fromUserName,String msgType/*这里暂时都定义为文本回复形式*/){

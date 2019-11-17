@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.dahua.boke.util.StaticAddressUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Component;
 import com.dahua.boke.entity.Article;
 import com.dahua.boke.service.UserService;
 import com.dahua.boke.util.RedisUtil;
-import com.dahua.boke.util.WeChatMesUtil;
 
 import net.sf.json.JSONObject;
 import redis.clients.jedis.Jedis;
@@ -45,7 +45,7 @@ public class RunFunction {
         Jedis jedis = jedisPool.getResource();
         try {  
             //利用get形式获得token  
-            HttpGet httpget = new HttpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+WeChatMesUtil.AppID+"&secret="+WeChatMesUtil.AppSecret);  
+            HttpGet httpget = new HttpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ StaticAddressUtil.AppID+"&secret="+StaticAddressUtil.AppSecret);
             // Create a custom response handler  
             ResponseHandler<JSONObject> responseHandler = new ResponseHandler<JSONObject>() {  
   
@@ -96,7 +96,7 @@ public class RunFunction {
         Jedis jedis = jedisPool.getResource();
         try {  
             //利用get形式获得token  
-            HttpGet httpget = new HttpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+WeChatMesUtil.AppID_CS+"&secret="+WeChatMesUtil.AppSecret_CS);  
+            HttpGet httpget = new HttpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+StaticAddressUtil.AppID_CS+"&secret="+StaticAddressUtil.AppSecret_CS);
             // Create a custom response handler  
             ResponseHandler<JSONObject> responseHandler = new ResponseHandler<JSONObject>() {  
   

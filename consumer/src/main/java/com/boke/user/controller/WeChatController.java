@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import com.dahua.boke.util.WeChatMesUtil;
 
 @RestController()
 @RequestMapping("wechat")
+@DwqAnnotation
 public class WeChatController {
 	
 	private static Logger logger = LoggerFactory.getLogger(WeChatController.class);

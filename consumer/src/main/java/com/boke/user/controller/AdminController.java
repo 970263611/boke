@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.dahua.boke.service.UserService;
 import net.sf.json.JSONArray;
 
 @Controller
+@DwqAnnotation
 public class AdminController {
 
 	@Autowired

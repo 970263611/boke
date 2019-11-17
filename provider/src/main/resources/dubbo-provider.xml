@@ -5,14 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
+
 	<!-- 提供方应用名称，用于计算依赖关系 -->
     <dubbo:application name="boke-provider" />
-    
-    <!-- 使用zookeeper注册中心暴露服务地址 -->
-    <dubbo:registry address="zookeeper://"/>
-    
-    <!-- 使用dubbo协议，在20880端口暴露服务 -->
-    <dubbo:protocol name="dubbo" port="20890"/>
     
     <dubbo:provider delay="-1" timeout="10000" retries="0"/>
     

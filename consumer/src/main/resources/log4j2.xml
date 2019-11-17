@@ -2,11 +2,6 @@
 
 <configuration status="error">
 
-    <Properties>
-        <!-- 配置日志文件输出目录 -->
-        <Property name="LOG_HOME">./logs</Property>
-    </Properties>
-
     <!--先定义所有的appender-->
     <appenders>
         <!--这个输出控制台的配置-->
@@ -38,13 +33,5 @@
             <appender-ref ref="log"/>
             <appender-ref ref="Console"/>
         </root>
-
-        <!--记录druid-sql的记录-->
-        <logger name="druid.sql.Statement" level="debug" additivity="false">
-            <appender-ref ref="Console"/>
-            <appender-ref ref="RollingFile"/>
-            <appender-ref ref="log"/>
-        </logger>
-
     </loggers>
 </configuration>

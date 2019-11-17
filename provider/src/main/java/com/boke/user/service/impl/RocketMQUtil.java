@@ -2,6 +2,7 @@ package com.boke.user.service.impl;
 
 import java.util.List;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -18,6 +19,7 @@ import com.alibaba.rocketmq.common.message.Message;
 import com.alibaba.rocketmq.common.message.MessageExt;
 import com.boke.user.service.impl.UserServiceImpl;
 
+@DwqAnnotation
 public class RocketMQUtil implements ApplicationContextAware{
 	
 	/**

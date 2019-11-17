@@ -12,6 +12,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -36,6 +37,7 @@ import com.dahua.boke.util.SerializeUtil;
 import com.dahua.boke.util.StaticAddressUtil;
 
 @RestController
+@DwqAnnotation
 public class UserController {
 
 	@Autowired

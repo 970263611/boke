@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -57,6 +58,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.SortingParams;
 
 @Service
+@DwqAnnotation
 public class UserServiceImpl implements UserService {
 
 	@Resource
@@ -728,8 +730,8 @@ public class UserServiceImpl implements UserService {
 	public String sweep(String loginUUID,String code) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(
-				"https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WeChatMesUtil.AppID_CS + "&secret="
-						+ WeChatMesUtil.AppSecret_CS + "&code=" + code + "&grant_type=authorization_code");
+				"https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + StaticAddressUtil.AppID_CS + "&secret="
+						+ StaticAddressUtil.AppSecret_CS + "&code=" + code + "&grant_type=authorization_code");
 		// Create a custom response handler
 		ResponseHandler<net.sf.json.JSONObject> responseHandler = new ResponseHandler<net.sf.json.JSONObject>() {
 

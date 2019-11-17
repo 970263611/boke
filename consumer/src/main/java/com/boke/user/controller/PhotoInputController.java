@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -26,6 +27,7 @@ import com.dahua.boke.util.StaticAddressUtil;
 import net.sf.json.JSONObject;
 
 @Controller
+@DwqAnnotation
 public class PhotoInputController {
 	
 	@Autowired

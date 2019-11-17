@@ -2,6 +2,7 @@ package com.boke.user.service.impl;
 
 import java.util.List;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import com.dahua.boke.service.AdminSerive;
 import com.boke.user.dao.AdminDao;
 
 @Service
+@DwqAnnotation
 public class AdminSeriveImpl implements AdminSerive{
 
 	@Autowired

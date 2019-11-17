@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.dahua.boke.aspect.DwqAnnotation;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -44,6 +45,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @Service
+@DwqAnnotation
 public class WeChatServiceImpl implements WeChatService {
 
 	private static Logger logger = LoggerFactory.getLogger(WeChatServiceImpl.class);
@@ -64,7 +66,7 @@ public class WeChatServiceImpl implements WeChatService {
 	@Override
 	public String Verification(WeChat weChat) {
 		List<String> params = new ArrayList<String>();
-		params.add(WeChatMesUtil.Token);
+		params.add(StaticAddressUtil.Token);
 		params.add(weChat.getTimestamp());
 		params.add(weChat.getNonce());
 		// 1. 将token、timestamp、nonce三个参数进行字典序排序
@@ -100,7 +102,7 @@ public class WeChatServiceImpl implements WeChatService {
 		Map<String,Object> map = new HashMap<String,Object>();
 		User u = new User();
 		String respMessage = "回复您的消息是来自于大花博客服务器端，欢迎访问"+StaticAddressUtil.yuming+"\n由于个人公众号微信给的权限较少，请关注我的测试公众号："
-				+ WeChatMesUtil.Account_Number_CS + "\n";
+				+ StaticAddressUtil.Account_Number_CS + "\n";
 		logger.debug(requestMap.toString()+"**************************************");
 		// 发送方帐号（open_id）
 		String fromUserName = (String) requestMap.get("FromUserName");
@@ -136,7 +138,7 @@ public class WeChatServiceImpl implements WeChatService {
 			// 订阅
 			if (eventType.equals(WeChatMesUtil.EVENT_TYPE_SUBSCRIBE)) {
 				respMessage = "mo-爱心 盼星星，盼月亮，你终于来鸟~\n欢迎访问大花博客公众号\n网页版请访问"+StaticAddressUtil.yuming+"\n由于个人公众号微信给的权限较少。\n更多功能请关注我的测试公众号："
-						+ WeChatMesUtil.Account_Number_CS + "。\n关注测试公众号后将为您自动注册并登陆，同时将提供给您可以在浏览器登陆大花博客的账号和密码。";
+						+ StaticAddressUtil.Account_Number_CS + "。\n关注测试公众号后将为您自动注册并登陆，同时将提供给您可以在浏览器登陆大花博客的账号和密码。";
 
 				// 发送方帐号（open_id）
 				String open_id = (String) requestMap.get("FromUserName");
@@ -367,8 +369,8 @@ public class WeChatServiceImpl implements WeChatService {
 		System.out.println("code===================================" + code);
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(
-				"https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + WeChatMesUtil.AppID_CS + "&secret="
-						+ WeChatMesUtil.AppSecret_CS + "&code=" + code + "&grant_type=authorization_code");
+				"https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + StaticAddressUtil.AppID_CS + "&secret="
+						+ StaticAddressUtil.AppSecret_CS + "&code=" + code + "&grant_type=authorization_code");
 		// Create a custom response handler
 		ResponseHandler<JSONObject> responseHandler = new ResponseHandler<JSONObject>() {
 
