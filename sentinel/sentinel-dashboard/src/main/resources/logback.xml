@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+        <property name="LOG_HOME" value="/ebank_logs/sentinel" />
+        <property name="pattern"
+                value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" />
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">   
+            <FileNamePattern>${LOG_HOME}/sentinel-dashboard-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxFileSize>10MB</MaxFileSize>
+            <MaxHistory>15</MaxHistory>
+            <TotalSizeCap>20GB</TotalSizeCap>
+        </rollingPolicy>  
+          
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">  
+            <pattern>${pattern}</pattern>  
+        </encoder>  
+    </appender>
+        <root level="INFO">
+                <appender-ref ref="FILE" />
+        </root>
+</configuration>
