@@ -12,7 +12,7 @@ public class ApolloUtil {
     static{
         InputStream in = null;
         try {
-            in = new BufferedInputStream(new FileInputStream("/ebank_app/sentinel/sentinel-apollo.properties"));
+            in = new BufferedInputStream(new FileInputStream("/root/sentinel/sentinel-apollo.properties"));
             Properties p = new Properties();
             p.load(in);
             APOLLO_USER = p.getProperty("APOLLO_USER");
@@ -33,7 +33,7 @@ public class ApolloUtil {
         }
     }
 
-    public static final String APOLLO_TOKEN = "642b7cc8506006d5b2db573e7e7d96dabc9f3334";
+    public static final String APOLLO_TOKEN = "7541522955101f5bfde0cf009b67b2cf95b76ede";
 
     public static final String APOLLO_CLUSTER_NAME = "default";
 
