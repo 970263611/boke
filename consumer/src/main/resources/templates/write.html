@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/base.css">
 <link rel="stylesheet" type="text/css" href="css/dwq.css">
-<link rel="stylesheet" type="text/css" href="css/ueditor.css">
+<link rel="stylesheet" type="text/css" href="css/wangEditor.css">
 <style>  
 	@font-face 
 		{
@@ -32,6 +32,8 @@
 	{
 		display:inline-block;
 		width: 65%;
+		margin-top: 11px;
+		margin-bottom: 10px;
 	}
 	@media screen and (min-width: 768px){
       #editor
@@ -62,7 +64,6 @@
 		{
 			display:inline-block;
 			width: 100%;
-			padding-top:10px;
 		}
   	}
 	#noticediv
@@ -77,6 +78,10 @@
 	    box-shadow: 0 0 0 1px #9e9e9e;
        	outline: 3px solid #607d8b52;
 	}
+	#div
+	{
+		margin-left: 20px;
+	}
 	@media screen and (max-width: 768px)
 	{
 		#noticediv
@@ -86,6 +91,14 @@
 		    width: auto;
 		    width:230px;
 	    }
+		#div
+		{
+			margin-left: 0px;
+		}
+		#shire
+		{
+			margin-top: 0px;
+		}
 	}		
 </style>
 </head>
@@ -126,9 +139,8 @@
 </header>
 <div id='line' style="height:10px;background-color:black;background-color: #7955486b;margin: 8px;"></div>	
 <div class="col-xs-12 col-md-9" style='padding-left:0px;padding-right:0px;'>
-<script id="editor" type="text/plain"></script>
-	<div id='typeandshire' style="clear: both;overflow: hidden;">
-		<div id='type' style='display:inline-block;float:left;'>
+		<div id="div"></div>
+		<div id='type' style='display:inline-block;float:left;margin-top: 10px;margin-bottom: 10px;'>
 			<div class="col-xs-4 col-md-4">
 				<button class='btn btn-default' onclick='settype(1)'>技术交流</button>
 			</div>
@@ -147,43 +159,7 @@
 				<button class='btn btn-default' onclick="insert_article()">分享</button>
 			</div>
 		</div>
-	</div>
 </div>
-<!--<div id="btns">
-	    <div>
-	        <button onclick="getAllHtml()">获得整个html的内容</button>
-	        <button onclick="getContent()">获得内容</button>
-	        <button onclick="setContent()">写入内容</button>
-	        <button onclick="setContent(true)">追加内容</button>
-	        <button onclick="getContentTxt()">获得纯文本</button>
-	        <button onclick="getPlainTxt()">获得带格式的纯文本</button>
-	        <button onclick="hasContent()">判断是否有内容</button>
-	        <button onclick="setFocus()">使编辑器获得焦点</button>
-	        <button onmousedown="isFocus(event)">编辑器是否获得焦点</button>
-	        <button onmousedown="setblur(event)" >编辑器失去焦点</button>
-
-	    </div>
-	    <div>
-	        <button onclick="getText()">获得当前选中的文本</button>
-	        <button onclick="insertHtml()">插入给定的内容</button>
-	        <button id="enable" onclick="setEnabled()">可以编辑</button>
-	        <button onclick="setDisabled()">不可编辑</button>
-	        <button onclick=" UE.getEditor('editor').setHide()">隐藏编辑器</button>
-	        <button onclick=" UE.getEditor('editor').setShow()">显示编辑器</button>
-	        <button onclick=" UE.getEditor('editor').setHeight(300)">设置高度为300默认关闭了自动长高</button>
-	    </div>
-
-	    <div>
-	        <button onclick="getLocalData()" >获取草稿箱内容</button>
-	        <button onclick="clearLocalData()" >清空草稿箱</button>
-	    </div>
-	</div>
-	<div>
-	    <button onclick="createEditor()">
-	    创建编辑器</button>
-	    <button onclick="deleteEditor()">
-	    删除编辑器</button>
-	</div> -->
 <div class="col-xs-0 col-md-3" id='word'>	
 	<div class="col-xs-0 col-md-6">	
 		<img src='images/gs2.png' style='margin: 170px auto;margin-bottom: -30px;margin-right: 10px;'>
@@ -202,18 +178,13 @@
         <ul id='noticeText'>
         </ul>
  </div>
-<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
-<!-- 配置文件 -->
-<script type="text/javascript" src="js/ueditor.config.js"></script>
-<!-- 编辑器源码文件 -->
-<script type="text/javascript" src="js/ueditor.all.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/zh-cn.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="js/ip.js"></script>
+<script type="text/javascript" src="js/wangEditor.js"></script>
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
-	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
 	$("#head").click(function(){
 		var oh2 = document.getElementsByTagName("h2")[0];
 		var oUl = document.getElementsByTagName("ul")[0];	
@@ -228,11 +199,39 @@
 	obj=As[i];}
 	obj.id='topnav_current'
 
-    var ue = UE.getEditor('editor');
 	var winWidth = document.body.clientWidth;
-	var winHeight = document.body.clientHeight;
+	var winHeight =  jQuery(window).height();
 	//$("body").css("min-height",winHeight)
 	//这个高度在js文件里面修改了 dwq
+
+	var E = window.wangEditor
+	var editor = new E('#div')
+	// 配置服务器端地址
+	editor.customConfig.uploadImgServer = '/fileUpWriteImg'
+	editor.customConfig.showLinkImg = false
+	editor.customConfig.uploadFileName = 'image'
+	editor.customConfig.uploadImgHooks = {
+		customInsert: function (insertImg, result, editor) {
+			var url = result.url
+			insertImg(url)
+		}
+	}
+	editor.create();
+
+	if(screen.width <= 768){
+		$(".w-e-toolbar").css("height","58px");
+		$(".w-e-menu:eq(8)").css({"float":"left","position":"absolute","margin-top":"26px"});
+		$(".w-e-menu:eq(9)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"36px"});
+		$(".w-e-menu:eq(10)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"72px"});
+		$(".w-e-menu:eq(11)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"108px"});
+		$(".w-e-menu:eq(12)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"144px"});
+		$(".w-e-menu:eq(13)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"180px"});
+		$(".w-e-menu:eq(14)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"216px"});
+		$(".w-e-menu:eq(15)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"252px"});
+		$(".w-e-menu:eq(16)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"288px"});
+		$(".w-e-menu:eq(17)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"324px"});
+	}
+	$(".w-e-text-container").css("height",winHeight - 96 - 10 - 16 - 60 -34 - 20 - 31 - 5);
 
 	var type="";
 	function settype(newType){
@@ -246,8 +245,8 @@
 			return false;
 		}
 		var title = $("#title").val();
-		var content = UE.getEditor('editor').getContent();
-		var lead = UE.getEditor('editor').getPlainTxt();
+		var content = editor.txt.html();
+		var lead = editor.txt.text();
 		if(title==null || title==""){
 			layer.msg('请填写标题后在提交', function(){});
 			$("#myShare").attr("disabled", false);
@@ -270,7 +269,7 @@
            success: function(data) {
            	if(data == 'success'){
            		layer.msg('分享成功');
-					window.location.href = "index.html";
+					window.location.href = "index";
            	}
            }			
 		});
@@ -287,114 +286,6 @@
 				});
 		}
 
-
-    function setblur(e){
-        UE.getEditor('editor').blur();
-        UE.dom.domUtils.preventDefault(e)
-    }
-    function insertHtml() {
-        var value = prompt('插入html代码', '');
-        UE.getEditor('editor').execCommand('insertHtml', value)
-    }
-    function createEditor() {
-        enableBtn();
-        UE.getEditor('editor');
-    }
-    function getAllHtml() {
-        alert(UE.getEditor('editor').getAllHtml())
-    }
-    function getContent() {
-        var arr = [];
-        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getContent());
-        alert(arr.join("\n"));
-    }
-    function getPlainTxt() {
-        var arr = [];
-        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
-        arr.push("内容为：");
-        arr.push(UE.getEditor('editor').getPlainTxt());
-        alert(arr.join('\n'))
-    }
-    function setContent(isAppendTo) {
-        var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-        alert(arr.join("\n"));
-    }
-    function setDisabled() {
-        UE.getEditor('editor').setDisabled('fullscreen');
-        disableBtn("enable");
-    }
-
-    function setEnabled() {
-        UE.getEditor('editor').setEnabled();
-        enableBtn();
-    }
-
-    function getText() {
-        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-        var range = UE.getEditor('editor').selection.getRange();
-        range.select();
-        var txt = UE.getEditor('editor').selection.getText();
-        alert(txt)
-    }
-
-    function getContentTxt() {
-        var arr = [];
-        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-        arr.push("编辑器的纯文本内容为：");
-        arr.push(UE.getEditor('editor').getContentTxt());
-        alert(arr.join("\n"));
-    }
-    function hasContent() {
-        var arr = [];
-        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-        arr.push("判断结果为：");
-        arr.push(UE.getEditor('editor').hasContents());
-        alert(arr.join("\n"));
-    }
-    function setFocus() {
-        UE.getEditor('editor').focus();
-    }
-    function deleteEditor() {
-        disableBtn();
-        UE.getEditor('editor').destroy();
-    }
-    function disableBtn(str) {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            if (btn.id == str) {
-                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-            } else {
-                btn.setAttribute("disabled", "true");
-            }
-        }
-    }
-    function enableBtn() {
-        var div = document.getElementById('btns');
-        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-        for (var i = 0, btn; btn = btns[i++];) {
-            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-        }
-    }
-
-    function getLocalData () {
-        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
-    }
-
-    function clearLocalData () {
-        UE.getEditor('editor').execCommand( "clearlocaldata" );
-        alert("已清空草稿箱")
-    }
-    
-    function isFocus(e){
-        alert(UE.getEditor('editor').isFocus());
-        UE.dom.domUtils.preventDefault(e)
-    }
-    
     $(function(){
     	$.ajax({
     		type : "post",

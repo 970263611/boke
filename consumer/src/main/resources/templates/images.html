@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 	<link rel="shortcut icon" href="images/logo.ico" />
 	<title>图片展示</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -11,6 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="css/dwq.css">
 	<link rel="stylesheet" type="text/css" href="css/jquery.magnify.css">
 	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/image.css">
 	<style> 
 		@font-face 
 		{
@@ -25,87 +28,114 @@
 			font-size: 43px;
 			margin-left: 10px;	
 		}
-	  ul 
-	  {         
-          padding:0 0 0 0;
-          margin:0 0 0 0;
-      }
-      .row li 
-      {     
-          list-style:none;
-          padding-bottom:25px;           
-      }
-      ul li img 
-      {
-          cursor: pointer;
-      }
-      .modal-body 
-      {
-          padding:5px !important;
-      }
-      .modal-content 
-      {
-          border-radius:0;
-      }
-      .modal-dialog img {
-          text-align:center;
-          margin:0 auto;
-      }
-	  .controls
-	  {          
-	      width:50px;
-	      display:block;
-	      font-size:11px;
-	      padding-top:8px;
-	      font-weight:bold;          
-	  }
-	  .next 
-	  {
-	      float:right;
-	      text-align:right;
-	  }
-      /*override modal for demo only*/
-      .modal-dialog 
-      {
-          max-width:500px;
-          padding-top: 90px;
-      }
-      .container
-      {
-  	      margin-top: 50px;
-      }
-      .visibili
-      {
-      	  visibility:hidden;
-      }
-      .img
-      {
-      	  height:165px!important;
-      	  width:165px!important;
-      }
-      @media screen and (min-width: 768px){
-          .modal-dialog 
-          {
-              width:500px;
-              padding-top: 90px;
-          }      
-      }
-      @media screen and (max-width: 768px){      
-          .container
-	      {
-	  	      margin-top: 30px;
-	      }
-	      .visibili
-	      {
-	      	  display: none;
-	      }  
-	      .img
-	      {
-	      	  height:95px!important;
-	      	  width:95px!important;
-	      }  
-      }
-      #noticediv
+        img {
+            max-width: none;
+        }
+        .row {
+            margin-right: 0px;
+            margin-left: 0px;
+        }
+        #gallery
+        {
+            position:relative;
+            margin:0px auto 0;
+            min-height:400px;
+            padding:20px;
+        }
+        #gallery h1
+        {
+            color:#fff;
+            font-size:2em;
+            font-weight:bold;
+        }
+        #gallery ul
+        {
+            width:280px;
+            float:right;
+            margin:10px 0 20px;
+        }
+        #gallery ul li
+        {
+            float: left;
+            margin: 20px 8px 0 0;
+        }
+        #gallery ul li span{
+            display:block;
+            position:relative;
+            width:60px;
+            height:80px;
+            border:1px solid #fff;
+            -moz-border-radius:4px;
+            -webkit-border-radius:4px;
+            -ms-border-radius:4px;
+            -o-border-radius:4px;
+            border-radius:4px;
+            overflow:hidden;
+        }
+        #gallery ul li span img{
+            position:relative;
+            top:-200px;
+            left:-100px;
+            filter:alpha(opacity=30);
+            opacity:0.3;
+        }
+        #gallery ul li span.touch img,#gallery ul li:hover span img
+        {
+            opacity:1;
+            filter:alpha(opacity=100);
+        }
+        #gallery ul li:hover div
+        {
+            display:block;
+        }
+        #gallery ul li div img
+        {
+            width: 520px;
+            height: 380px;
+        }
+        #gallery ul li div
+        {
+            display:none;
+            position:absolute;
+            top:100px;
+            left:30px;
+            /*border:5px solid #fff;*/
+        }
+        .clearfix
+        {
+            clear:both;
+        }
+        html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend
+        {
+            margin:0;
+            padding:0;
+            font-size:100%;
+            border:0;
+            outline:0;
+            background:transparent;
+        }
+
+        ol,ul
+        {
+            list-style:none;
+        }
+
+        blockquote,q
+        {
+            quotes:none;
+        }
+
+        :focus
+        {
+            outline:0;
+        }
+
+        table
+        {
+            border-collapse:collapse;
+            border-spacing:0;
+        }
+        #noticediv
 		{
 		    background-color: white;
 		    display: inline-block;
@@ -125,11 +155,32 @@
 			    right: 0px;
 			    width: auto;
 			    width:230px;
+                min-height: 400px;
 		    }
+            #gallery
+            {
+                margin-top: 0px;
+                padding: 0px;
+            }
+            #gallery ul
+            {
+                margin: 0 auto;
+                float: none;
+                width: 304px;
+            }
+            .swiper-container
+            {
+                padding-top: 30px;
+                padding-bottom: 10px;
+            }
+            #gallery ul li
+            {
+                margin-left: 8px;
+            }
 		}	
    </style>
 </head>
-<body style='background: #ffeb3b36;'>
+<body style='background: #f7f7f7;'>
 <header style='padding-bottom:10px;' id='head'>
   <div class="tophead">
     <div class="logo"><a href="/"><span class='logoWord'>dahua</span><span style="color: red;">.</span></a></div>
@@ -164,12 +215,22 @@
     </nav>
   </div>
 </header>
-<div id='imgs'>
-	<div class="container" style='background-image:url()'>
-		<ul class="row" id='allImages'>
-	        
-	    </ul>             
-	</div>
+<div class="row">
+    <div class="col-md-1 col-md-0"></div>
+    <div class="col-md-7 col-md-12">
+        <div class="swiper-container" id="s-c">
+            <div class="swiper-wrapper">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 col-md-0"></div>
+    <div id="gallery" class="col-md-2 col-md-12">
+        <ul id='allImages'>
+
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-md-2 col-md-0"></div>
 </div>
 <div id='fot'>
 	<footer style="height: 60px;">
@@ -181,13 +242,15 @@
         <ul id='noticeText'>
         </ul>
  </div>
-<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="js/jquery.magnify.js"></script>
 <script type="text/javascript" src="js/ip.js"></script>
+<script type="text/javascript" src="js/swiper.min.js"></script>
 <script>
-	console.log("------欢迎访问大花博客,请联系我。邮箱:love_dingwq@163.com。------\n查看简历请访问www.loveding.top/mine");
+    var winHeight = document.documentElement.clientHeight;
+    var winWidth = document.documentElement.clientWidth;
 	//头部显示响应式
 	$("#head").click(function(){
 		var oh2 = document.getElementsByTagName("h2")[0];
@@ -196,22 +259,7 @@
 		style.display = style.display == "block" ? "none" : "block";
 		oh2.className = style.display == "block" ? "open" : ""
 	});
-	window.onload = function() {
-		var winHeight = document.documentElement.clientHeight;
-		var winWidth = document.documentElement.clientWidth;
-		var tsxth = $("#head").height();
-		if(tsxth==undefined){
-			tsxth = 0;
-		}
-		var h = $(".container").height();
-		var f = $("footer").height();
-		if(winWidth<768){
-			if(tsxth+h+f<winHeight){
-				$("footer").css("position", "absolute");
-				$("footer").css("bottom", 0);
-			}
-		}
-	}
+
 	//菜单加横线
 	var obj=null;
 	var As=document.getElementById('topnav').getElementsByTagName('a');
@@ -219,6 +267,8 @@
 	for(i=1;i<As.length;i++){if(window.location.href.indexOf(As[i].href)>=0)
 	obj=As[i];}
 	obj.id='topnav_current';
+
+	var swiper;
 
 	$(function() {
 		$.ajax({
@@ -230,102 +280,104 @@
 				layer.msg('保存失败', function(){});
             },
             success: function(data) {
-            	var html = 
-        			"<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[0].photo+"' data-magnify='gallery' href='"+data[0].photo+"' data-caption='"+data[0].photo_test+"---作者:"+data[0].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[1].photo+"' data-magnify='gallery' href='"+data[1].photo+"' data-caption='"+data[1].photo_test+"---作者:"+data[1].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[2].photo+"' data-magnify='gallery' href='"+data[2].photo+"' data-caption='"+data[2].photo_test+"---作者:"+data[2].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[3].photo+"' data-magnify='gallery' href='"+data[3].photo+"' data-caption='"+data[3].photo_test+"---作者:"+data[3].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[4].photo+"' data-magnify='gallery' href='"+data[4].photo+"' data-caption='"+data[4].photo_test+"---作者:"+data[4].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[5].photo+"' data-magnify='gallery' href='"+data[5].photo+"' data-caption='"+data[5].photo_test+"---作者:"+data[5].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[6].photo+"' data-magnify='gallery' href='"+data[6].photo+"' data-caption='"+data[6].photo_test+"---作者:"+data[6].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[7].photo+"' data-magnify='gallery' href='"+data[7].photo+"' data-caption='"+data[7].photo_test+"---作者:"+data[7].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[8].photo+"' data-magnify='gallery' href='"+data[8].photo+"' data-caption='"+data[8].photo_test+"---作者:"+data[8].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-0 visibili'>"+
-	    	            
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[9].photo+"' data-magnify='gallery' href='"+data[9].photo+"' data-caption='"+data[9].photo_test+"---作者:"+data[9].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4 visibili'>"+
-	    	            "<img class='img-responsive img' src='"+data[10].photo+"' data-magnify='gallery' href='"+data[10].photo+"' data-caption='"+data[10].photo_test+"---作者:"+data[10].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4 visibili'>"+
-	    	            "<img class='img-responsive img' src='"+data[10].photo+"' data-magnify='gallery' href='"+data[10].photo+"' data-caption='"+data[10].photo_test+"---作者:"+data[10].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4 visibili'>"+
-	    	            "<img class='img-responsive img' src='"+data[10].photo+"' data-magnify='gallery' href='"+data[10].photo+"' data-caption='"+data[10].photo_test+"---作者:"+data[10].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[10].photo+"' data-magnify='gallery' href='"+data[10].photo+"' data-caption='"+data[10].photo_test+"---作者:"+data[10].nickname+"'>"+
-	    	        "</li>"+
-	    	        "<li class='col-lg-2 col-md-2 col-sm-3 col-xs-4'>"+
-	    	            "<img class='img-responsive img' src='"+data[11].photo+"' data-magnify='gallery' href='"+data[11].photo+"' data-caption='"+data[11].photo_test+"---作者:"+data[11].nickname+"'>"+
-	    	        "</li>";
+			    var html = "";
+			    var html1 = "";
+			    var theLength = 0;
+			    if(winWidth <= 768){
+                    theLength = 12;
+                }else{
+                    theLength = data.length;
+                }
+			    for(var a=0;a<theLength;a++){
+			        html1 += "<div class='swiper-slide' style='background-image:url(" + data[a].photo + ")' id='" + a + "'>" +
+                                 "<a data-magnify='gallery' href='" + data[a].photo + "'>" +
+                                    "<h1>"+data[a].photo_test+"---作者:"+data[a].nickname+"</h1>" +
+                                 "</a>" +
+                             "</div>";
+			        if(a == 0){
+                        html += "<li>" +
+                                    "<span class='touch' onclick='onTouch(\""+ a +"\")' id='image" + a + "'>" +
+                                        "<img src='"+data[a].photo+"'/>" +
+                                    "</span>" +
+                                    // "<div style='display:block;' id='imageShow" + a + "'>" +
+                                    //     "<img class='img-responsive' src='"+data[a].photo+"' data-magnify='gallery' href='"+data[a].photo+"' data-caption='"+data[a].photo_test+"---作者:"+data[a].nickname+"'/>" +
+                                    // "</div>" +
+                                "</li>";
+                    }else{
+                        html += "<li>" +
+                                    "<span onclick='onTouch(\""+ a +"\")' id='image" + a + "'>" +
+                                        "<img src='"+data[a].photo+"'/>" +
+                                    "</span>" +
+                                    // "<div id='imageShow" + a + "'>" +
+                                    //     "<img class='img-responsive' src='"+data[a].photo+"' data-magnify='gallery' href='"+data[a].photo+"' data-caption='"+data[a].photo_test+"---作者:"+data[a].nickname+"'/>" +
+                                    // "</div>" +
+                                "</li>";
+                    }
+                }
            	 	$("#allImages").append(html);
+                $(".swiper-wrapper").append(html1);
+                swiper = new Swiper('.swiper-container', {
+                    pagination: '.swiper-pagination',
+                    effect: 'coverflow',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 'auto',
+                    loop: true,
+                    initialSlide:0,
+                    coverflow: {
+                        rotate: 50,
+                        stretch: 100,
+                        depth: 400,
+                        modifier: 1,
+                        slideShadows : true
+                    },
+                    onTouchEnd: function(swiper){
+                        $("#allImages li span").each(function() {
+                            $(this).removeClass("touch");
+                        });
+                        $("#image" + $(".swiper-slide-active")[0].id).addClass("touch");
+                    }
+                });
+                var height = 0;
+                var sch = $("#s-c").height();
+                if(winWidth <= 768){
+                    $("#gallery").css("min-height",winHeight - 66 - sch - 60 - 30 - 10 - 3);
+                    height = winHeight - 96 - 60 - $(".swiper-container").height;
+                }else{
+                    var h = $("#allImages").height();
+                    height = winHeight - 96 - 60;
+                    $("#allImages").css("margin-top",(height - h - 60)/2);
+                    $("#s-c").css("margin-top",(height - sch - 60)/2);
+                }
+                $("#gallery").css("height",height);
             }
 		});
       })
       
-$(function(){
-	$.ajax({
-		type : "post",
-		url : "/getNotice",
-		cache: false,
-		async: false,
-		error: function(request) {
-			layer.msg('获取消息失败', function(){});
-        },
-        success: function(data) {
-            if(data != ""){
-            	var html ="";
-            	for(var a=0;a<data.length;a++){
-            		html += "<li>" + data[a] + "</li>";
-            	}
-            	$("#noticeText").append(html);
-            	$("#notice").text("消息("+data.length+")");
-            	$("#notice_phone").text("消息("+data.length+")");
+    $(function(){
+        $.ajax({
+            type : "post",
+            url : "/getNotice",
+            cache: false,
+            async: false,
+            error: function(request) {
+                layer.msg('获取消息失败', function(){});
+            },
+            success: function(data) {
+                if(data != ""){
+                    var html ="";
+                    for(var a=0;a<data.length;a++){
+                        html += "<li>" + data[a] + "</li>";
+                    }
+                    $("#noticeText").append(html);
+                    $("#notice").text("消息("+data.length+")");
+                    $("#notice_phone").text("消息("+data.length+")");
+                }
             }
-        }
-	});
-})
+        });
+    })
 
-function shownotice(){
+    function shownotice(){
 		$("#noticediv").show();
 	}
 	
@@ -366,6 +418,15 @@ function shownotice(){
 			  }
 			});
 	}
+
+	function onTouch(id){
+        $("#allImages li span").each(function() {
+            $(this).removeClass("touch");
+        });
+        $("#image" + id).addClass("touch");
+        swiper.slideTo(id, 1000, false);
+    }
+
 </script>
 </body>
 </html>
