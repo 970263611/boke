@@ -6,32 +6,32 @@
 
 dahuaboke
 
- gh_9f88428b7945（测试公众号）
+gh_9f88428b7945（测试公众号）
 
 ##### pc
 
-https://www.dahuaboke.com
+www.dahuaboke.com
 
-http://www.dahuaboke.com
-
-http://www.loveding.top
+www.loveding.top
 
 ### 博客整合框架
 
-| 名称      | 作用                         | 是否上线 |
-| --------- | ---------------------------- | -------- |
-| docker    | 容器部署                     | 已上线   |
-| apollo    | 配置中心                     | 已上线   |
-| sentinel  | 流控降级保护                 | 已上线   |
-| shiro     | 权限管理url过滤              | 已上线   |
-| dubbo     | rpc分布式调用框架            | 已上线   |
-| zookeeper | 注册中心                     | 已上线   |
-| rocketmq  | 消息队列                     | 已上线   |
-| redis     | 缓存                         | 已上线   |
-| thymeleaf | 模版引擎                     | 已上线   |
-| UEditor   | 富文本编辑器（源码部分改动） | 已上线   |
-| nginx     | 反向代理，负载均衡           | 已上线   |
-| starter   | 编写springboot的starter组件  | 已上线   |
+| 名称                        | 版本       | 作用                        | 是否上线 |
+| --------------------------- | ---------- | --------------------------- | -------- |
+| docker                      | 2019-10-21 | 容器部署                    | 已上线   |
+| apollo                      | 1.5.1      | 配置中心                    | 已上线   |
+| sentinel(部分源码改动)      | 1.6.3      | 流控降级保护                | 已上线   |
+| shiro                       | 1.4.2      | 权限管理url过滤             | 已上线   |
+| rpc(自己编写，仓库有源码)   | 1.0.0      | rpc分布式调用框架           | 已上线   |
+| nodou(自己编写，仓库有源码) | 1.0.0      | 注册中心                    | 已上线   |
+| rocketmq                    | 4.5.0      | 消息队列                    | 已上线   |
+| redis                       | 6.0        | 缓存                        | 已上线   |
+| thymeleaf                   | 3.0.10     | 模版引擎                    | 已上线   |
+| wangEditor                  | 3          | 富文本编辑器                | 已上线   |
+| nginx                       | 1.17.8     | 反向代理，负载均衡          | 已上线   |
+| starter                     | 1.0.0      | 编写springboot的starter组件 | 已上线   |
+| mybatis                     | 2.1.1      | 持久化框架                  | 已上线   |
+| mysql                       | 8.0        | 数据库                      | 已上线   |
 
 ### 实现的功能点
 
