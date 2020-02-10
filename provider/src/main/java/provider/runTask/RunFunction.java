@@ -36,7 +36,7 @@ public class RunFunction {
 	private UserService userService;
 	
 	//获取微信token定时方法
-	@Scheduled(cron="* * */2 * * ?") //每2小时执行一次
+	@Scheduled(cron="0 0 */2 * * ?") //每2小时执行一次
     public void statusCheck() {      
         logger.info(new Date()+"dwq---微信token定时任务执行---");
         CloseableHttpClient httpclient = HttpClients.createDefault();
