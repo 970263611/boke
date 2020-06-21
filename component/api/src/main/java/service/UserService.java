@@ -5,6 +5,7 @@ import org.apache.rocketmq.common.message.MessageExt;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface UserService {
@@ -222,4 +223,6 @@ public interface UserService {
 	String save_leaveMes(String articleId, String mes, User user);
 
 	void custom(List<MessageExt> msgs);
+
+    List<Map> getArticleTypes();
 }

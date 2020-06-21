@@ -4,12 +4,12 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" href="images/logo.ico" />
-	<title>首页</title>
+	<title>大花的文章分享</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/base.css">
 	<link rel="stylesheet" type="text/css" href="css/dwq.css">
 	<style>
-		@font-face 
+		@font-face
 		{
 			/* 字体名称随意起 */
 			font-family: logoFont;
@@ -20,7 +20,7 @@
 		{
 			font-family:logoFont;
 			font-size: 43px;
-			margin-left: 10px;	
+			margin-left: 10px;
 		}
 		#noticediv
 		{
@@ -43,7 +43,7 @@
 			    width: auto;
 			    width:230px;
 		    }
-		}	
+		}
 	</style>
 </head>
 <body>
@@ -91,12 +91,12 @@
 <div class='allplace'>
 	<div class="col-xs-12 col-md-8 leftplace">
 	<div id='textList'>
-	
+
 	</div>
 	<div style="background-color: white;height: 35px;margin-bottom: 10px;">
 		<div aria-label='...'>
 		    <ul class='pagination' id='go_any_page' style="margin:0px auto;">
-		    
+
 		  	</ul>
 		</div>
 	</div>
@@ -250,12 +250,12 @@ $(function() {
 		type : "post",
 		url : "/go_page",
 		data : {"page":'1'},
+        async : false,
 		dataType : "json",
         success: function(data) {
         	var html = "";
        		 for(var a = 0;a<data.length;a++){
 	  			var btn = "";
-	   			var topImage = "";
 				var head = "<div style='position: absolute; right: 36px; top: 10%;'>";
 				var foot = "</div>";
        			var role = '[[${rowId}]]';
@@ -264,29 +264,24 @@ $(function() {
        				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
        				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
        				if(data[a].top == '0'){
-       					btn = head + top + del + topImage;
+       					btn = head + top + del;
        				}else{
-       					btn = head + untop + del + topImage;
+       					btn = head + untop + del;
        				}
        			}else{
        				btn = head;
        			}
-       			if(data[a].top == '1'){
-       				topImage = "<span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true' title='置顶'></span>";
-   				}
-       			btn = btn + topImage + foot;
-       			if(data[a].type=='1'){
-       				type='技术交流';
-       			}else if(data[a].type=='1'){
-       				type='我的困惑';
-       			}else{
-       				type='谈谈生活';
-       			}
-       			html += 
+       			btn = btn + foot;
+       			html +=
            			"<div class='article'>"+
 						"<div class='article_inside'>"+
-							"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>"+
-								"<a>"+data[a].title+"</a>"+
+							"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>";
+							 if(data[a].top == '1'){
+								 html += "<a><span style='color: hsla(16, 90%, 58%, 0.79);margin-right: 5px;'>(置顶)</span>" + data[a].title + "</a>";
+							 } else {
+								 html += "<a>"+data[a].title+"</a>";
+							 }
+					html +=
 							"</h3>"+
 							"<div class='content'>"+
 								"<span>"+
@@ -294,7 +289,7 @@ $(function() {
 								"</span>"+
 							"</div>"+
 							"<div class='article_img_div'>"+
-								"<span class='type'>"+type+"</span>"+
+								"<span class='type'>"+data[a].type+"</span>"+
 								"<span class='time'>"+data[a].create_time+"</span>"+
 								"<span class='view'>"+data[a].see+"</span>"+
 								"<span class='glyphicon glyphicon-user pointer' aria-hidden='true' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
@@ -306,7 +301,7 @@ $(function() {
 						"</div>"+
 					"</div>";
        		}
-            	$('#textList').append(html);
+            $('#textList').append(html);
         }
 	});
 })
@@ -317,6 +312,7 @@ $(function() {
 		type : "post",
 		url : "/pageNum",
 		dataType : "json",
+        async : false,
 		success : function(data) {
 			var html =  "<li id='previousParent'><a onclick='go_page(1,this,"+data+")'>首页</a></li>" +
 						"<li class='disabled' id='previous'>" +
@@ -328,14 +324,14 @@ $(function() {
 				if(a==0){
 					html += "<li class='active'>" +
 				    			"<a id='page_" + (a + 1) +
-				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) +
 				    				"<span class='sr-only'>(current)</span>" +
 			    				"</a>" +
 		    				"</li>";
 				}else{
 					html += "<li>" +
 				    			"<a id='page_" + (a + 1) +
-				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) + 
+				    				"'onclick='go_page(" + (a + 1) + ",this,"+data+")'>"+ (a + 1) +
 				    				"<span class='sr-only'>(current)</span>" +
 			    				"</a>" +
 							"</li>";
@@ -364,7 +360,7 @@ function go_page(page,obj,lastPage){
 	});
 	$(obj).parent().addClass("active");
 	if(page!=1){
-		$("#previous").removeClass("disabled"); 
+		$("#previous").removeClass("disabled");
 		$("#previousParent").removeClass("disabled");
 	}else{
 		$("#previous").addClass("disabled");
@@ -395,7 +391,6 @@ function go_page(page,obj,lastPage){
        		for(var a = 0;a<data.length;a++){
        			var btn = "";
        			var role = '[[${rowId}]]';
-       			var topImage = "";
    				var head = "<div>";
 				var foot = "</div>";
        			if(role=='1'){
@@ -403,41 +398,38 @@ function go_page(page,obj,lastPage){
        				var top = "<input type='button' style='float: right;' value='置顶' onclick='totop("+data[a].id+",\""+data[a].create_time+"\")'>";
        				var untop = "<input type='button' style='float: right;' value='取消置顶' onclick='untop("+data[a].id+",\""+data[a].create_time+"\")'>";
        				if(data[a].top == '0'){
-       					btn = head + top + del + topImage;
+       					btn = head + top + del;
        				}else{
-       					btn = head + untop + del + topImage;
+       					btn = head + untop + del;
        				}
        			}else{
        				btn = head;
        			}
-       			if(data[a].top == '1'){
-       				topImage = "<span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true' title='置顶'></span>";
-   				}
-       			btn = btn + topImage + foot;
-       			if(data[a].type=='1'){
-       				type='技术交流';
-       			}else if(data[a].type=='1'){
-       				type='我的困惑';
-       			}else{
-       				type='谈谈生活';
-       			}
-       			html += "<div class='article'>"+
+       			btn = btn + foot;
+       			html +=
+						"<div class='article'>"+
 							"<div class='article_inside'>"+
-								"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>"+
-									"<a>"+data[a].title+"</a>"+
-								"</h3>"+
+								"<h3 class='blogtitle' onclick='gpSingle("+data[a].id+")'>";
+
+								if(data[a].top == '1'){
+									html += "<a><span style='color: hsla(16, 90%, 58%, 0.79);margin-right: 5px;'>(置顶)</span>" + data[a].title + "</a>";
+								} else {
+									html += "<a>"+data[a].title+"</a>";
+								}
+				html +=
+							"</h3>"+
 								"<div class='content'>"+
 									"<span>"+
 									   data[a].lead+
 									"</span>"+
 								"</div>"+
 								"<div class='article_img_div'>"+
-									"<span class='type'>"+type+"</span>"+
+									"<span class='type'>"+data[a].type+"</span>"+
 									"<span class='time'>"+data[a].create_time+"</span>"+
 									"<span class='view'>"+data[a].see+"</span>"+
 									"<span class='glyphicon glyphicon-user pointer' onclick='go_people("+data[a].id+")' style='margin-left: -10px;'>"+data[a].create_user+"</span>"+
 								"</div>"+
-								btn + 
+								btn +
 								"<div class='readall'>"+
 									"<span onclick='gpSingle("+data[a].id+")'><a href='#' style='color: green;'>阅读全文</a></span>"+
 								"</div>"+
@@ -509,6 +501,7 @@ function del(articleId,time){
         success: function(data) {
             if(data == "success"){
             	layer.msg('删除成功');
+            	window.location.reload();
             }
         }
 	});

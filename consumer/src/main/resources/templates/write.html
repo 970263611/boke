@@ -10,7 +10,8 @@
 <link rel="stylesheet" type="text/css" href="css/base.css">
 <link rel="stylesheet" type="text/css" href="css/dwq.css">
 <link rel="stylesheet" type="text/css" href="css/wangEditor.css">
-<style>  
+<link rel="stylesheet" type="text/css" href="css/select2.css">
+<style>
 	@font-face 
 		{
 			/* 字体名称随意起 */
@@ -31,10 +32,26 @@
 	#shire
 	{
 		display:inline-block;
-		width: 65%;
+		width: 100%;
 		margin-top: 11px;
 		margin-bottom: 10px;
 	}
+    #title
+    {
+        display:inline-block;
+        width: 60%;
+        margin-left: 20px;
+    }
+    #shireBtn
+    {
+        display:inline-block;
+        width: 10%;
+        margin-left: 20px;
+    }
+    .select2-search
+    {
+        display: none;
+    }
 	@media screen and (min-width: 768px){
       #editor
       {
@@ -61,11 +78,11 @@
 	  	 display:none;
 	  } 
 	  #shire
-		{
-			display:inline-block;
-			width: 100%;
-		}
-  	}
+    {
+        display:inline-block;
+        width: 100%;
+    }
+  }
 	#noticediv
 	{
 	    background-color: white;
@@ -97,8 +114,19 @@
 		}
 		#shire
 		{
-			margin-top: 0px;
+			margin-top: 30px;
+            margin-bottom: 20px;
 		}
+        #title
+        {
+            width: 35%;
+            margin-left: 10px;
+        }
+        #shireBtn
+        {
+            width: 20%;
+            margin-left: 10px;
+        }
 	}		
 </style>
 </head>
@@ -138,25 +166,13 @@
   </div>
 </header>
 <div id='line' style="height:10px;background-color:black;background-color: #7955486b;margin: 8px;"></div>	
-<div class="col-xs-12 col-md-9" style='padding-left:0px;padding-right:0px;'>
+<div class="col-xs-12 col-md-9" style='padding-left:0px;padding-right:0px;z-index: 1;'>
 		<div id="div"></div>
-		<div id='type' style='display:inline-block;float:left;margin-top: 10px;margin-bottom: 10px;'>
-			<div class="col-xs-4 col-md-4">
-				<button class='btn btn-default' onclick='settype(1)'>技术交流</button>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<button class='btn btn-default' onclick='settype(2)'>我的困惑</button>
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<button class='btn btn-default' onclick='settype(3)'>谈谈生活</button>
-			</div>
-		</div>
 		<div id='shire'>
-			<div class="col-xs-8 col-md-8">
-				<input id='title' type=text class="form-control" style='display:inline-block;' placeholder="加个标题吧">
-			</div>
-			<div class="col-xs-4 col-md-4">
-				<button class='btn btn-default' onclick="insert_article()">分享</button>
+			<div class="col-xs-12 col-md-12">
+                <select id="article-type-ajax" style='display:inline-block;'></select>
+				<input id='title' type=text class="form-control" placeholder="加个标题吧">
+                <button id='shireBtn' class='btn btn-default' onclick="insert_article()">分享</button>
 			</div>
 		</div>
 </div>
@@ -183,6 +199,7 @@
 <script type="text/javascript" src="layer/layer.js"></script>
 <script type="text/javascript" src="js/ip.js"></script>
 <script type="text/javascript" src="js/wangEditor.js"></script>
+<script type="text/javascript" src="js/select2.js"></script>
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
 	$("#head").click(function(){
@@ -218,6 +235,16 @@
 	}
 	editor.create();
 
+	//加载select2
+	$('#article-type-ajax').select2({
+        width: ($("#shire").width() - $("#title").width() - $("#shireBtn").width())/2,
+        placeholder: '请选择文章类型',
+        ajax: {
+			url: '/getArticleTypes',
+			dataType: 'json'
+		}
+	});
+
 	if(screen.width <= 768){
 		$(".w-e-toolbar").css("height","58px");
 		$(".w-e-menu:eq(8)").css({"float":"left","position":"absolute","margin-top":"26px"});
@@ -232,14 +259,10 @@
 		$(".w-e-menu:eq(17)").css({"float":"left","position":"absolute","margin-top":"26px","margin-left":"324px"});
 	}
 	$(".w-e-text-container").css("height",winHeight - 96 - 10 - 16 - 60 -34 - 20 - 31 - 5);
-
-	var type="";
-	function settype(newType){
-		type = newType;
-	}
 	
     function insert_article(){
 		$("#myShare").attr("disabled", true);
+		var type = $("#article-type-ajax").val();
 		if(type==""){
 			layer.msg('请选择分类后在提交', function(){});
 			return false;

@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
                         //当非置顶文章的总数量不够填补本页了
                     } else {
                         //从redis中取出所有非置顶文章标题
-                        notops = jedis.sort("article", sortingParameters).subList(0, asize);
+                        notops = jedis.sort("article", sortingParameters).subList(firstArticle - size, asize);
                     }
                     //根据标题从redis中取出应该返回的非置顶文章添加到返回的list中
                     acList.addAll(RedisUtil.hgetArticle(notops, jedis));
@@ -526,9 +526,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public String top(String articleId, String time) {
         Jedis jedis = jedisPool.getResource();
-        jedis.lpush("top", time + "*" + articleId);
-        jedis.hset("article_" + articleId + "", "top", "1");
-        jedis.lrem("article", 0, time + "*" + articleId);
+        List<String> list = jedis.lrange("article", 0, -1);
+        for (String s : list) {
+            if (s.contains(time + "*" + articleId)) {
+                jedis.lrem("article", 1, s);
+                jedis.lpush("top", s);
+            }
+        }
+        jedis.hset("article_" + articleId, "top", "1");
         jedis.close();
         RocketMQUtil.producer(ipAddress, producterName, topicName, "top", articleId);
         return "success";
@@ -540,9 +545,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public String untop(String articleId, String time) {
         Jedis jedis = jedisPool.getResource();
-        jedis.lrem("top", 0, time + "*" + articleId);
+        List<String> list = jedis.lrange("top", 0, -1);
+        for (String s : list) {
+            if (s.contains(time + "*" + articleId)) {
+                jedis.lrem("top", 1, s);
+                jedis.lpush("article", s);
+            }
+        }
         jedis.hset("article_" + articleId + "", "top", "0");
-        jedis.lpush("article", time + "*" + articleId);
         jedis.close();
         RocketMQUtil.producer(ipAddress, producterName, topicName, "untop", articleId);
         return "success";
@@ -555,6 +565,12 @@ public class UserServiceImpl implements UserService {
     public String isdel(String articleId, String time) {
         Jedis jedis = jedisPool.getResource();
         jedis.del("article_" + articleId);
+        List<String> list = jedis.lrange("article", 0, -1);
+        for (String s : list) {
+            if (s.contains(time + "*" + articleId)) {
+                jedis.lrem("article", 1, s);
+            }
+        }
         jedis.close();
         RocketMQUtil.producer(ipAddress, producterName, topicName, "isdel", articleId);
         return "success";
@@ -571,6 +587,14 @@ public class UserServiceImpl implements UserService {
 			String body = new String(msg.getBody());
 			Follow follow = JSON.parseObject(new String(msg.getBody()), Follow.class);
         }*/
+    }
+
+    /**
+     * select2加载数据
+     */
+    @Override
+    public List<Map> getArticleTypes() {
+        return userDao.getArticleTypes();
     }
 
     /**

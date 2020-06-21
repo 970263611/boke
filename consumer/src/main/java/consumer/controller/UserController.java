@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @DwqAnnotation
@@ -192,7 +193,16 @@ public class UserController {
     @RequestMapping("go_page")
     public List<Article> Go_page(HttpServletRequest request) {
         String page = request.getParameter("page");
-        return userService.Go_page(Integer.parseInt(page));
+        List<Article> articles = userService.Go_page(Integer.parseInt(page));
+        List<Map> maps = (List<Map>) getArticleTypes().get("results");
+        articles.forEach(a -> {
+            maps.forEach((m) -> {
+                if(String.valueOf(m.get("id")).equals(a.getType())){
+                    a.setType((String) m.get("text"));
+                }
+            });
+        });
+        return articles;
     }
 
     /**
@@ -338,6 +348,16 @@ public class UserController {
             return userService.save_leaveMes(articleId, mes, user);
         }
         return null;
+    }
+
+    /**
+     * select2加载数据
+     */
+    @RequestMapping("getArticleTypes")
+    public Map getArticleTypes() {
+        return new HashMap(){{
+            put("results",userService.getArticleTypes());
+        }};
     }
 
     public Session getSession() {

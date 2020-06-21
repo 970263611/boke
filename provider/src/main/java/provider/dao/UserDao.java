@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Mapper
@@ -269,4 +270,9 @@ public interface UserDao {
 	})
 	void beachSaveSee(@Param("articles") List<Article> articles);
 
+	/**
+	 * select2加载数据
+	 */
+	@Select("select typeId id,typeName text from article_type")
+    List<Map> getArticleTypes();
 }
