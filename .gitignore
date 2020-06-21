@@ -1,4 +1,5 @@
 /.idea
 /*.iml
 /**/*.iml
+/**/application.properties
 /**/target
