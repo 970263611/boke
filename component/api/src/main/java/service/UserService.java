@@ -224,5 +224,7 @@ public interface UserService {
 
 	void custom(List<MessageExt> msgs);
 
-    List<Map> getArticleTypes();
+    List<Map> getArticleTypes(int id);
+
+	List<Map> getArticleTypes();
 }

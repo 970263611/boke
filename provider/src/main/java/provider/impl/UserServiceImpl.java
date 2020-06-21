@@ -590,11 +590,19 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * select2加载数据
+     * 文章加载数据匹配
      */
     @Override
     public List<Map> getArticleTypes() {
-        return userDao.getArticleTypes();
+        return userDao.getArticleTypeNoCheck();
+    }
+
+    /**
+     * select2加载数据
+     */
+    @Override
+    public List<Map> getArticleTypes(int id) {
+        return userDao.getArticleTypes(id + "");
     }
 
     /**

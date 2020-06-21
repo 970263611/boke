@@ -194,7 +194,7 @@ public class UserController {
     public List<Article> Go_page(HttpServletRequest request) {
         String page = request.getParameter("page");
         List<Article> articles = userService.Go_page(Integer.parseInt(page));
-        List<Map> maps = (List<Map>) getArticleTypes().get("results");
+        List<Map> maps = (List<Map>) userService.getArticleTypes();
         articles.forEach(a -> {
             maps.forEach((m) -> {
                 if(String.valueOf(m.get("id")).equals(a.getType())){
@@ -296,7 +296,6 @@ public class UserController {
      */
     @RequestMapping("getNotice")
     public List<String> getNotice() {
-
         Session session = getSession();
         User user = (User) session.getAttribute("user");
         if (user != null) {
@@ -311,7 +310,6 @@ public class UserController {
      */
     @RequestMapping("delNotice")
     public String delNotice() {
-
         Session session = getSession();
         User user = (User) session.getAttribute("user");
         if (user != null) {
@@ -355,8 +353,10 @@ public class UserController {
      */
     @RequestMapping("getArticleTypes")
     public Map getArticleTypes() {
+        Session session = getSession();
+        User user = (User) session.getAttribute("user");
         return new HashMap(){{
-            put("results",userService.getArticleTypes());
+            put("results",userService.getArticleTypes(user.getId()));
         }};
     }
 
