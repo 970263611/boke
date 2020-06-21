@@ -338,7 +338,7 @@
 	var websocket = null;
     if ('WebSocket' in window) {
         //websocket = new WebSocket("ws:localhost:8099/websocket/socketServer");
-    	websocket = new WebSocket("ws:"+websocketport+"/websocket/socketServer");
+    	websocket = new WebSocket("wss:"+websocketport+"/websocket/socketServer");
     }
     
   //连接发生错误的回调方法
