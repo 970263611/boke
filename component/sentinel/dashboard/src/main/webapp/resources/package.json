@@ -35,7 +35,7 @@
     "ng-tags-input": "~3.0.0",
     "oclazyload": "^1.1.0",
     "selectize": "^0.12.1",
-    "lodash": ">=4.17.11"
+    "lodash": ">=4.17.19"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
